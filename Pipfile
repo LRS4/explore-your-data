@@ -11,6 +11,7 @@ flask = "*"
 numpy = "*"
 pandas = "*"
 requests = "*"
+werkzeug = "==0.16.0"
 
 [dev-packages]
 pytest = "*"
