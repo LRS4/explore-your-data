@@ -15,6 +15,9 @@ install:
   - "pip install pipenv"
   - "pipenv install --dev"
   - "pip install codecov"
+  - "pip install numpy"
+  - "pip install pandas"
+  - "pip install requests"
 after_success:
     - codecov
 cache: yarn
