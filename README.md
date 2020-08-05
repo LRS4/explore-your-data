@@ -132,6 +132,14 @@ This will create the bundled `dist` folder which will be served by whitenoise.
 #### Python Build Process
 
 The python buildpack will detect the `Pipfile` and install all the python dependencies.
+To add new python dependencies, once in the virtual environment using `pipenv shell` run
+
+	```
+	$ pipenv install [package-name]
+	$ pipenv lock
+	```
+
+Then update the .travis.yml with the new packages under `install`, to ensure the build pipeline doesn't fail.
 
 #### Production Sever Setup
 
@@ -150,3 +158,5 @@ Here are the commands we need to run to get things setup on the Heroku side:
 
 ### References
 Credit for the Vue.js Flask template goes to [gtalarico](https://github.com/gtalarico/flask-vuejs-template) and set up to [this video](https://www.youtube.com/watch?v=VZv8UybZHNA).
+
+* [Managing python dependencies](https://thoughtbot.com/blog/how-to-manage-your-python-projects-with-pipenv)
