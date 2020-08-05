@@ -1,4 +1,5 @@
 # Explore Your Data - with AI 🦾
+[![Build Status](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)
 
 ## Introduction
 An application to present exploratory data analysis in an accessible format. You bring a nicely formatted CSV file that has some data in it, and let the AI worry about the rest! It will give you a good overview of the data for quicker understanding, perfect for data professionals and non-technical persons alike.
@@ -160,3 +161,4 @@ Here are the commands we need to run to get things setup on the Heroku side:
 Credit for the Vue.js Flask template goes to [gtalarico](https://github.com/gtalarico/flask-vuejs-template) and set up to [this video](https://www.youtube.com/watch?v=VZv8UybZHNA).
 
 * [Managing python dependencies](https://thoughtbot.com/blog/how-to-manage-your-python-projects-with-pipenv)
+* [Using yarn](https://stackoverflow.com/questions/47238241/heroku-build-failing-due-to-yarn-and-npm-lockfile-conflict)
