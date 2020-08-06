@@ -5,13 +5,13 @@ name = "pypi"
 
 [packages]
 gunicorn = "==19.7.1"
-flask-restplus = "*"
 python-dotenv = "*"
 flask = "*"
 numpy = "*"
 pandas = "*"
 requests = "*"
 werkzeug = "==0.16.0"
+flask-restx = "*"
 
 [dev-packages]
 pytest = "*"

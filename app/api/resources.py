@@ -1,11 +1,11 @@
 """
 REST API Resource Routing
-http://flask-restplus.readthedocs.io
+https://flask-restx.readthedocs.io/en/latest/quickstart.html
 """
 
 from datetime import datetime
 from flask import request
-from flask_restplus import Resource
+from flask_restx import Resource
 
 from .security import require_auth
 from . import api_rest

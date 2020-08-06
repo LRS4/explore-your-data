@@ -9,6 +9,7 @@ An application to present exploratory data analysis in an accessible format. You
 
 ## Features
 * Minimal Flask 1.0 App
+* [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/index.html)
 * [Flask-RestPlus](http://flask-restplus.readthedocs.io) API with class-based secure resource routing
 * Starter [PyTest](http://pytest.org) test suite
 * [vue-cli 3](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md) + yarn
@@ -20,7 +21,7 @@ An application to present exploratory data analysis in an accessible format. You
 
 ## Structure
 
-The template uses Flask & Flask-RestPlus to create a minimal REST style API,
+The template uses Flask & Flask-RESTX (fork of Flask-RestPlus) to create a minimal REST style API,
 and let's VueJs + vue-cli handle the front end and asset pipline.
 Data from the python server to the Vue application is passed by making Ajax requests.
 
@@ -28,7 +29,7 @@ Data from the python server to the Vue application is passed by making Ajax requ
 
 #### Rest Api
 
-The Api is served using a Flask blueprint at `/api/` using Flask RestPlus class-based
+The Api is served using a Flask blueprint at `/api/` using Flask RESTX (fork of Flask-RestPlus) class-based
 resource routing.
 
 #### Client Application
@@ -65,13 +66,7 @@ Before getting started, you should have the following installed and running:
 - [X] Pipenv (optional)
 - [X] Heroku Cli (if deploying to Heroku)
 
-##### Template and Dependencies
-
-* Clone this repository:
-
-	```
-	$ git clone https://github.com/gtalarico/flask-vuejs-template.git
-	```
+##### Dependencies
 
 * Setup virtual environment, install dependencies, and activate it:
 
@@ -127,7 +122,7 @@ to have Heroku build the application before releasing it.
 
 #### JS Build Process
 
-Heroku's nodejs buidlpack will handle install for all the dependencies from the `packages.json` file.
+Heroku's nodejs buildpack will handle install for all the dependencies from the `packages.json` file.
 It will then trigger the `postinstall` command which calls `yarn build`.
 This will create the bundled `dist` folder which will be served by whitenoise.
 
@@ -137,13 +132,18 @@ The python buildpack will detect the `Pipfile` and install all the python depend
 To add new python dependencies, once in the virtual environment using `pipenv shell` run
 
 	```
-	$ pipenv install [package-name]
+	$ pipenv install <package-name>
 	$ pipenv lock
 	```
+To remove a python dependency, use `pipenv uninstall <package-name>`
 
 Then update the .travis.yml with the new packages under `install`, to ensure the build pipeline doesn't fail.
 
-#### Production Sever Setup
+#### Running tests
+
+To run all pytest unit tests run `pytest tests/`
+
+#### Production Server Setup
 
 Here are the commands we need to run to get things setup on the Heroku side:
 
