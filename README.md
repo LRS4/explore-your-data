@@ -1,5 +1,6 @@
 # Explore Your Data - with AI 🦾
-[![Build Status](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)
+[![Build Status](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)   [![codecov](https://codecov.io/gh/LRS4/explore-your-data/branch/master/graph/badge.svg)](https://codecov.io/gh/LRS4/explore-your-data)
+
 
 ## Introduction
 An application to present exploratory data analysis in an accessible format. You bring a nicely formatted CSV file that has some data in it, and let the AI worry about the rest! It will give you a good overview of the data for quicker understanding, perfect for data professionals and non-technical persons alike.
