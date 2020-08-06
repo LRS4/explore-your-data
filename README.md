@@ -141,7 +141,7 @@ Then update the .travis.yml with the new packages under `install`, to ensure the
 
 #### Running tests
 
-To run all pytest unit tests run `pytest tests/`
+To run all pytest unit tests run `pytest` or `pytest tests/`
 
 #### Production Server Setup
 

@@ -33,6 +33,10 @@ def test_secure_resource_pass(client):
                       headers={'authorization': 'Bearer x'})
     assert resp.status_code == 200
 
+def test_titanic_data_get(client):
+    resp = client.get('/api/get-titanic-data')
+    assert resp.status_code == 200
+
 @pytest.fixture(scope="module")
 def request_context():
     return app.test_request_context('')
