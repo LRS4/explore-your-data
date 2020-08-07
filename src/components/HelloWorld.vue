@@ -1,41 +1,55 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://github.com/vuejs/vue-cli/tree/dev/docs" target="_blank">vue-cli documentation</a>.
+  <div class="has-text-left">
+    <h1 class="is-size-1 has-text-weight-bold content">{{ msg }}</h1>
+    <p class="content">
+      <span class="has-text-weight-bold">Explore Your Data</span> provides automated exploratory data analysis as a service.
+      This can be used by individuals and organisations to better understand your datasets,
+      to support the start of new data projects.
     </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org/en/essentials/getting-started.html" target="_blank">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org/en/intro.html" target="_blank">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org/en" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <p class="content">
+      Exploratory data analysis (EDA) is an approach to analyzing datasets to summarise their main characteristics,
+      often with visual methods. A statistical model can be used or not, but primarily EDA is for seeing what the data
+      can tell us beyond the formal modeling or hypothesis testing task.
+    </p>
+    <h3 class="is-size-4 has-text-weight-bold">Use this service to:</h3>
+    <div class="content">
+      <ul>
+        <li>Get a basic understanding of any dataset you upload</li>
+        <li>Carry out guided data exploration</li>
+        <li>Get ideas and suggestions on how to develop your data project</li>
+      </ul>
+    </div>
+    <h3 class="is-size-4 has-text-weight-bold content">Before you start</h3>
+    <p class="content">
+      You'll need your dataset in CSV (comma-seperated values) format.
+      Currently Explore Your Data only allows CSV files as uploads.
+      <a class="link" 
+        href="https://support.microsoft.com/en-us/office/save-a-workbook-to-text-format-txt-or-csv-3e9a9d6c-70da-4255-aa28-fcacf1f081e6"
+        target="_blank">
+        How to store data as a CSV file?
+      </a>
+    </p>
+    <p class="content">
+      The dataset uploaded will need to be understandable. For example, naming a column 'Date of Birth' or 'DateOfBirth' is
+      easier to understand than 'dob'.
+    </p>
+    <b-button
+      class="is-success start-button has-text-weight-bold"
+      size="is-large"
+      :rounded="false"
+      tag="router-link"
+      :to="{ path: '/api' }"
+    >Upload data</b-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
-    msg: String
-  }
-}
+    msg: String,
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -43,15 +57,22 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
+
+p,
 ul {
-  list-style-type: none;
-  padding: 0;
+  font-size: 19px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.start-button {
+  background-color: #00703c !important;
 }
-a {
-  color: #42b983;
+
+.start-button:hover {
+  background-color: #00703cf3 !important;
+}
+
+.start-button:active {
+  border: 3px solid;
+  border-color: #ffdd00 !important;
 }
 </style>
