@@ -171,3 +171,4 @@ Credit for the Vue.js Flask template goes to [gtalarico](https://github.com/gtal
 
 * [Managing python dependencies](https://thoughtbot.com/blog/how-to-manage-your-python-projects-with-pipenv)
 * [Using yarn](https://stackoverflow.com/questions/47238241/heroku-build-failing-due-to-yarn-and-npm-lockfile-conflict)
+* [Initialise SQLAlchemy](https://stackoverflow.com/questions/45228328/sqlalchemy-nameerror-name-db-is-not-defined)
