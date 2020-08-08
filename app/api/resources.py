@@ -62,4 +62,4 @@ class UsefulLinks(Resource):
 
     def get(self):
         links = [{'text': link.Text, 'href': link.URL} for link in Link.query.all()]
-        return json.dumps(links)
+        return links

@@ -4,18 +4,11 @@
     <div class="has-text-left help-section">
       <h1 class="is-size-4 has-text-weight-bold content">Useful resources</h1>
       <ul>
-        <li>
+        <li v-for="link in links" :key="link.text">
           <a class="link"
-            href="https://analystsuncertaintytoolkit.github.io/UncertaintyWeb/introduction.html"
+            :href="link.href"
             target="_blank">
-            Uncertainty toolkit
-          </a>
-        </li>
-        <li>
-          <a class="link"
-            href="https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/416478/aqua_book_final_web.pdf"
-            target="_blank">
-            Aqua Book
+            {{ link.text }}
           </a>
         </li>
       </ul>
@@ -24,8 +17,23 @@
 </template>
 
 <script>
+import $backend from '../backend'
+
 export default {
   name: "Help",
+  data() {
+    return {
+      links: null
+    }
+  },
+  created() {
+    $backend.fetchLinks()
+      .then(responseData => {
+        this.links = responseData.sort((a, b) => a.text.localeCompare(b.text));
+      }).catch(error => {
+        this.error = error.message
+      })
+  }
 };
 </script>
 

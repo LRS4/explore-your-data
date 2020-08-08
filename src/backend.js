@@ -31,5 +31,10 @@ export default {
   fetchSecureResource () {
     return $axios.get(`secure-resource/zzz`)
       .then(response => response.data)
+  },
+
+  fetchLinks () {
+    return $axios.get(`resource/get-useful-links`)
+      .then(response => response.data)
   }
 }
