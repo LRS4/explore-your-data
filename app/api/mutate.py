@@ -21,4 +21,4 @@ class AddTwoNumbers(Resource):
     """ Adds two numbers """
 
     def get(self, number_one, number_two):
-        return f"{number_one + number_two}"
+        return number_one + number_two

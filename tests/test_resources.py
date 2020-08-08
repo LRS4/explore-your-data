@@ -1,4 +1,4 @@
-""" pytests for Flask """
+""" pytests for resources endpoints """
 
 import pytest
 from app import app
@@ -34,7 +34,12 @@ def test_secure_resource_pass(client):
     assert resp.status_code == 200
 
 def test_titanic_data_get(client):
-    resp = client.get('/api/get-titanic-data')
+    resp = client.get('/api/resource/get-titanic-data')
+    assert resp.status_code == 200
+
+def test_useful_links_return(client):
+    resp = client.get('/api/resource/get-useful-links')
+    assert resp.data != None
     assert resp.status_code == 200
 
 @pytest.fixture(scope="module")
