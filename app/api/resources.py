@@ -16,6 +16,8 @@ import pandas as pd
 import json
 import io
 
+from app.models.link import Link
+
 
 class SecureResource(Resource):
     """ Calls require_auth decorator on all requests """
@@ -44,7 +46,7 @@ class SecureResourceOne(SecureResource):
         return {'timestamp': timestamp}
 
 
-@api_rest.route('/get-titanic-data')
+@api_rest.route('/resource/get-titanic-data')
 class TitanicData(Resource):
     """ Returns titanic dataset in JSON format """
 
@@ -52,3 +54,12 @@ class TitanicData(Resource):
         url = "https://gist.githubusercontent.com/michhar/2dfd2de0d4f8727f873422c5d959fff5/raw/fa71405126017e6a37bea592440b4bee94bf7b9e/titanic.csv"
         df = pd.read_csv(url)
         return df.to_json()
+
+
+@api_rest.route('/resource/get-useful-links')
+class UsefulLinks(Resource):
+    """ Returns useful links for help section """
+
+    def get(self):
+        links = [{'text': link.Text, 'href': link.URL} for link in Link.query.all()]
+        return json.dumps(links)
