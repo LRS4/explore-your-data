@@ -12,7 +12,9 @@ class Config(object):
     # If not set fall back to production for safety
     FLASK_ENV =  os.getenv('FLASK_ENV', 'production')
     # Set FLASK_SECRET on your production Environment
-    SECRET_KEY = os.getenv('FLASK_SECRET', 'Secret')
+    SECRET_KEY = os.getenv('FLASK_SECRET')
+
+    SQLALCHEMY_DATABASE_URI = os.environ['DB_URI']
 
     APP_DIR = os.path.dirname(__file__)
     ROOT_DIR = os.path.dirname(APP_DIR)

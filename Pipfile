@@ -12,12 +12,14 @@ pandas = "*"
 requests = "*"
 werkzeug = "==0.16.0"
 flask-restx = "*"
+psycopg2 = "*"
 
 [dev-packages]
 pytest = "*"
 bumpversion = "*"
 pytest-sugar = "*"
 pytest-cov = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.6"

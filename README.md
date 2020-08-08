@@ -8,22 +8,27 @@ An application to present exploratory data analysis in an accessible format. You
 ![Vue Logo](/docs/vue-logo.png "Vue Logo") ![Flask Logo](/docs/flask-logo.png "Flask Logo")
 
 ## Features
-* Minimal Flask 1.0 App
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/quickstart/) 1.0 App
 * [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/index.html)
 * [Flask-RestPlus](http://flask-restplus.readthedocs.io) API with class-based secure resource routing
-* Starter [PyTest](http://pytest.org) test suite
+* [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) ORM
+* [PyTest](http://pytest.org) test suite
 * [vue-cli 3](https://github.com/vuejs/vue-cli/blob/dev/docs/README.md) + yarn
 * [Vuex](https://vuex.vuejs.org/)
 * [Vue Router](https://router.vuejs.org/)
 * [Axios](https://github.com/axios/axios/) for backend communication
-* Sample Vue [Filters](https://vuejs.org/v2/guide/filters.html)
-* Heroku Configuration with one-click deployment + Gunicorn
+* [Postgres](https://www.postgresql.org/) database using [ElephantSQL](https://www.elephantsql.com/)
+* [Psycopg2](https://pypi.org/project/psycopg2/) PostgreSQL database adapter
+* Vue [Filters](https://vuejs.org/v2/guide/filters.html)
+* [Travis CI](https://travis-ci.com/github/LRS4/explore-your-data) pipeline with automated testing
+* [Codecov](https://codecov.io/gh/LRS4/explore-your-data) for monitoring code test coverage
+* [Heroku](https://www.heroku.com/) Configuration with automated Git deployment + Gunicorn
 
 ## Structure
 
-The template uses Flask & Flask-RESTX (fork of Flask-RestPlus) to create a minimal REST style API,
+Uses Flask & Flask-RESTX (fork of Flask-RestPlus) to create a minimal REST style API,
 and let's VueJs + vue-cli handle the front end and asset pipline.
-Data from the python server to the Vue application is passed by making Ajax requests.
+Data from the python server to the Vue application is passed by making AJAX requests with Axios.
 
 ### Application Structure
 
@@ -83,6 +88,9 @@ Before getting started, you should have the following installed and running:
 
 
 ## Development Server
+
+Add a `.env` file for following environment variables:
+
 
 Run Flask Api development server:
 
