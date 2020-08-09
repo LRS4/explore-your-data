@@ -16,7 +16,8 @@ import pandas as pd
 import json
 import io
 
-from app.models.link import Link
+import app.services.resource_service as resource_service
+import app.services.data_service as data_service
 
 
 class SecureResource(Resource):
@@ -51,9 +52,8 @@ class TitanicData(Resource):
     """ Returns titanic dataset in JSON format """
 
     def get(self):
-        url = "https://gist.githubusercontent.com/michhar/2dfd2de0d4f8727f873422c5d959fff5/raw/fa71405126017e6a37bea592440b4bee94bf7b9e/titanic.csv"
-        df = pd.read_csv(url)
-        return df.to_json()
+        return data_service.get_titanic_data()
+        
 
 
 @api_rest.route('/resource/get-useful-links')
@@ -61,5 +61,4 @@ class UsefulLinks(Resource):
     """ Returns useful links for help section """
 
     def get(self):
-        links = [{'text': link.Text, 'href': link.URL} for link in Link.query.all()]
-        return links
+        return resource_service.get_useful_links()
