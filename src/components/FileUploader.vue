@@ -1,6 +1,6 @@
 /* eslint-disable semi */
 <template>
-  <section>
+  <section class="uploader-section">
     <b-field>
       <b-upload v-model="dropFiles" 
         multiple 
@@ -55,6 +55,7 @@ export default {
         } else {
           this.showError = false;
           this.$emit('showError', this.showError);
+          this.$emit('dataValid');
         }
       }
     }
@@ -63,4 +64,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.uploader-section {
+  margin-bottom: 35px;
+}
 </style>

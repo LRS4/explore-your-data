@@ -7,9 +7,18 @@
           v-if="showError"
           type="error"
           title="There is a problem"
-          message="The file must be CSV (comma-separated values) format"
+          message="The file must be in CSV (comma-separated values) format"
         />
-        <FileUploader @showError="showError = $event" />
+        <FileUploader @showError="showError = $event" @dataValid="isButtonDisabled = false" />
+        <b-button
+          class="is-success button has-text-weight-bold"
+          size="is-medium"
+          data-prevent-double-click
+          :rounded="false"
+          :disabled="isButtonDisabled"
+          :loading="isButtonLoading"
+          @click="submitData"
+        >Save and continue</b-button>
       </div>
     </div>
   </div>
@@ -23,16 +32,23 @@ import Notification from "@/components/Notification.vue";
 
 export default {
   name: "upload",
-  data() {
-    return {
-      showError: false,
-      canContinue: false
-    };
-  },
   components: {
     FileUploader,
     Help,
     Notification,
+  },
+  data() {
+    return {
+      showError: false,
+      isButtonDisabled: true,
+      isButtonLoading: false,
+    };
+  },
+  methods: {
+    submitData() {
+      console.log("Submitting data...");
+      this.isButtonLoading = true;
+    },
   },
 };
 </script>

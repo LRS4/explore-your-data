@@ -39,7 +39,8 @@
       :rounded="false"
       tag="router-link"
       :to="{ path: '/upload' }"
-    >Upload data</b-button>
+    >Start now  <b-icon class="chevron-right" icon="chevron-right" size="is-medium"></b-icon>
+    </b-button>
   </div>
 </template>
 
@@ -72,7 +73,12 @@ ul {
 }
 
 .start-button:active {
-  border: 3px solid;
+  border: 4px solid;
   border-color: #ffdd00 !important;
+}
+
+.chevron-right {
+  vertical-align: bottom !important;
+  font-weight: bold !important;
 }
 </style>
