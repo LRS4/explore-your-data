@@ -38,7 +38,7 @@
       size="is-large"
       :rounded="false"
       tag="router-link"
-      :to="{ path: '/api' }"
+      :to="{ path: '/upload' }"
     >Upload data</b-button>
   </div>
 </template>
