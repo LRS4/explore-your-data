@@ -52,10 +52,11 @@ export default {
         if (!this.dropFiles[0].name.includes(".csv")) {
           this.showError = true;
           this.$emit('showError', this.showError);
+          this.$emit('dataValid', true);
         } else {
           this.showError = false;
           this.$emit('showError', this.showError);
-          this.$emit('dataValid');
+          this.$emit('dataValid', false);
         }
       }
     }

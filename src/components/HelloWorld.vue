@@ -30,8 +30,13 @@
       </a>
     </p>
     <p class="content">
-      The dataset uploaded will need to be understandable. For example, naming a column 'Date of Birth' or 'DateOfBirth' is
-      easier to understand than 'dob'.
+      The dataset uploaded will need to be clean and understandable. For example, naming a column 'Date of Birth' or 'DateOfBirth' is
+      easier to understand than 'dob'. 
+      <a class="link" 
+        href="https://support.microsoft.com/en-us/office/top-ten-ways-to-clean-your-data-2844b620-677c-47a7-ac3e-c2e157d1db19"
+        target="_blank">
+        How to clean a CSV file?
+      </a>
     </p>
     <b-button
       class="is-success start-button has-text-weight-bold"
