@@ -16,8 +16,7 @@ import pandas as pd
 import json
 import io
 
-import app.services.resource_service as resource_service
-import app.services.data_service as data_service
+from app.services import resource_service, data_service
 
 
 class SecureResource(Resource):
