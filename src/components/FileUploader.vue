@@ -65,6 +65,7 @@ export default {
           this.showError = false;
           this.$emit('showError', this.showError);
           this.$emit('dataValid', false);
+          this.$emit('data', this.dropFiles[0])
         }
       } else {
         this.$emit('dataValid', true);

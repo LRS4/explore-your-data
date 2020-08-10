@@ -10,7 +10,11 @@
           message="The file must be in CSV (comma-separated values) format."
         />
         <Warning message="Only upload data which is not sensitive, or has been anonymised." />
-        <FileUploader @showError="showError = $event" @dataValid="isButtonDisabled = $event" />
+        <FileUploader
+          @showError="showError = $event"
+          @dataValid="isButtonDisabled = $event"
+          @data="data = $event"
+        />
         <b-button
           class="is-success button has-text-weight-bold"
           size="is-medium"
@@ -30,6 +34,7 @@
 import FileUploader from "@/components/FileUploader.vue";
 import Warning from "@/components/Warning.vue";
 import Notification from "@/components/Notification.vue";
+import $backend from '../backend'
 
 export default {
   name: "upload",
@@ -43,12 +48,17 @@ export default {
       showError: false,
       isButtonDisabled: true,
       isButtonLoading: false,
+      data: null,
     };
   },
   methods: {
     submitData() {
       console.log("Submitting data...");
       this.isButtonLoading = true;
+
+      // upload data
+      console.log(this.data);
+      $backend.uploadFile(this.data);
 
       // initial check - is the data valid?
 
