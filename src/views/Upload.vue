@@ -19,7 +19,7 @@
           :disabled="isButtonDisabled"
           :loading="isButtonLoading"
           @click="submitData"
-        >Save and continue</b-button>
+        >Continue</b-button>
       </div>
     </div>
   </div>

@@ -1,6 +1,21 @@
 /* eslint-disable semi */
 <template>
   <section class="uploader-section">
+    <div class="columns is-gapless is-vcentered" v-for="(file, index) in dropFiles" :key="index">
+      <div class="column is-one-quarter">
+        <b-icon v-if="showError == false" icon="check-bold" size="is-medium"></b-icon>
+        <b-icon v-else icon="alert" size="is-medium"></b-icon>
+      </div>
+      <div class="column is-one-quarter">
+        <span class="has-text-weight-bold">{{ file.name }}</span>
+      </div>
+      <div class="column is-one-half">
+        <b-button class="is-pulled-right button-secondary is-light is-medium" @click="deleteDropFile(index)">
+          <span>Remove</span>
+        </b-button>
+      </div>
+    </div>
+    <hr />
     <b-field>
       <b-upload v-model="dropFiles" 
         multiple 
@@ -18,13 +33,6 @@
         </section>
       </b-upload>
     </b-field>
-
-    <div class="tags">
-      <span v-for="(file, index) in dropFiles" :key="index" class="tag is-dark">
-        {{file.name}}
-        <button class="delete is-small" type="button" @click="deleteDropFile(index)"></button>
-      </span>
-    </div>
   </section>
 </template>
 
@@ -58,6 +66,8 @@ export default {
           this.$emit('showError', this.showError);
           this.$emit('dataValid', false);
         }
+      } else {
+        this.$emit('dataValid', true);
       }
     }
   }
@@ -67,5 +77,17 @@ export default {
 <style scoped lang="scss">
 .uploader-section {
   margin-bottom: 35px;
+}
+
+.columns {
+  margin-bottom: 0px !important;
+}
+
+hr {
+  margin-top: 3px;
+}
+
+.file-name {
+  margin-top: 1px;
 }
 </style>

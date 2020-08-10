@@ -57,6 +57,19 @@ export default {
   border-color: #ffdd00 !important;
 }
 
+.button-secondary {
+  background-color: #F3F2F1 !important;
+}
+
+.button-secondary:hover {
+  background-color: #dbdad9 !important;
+}
+
+.button-secondary:active {
+  border: 4px solid;
+  border-color: #ffdd00 !important;
+}
+
 /* Medium devices (landscape tablets, 768px and down) */
 @media only screen and (max-width: 768px) {
   .container {
