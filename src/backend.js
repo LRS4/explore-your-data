@@ -36,5 +36,16 @@ export default {
   fetchLinks () {
     return $axios.get(`resource/get-useful-links`)
       .then(response => response.data)
+  },
+
+  uploadFile (file) {
+    let formData = new FormData();
+    formData.append('file', file);
+    return $axios.post(`data/upload`, formData)
+      .then(res => {
+        console.log({ res });
+      }).catch(err => {
+        console.error({ err });
+      });
   }
 }
