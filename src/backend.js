@@ -43,7 +43,8 @@ export default {
     formData.append('file', file);
     return $axios.post(`data/upload`, formData, { timeout: 10000 })
       .then(res => {
-        console.log({ res });
+        let data = JSON.parse(res.data);
+        console.log(data);
       }).catch(err => {
         console.error({ err });
       });
