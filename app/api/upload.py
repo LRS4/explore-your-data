@@ -16,6 +16,8 @@ import numpy as np
 import pandas as pd
 import json
 import io
+import os
+import uuid
 
 
 @api_rest.route('/data/upload')
@@ -23,6 +25,10 @@ class FileUpload(Resource):
     """ Handles file upload """
 
     def post(self):
-        csv = request.files['file']
-        csv.save()
-        return 200
+        f = request.files['file']
+        filename = secure_filename(str(f.filename).replace('.csv', '') + str(uuid.uuid4()) + '.csv')
+        f.save(filename)
+        data = pd.read_csv(filename)
+        print(data)
+        os.remove(filename)
+        return data.to_json()
