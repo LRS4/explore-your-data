@@ -60,10 +60,12 @@ export default {
         if (!this.dropFiles[0].name.includes(".csv")) {
           this.showError = true;
           this.$emit('showError', this.showError);
+          this.$emit('errorMessage', 'The file must be in CSV (comma-separated values) format.');
           this.$emit('dataValid', true);
         } else {
           this.showError = false;
           this.$emit('showError', this.showError);
+          this.$emit('errorMessage', 'The file must be in CSV (comma-separated values) format.');
           this.$emit('dataValid', false);
           this.$emit('data', this.dropFiles[0])
         }
