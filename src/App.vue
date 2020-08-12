@@ -44,6 +44,15 @@ export default {
   text-decoration: none;
 }
 
+.back-link {
+  color: black;
+  text-decoration: underline;
+}
+
+.back-link:hover {
+  color: black;
+}
+
 .button {
   background-color: #00703c !important;
 }
