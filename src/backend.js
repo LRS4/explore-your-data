@@ -37,14 +37,22 @@ export default {
     return $axios.get(`resource/get-useful-links`)
       .then(response => response.data)
   },
-
+ 
+  /**
+   * Uploads file to server.
+   * @param {File} file The file to be uploaded.
+   */
   uploadFile (file) {
     let formData = new FormData();
     formData.append('file', file);
     return $axios.post(`data/upload`, formData, { timeout: 10000 })
       .then(res => {
-        let data = JSON.parse(res.data);
-        console.log(data);
+        if (res.data === "Invalid data") {
+          return res.data;
+        } else {
+          let dataset = JSON.parse(res.data);  
+          console.log(dataset);
+        }
       }).catch(err => {
         console.error({ err });
       });
