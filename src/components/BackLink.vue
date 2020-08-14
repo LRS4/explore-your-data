@@ -21,6 +21,6 @@ export default {
 
 <style scoped>
 .back-link-area {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 </style>
