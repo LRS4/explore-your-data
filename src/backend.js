@@ -51,7 +51,7 @@ export default {
           return res.data;
         } else {
           let dataset = JSON.parse(res.data);  
-          console.log(dataset);
+          return dataset;
         }
       }).catch(err => {
         console.error({ err });

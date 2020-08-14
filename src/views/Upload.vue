@@ -70,6 +70,9 @@ export default {
             this.isLoading = false;
             this.errorMessage = "The uploaded data was invalid.";
           } else {
+            this.$store.dispatch('setDataset', {
+              dataset: res
+            });
             router.push('analysis');
           }
         });
