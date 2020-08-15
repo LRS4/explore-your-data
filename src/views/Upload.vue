@@ -73,6 +73,7 @@ export default {
             this.$store.dispatch('setDataset', {
               dataset: res
             });
+            console.log('Data pushed to store:', res);
             router.push('analysis');
           }
         });

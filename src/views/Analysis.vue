@@ -1,7 +1,9 @@
 <template>
   <section>
     <b-tabs v-model="activeTab" :animated="false">
-      <b-tab-item class="tab" label="Data">Lorem ipsum dolor sit amet.</b-tab-item>
+      <b-tab-item class="tab" label="Data">
+        <Table :data="rows" :columns="columns" />
+      </b-tab-item>
 
       <b-tab-item class="tab" label="Describe">
         Lorem
@@ -45,16 +47,34 @@
 </template>
 
 <script>
+import Table from "@/components/Table.vue";
+import { mapGetters } from 'vuex';
+import router from '../router'
+
 export default {
   name: "analysis",
   components: {
-    
+    Table
   },
   data() {
     return {
       activeTab: 0,
       showBooks: false,
     };
+  },
+  created() {
+    if (this.$store.state.dataset.length <= 0) {
+      router.push({ path: 'upload' });
+    }
+  },
+  computed: {
+    dataset() {
+      return this.$store.state.dataset[0].dataset;
+    },
+    ...mapGetters([
+      'columns',
+      'rows'
+    ])
   }
 };
 </script>
