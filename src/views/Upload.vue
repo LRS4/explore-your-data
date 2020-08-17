@@ -60,9 +60,15 @@ export default {
     };
   },
   methods: {
-    submitData() {
+    async submitData() {
       console.log("Submitting data...");
       this.isLoading = true;
+      if (!this.sessionIdHasBeenSet()) {
+        await $backend.getUniqueSessionId();
+      }
+      this.handleFileSubmit();
+    },
+    handleFileSubmit() {
       $backend.uploadFile(this.data)
         .then(res => {
           if (res === "Invalid data") {
@@ -91,8 +97,11 @@ export default {
     },
     goToAnalysisPage() {
       router.push('analysis');
+    },
+    sessionIdHasBeenSet() {
+      return sessionStorage['sessionId'] !== undefined;
     }
-  },
+  }
 };
 </script>
 

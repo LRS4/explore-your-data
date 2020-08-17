@@ -45,7 +45,11 @@ export default {
   uploadFile (file) {
     let formData = new FormData();
     formData.append('file', file);
-    return $axios.post(`data/upload`, formData, { timeout: 60000 })
+    formData.set('sessionId', sessionStorage.sessionId);
+    return $axios.post(`data/upload`, formData, { 
+      headers: { 'Content-Type': 'multipart/form-data' }, 
+      timeout: 60000 
+    })
       .then(res => {
         if (res.data === "Invalid data") {
           return res.data;
@@ -56,5 +60,17 @@ export default {
       }).catch(err => {
         console.error({ err });
       });
+  },
+
+  /**
+   * Retrieves a unique session ID and sets in session storage.
+   * @return {Boolean} True or false indicating success or failure.
+   */
+  getUniqueSessionId() {
+    return $axios.get(`session/create`)
+      .then(response => {
+        sessionStorage['sessionId'] = response.data;
+        console.log("Session token set.");
+      })
   }
 }

@@ -26,9 +26,19 @@ class FileUpload(Resource):
 
     def post(self):
         f = request.files['file']
-        filename = secure_filename(str(f.filename).replace('.csv', '') + str(uuid.uuid4()) + '.csv')
+        sessionId = request.form['sessionId']
+        print(sessionId)
+        filename = secure_filename(str(sessionId) + '.csv')
         f.save(filename)
         data = pd.read_csv(filename)
-        print(data)
-        os.remove(filename)
+        #os.remove(filename)
         return data.head(20).to_json()
+
+
+@api_rest.route('/session/create')
+class CreateUniqueSession(Resource):
+    """ Creates a unique session ID """
+
+    def get(self):
+        sessionId = str(uuid.uuid4())
+        return sessionId
