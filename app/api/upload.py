@@ -31,4 +31,4 @@ class FileUpload(Resource):
         data = pd.read_csv(filename)
         print(data)
         os.remove(filename)
-        return data.to_json()
+        return data.head(20).to_json()
