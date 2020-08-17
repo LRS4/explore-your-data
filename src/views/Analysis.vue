@@ -5,7 +5,7 @@
         <Table :data="rows" :columns="columns" />
       </b-tab-item>
 
-      <b-tab-item class="tab" label="Describe">
+      <b-tab-item class="tab" label="Summary">
         Lorem
         <br />ipsum
         <br />dolor
@@ -13,7 +13,7 @@
         <br />amet.
       </b-tab-item>
 
-      <b-tab-item :visible="showBooks" label="Univariate">
+      <b-tab-item label="Univariate">
         What light is light, if Silvia be not seen?
         <br />What joy is joy, if Silvia be not by—
         <br />Unless it be to think that she is by
@@ -42,6 +42,21 @@
         Nullam hendrerit iaculis augue vitae ornare.
         Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
       </b-tab-item>
+
+      <b-tab-item :visible="featureSwitch" label="Analysis">
+        Nunc nec velit nec libero vestibulum eleifend.
+        Curabitur pulvinar congue luctus.
+        Nullam hendrerit iaculis augue vitae ornare.
+        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+      </b-tab-item>
+
+      <b-tab-item :visible="featureSwitch" label="Time Series">
+        Nunc nec velit nec libero vestibulum eleifend.
+        Curabitur pulvinar congue luctus.
+        Nullam hendrerit iaculis augue vitae ornare.
+        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+      </b-tab-item>
+
     </b-tabs>
   </section>
 </template>
@@ -59,7 +74,7 @@ export default {
   data() {
     return {
       activeTab: 0,
-      showBooks: false,
+      featureSwitch: true,
     };
   },
   created() {
