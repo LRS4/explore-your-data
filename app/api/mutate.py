@@ -22,3 +22,13 @@ class AddTwoNumbers(Resource):
 
     def get(self, number_one, number_two):
         return number_one + number_two
+
+
+@api_rest.route('/mutate/describe')
+class DescribeData(Resource):
+    """ Returns summary description of a dataset """
+
+    def post(self):
+        file_name = request.get_json()['sessionId']
+        data = pd.read_csv(file_name + '.csv')
+        return data.describe().to_json()

@@ -26,9 +26,9 @@ class FileUpload(Resource):
 
     def post(self):
         f = request.files['file']
-        sessionId = request.form['sessionId']
-        print(sessionId)
-        filename = secure_filename(str(sessionId) + '.csv')
+        session_id = request.form['sessionId']
+        print(session_id)
+        filename = secure_filename(str(session_id) + '.csv')
         f.save(filename)
         data = pd.read_csv(filename)
         #os.remove(filename)

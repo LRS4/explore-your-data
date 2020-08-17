@@ -67,10 +67,17 @@ export default {
    * @return {Boolean} True or false indicating success or failure.
    */
   getUniqueSessionId() {
-    return $axios.get(`session/create`)
+    return $axios.post(`session/create`)
       .then(response => {
         sessionStorage['sessionId'] = response.data;
         console.log("Session token set.");
+      })
+  },
+
+  getDataSummary() {
+    return $axios.post(`mutate/describe`, { sessionId: String(sessionStorage.sessionId) })
+      .then(response => {
+        return response.data;
       })
   }
 }
