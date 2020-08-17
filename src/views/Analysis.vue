@@ -78,7 +78,7 @@ export default {
     };
   },
   created() {
-    if (this.$store.state.dataset.length <= 0) {
+    if (this.$store.state.dataset.length <= 0 || this.$store.state.dataset === undefined) {
       router.push({ path: 'upload' });
     }
   },
