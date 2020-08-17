@@ -39,6 +39,6 @@ class FileUpload(Resource):
 class CreateUniqueSession(Resource):
     """ Creates a unique session ID """
 
-    def get(self):
+    def post(self):
         sessionId = str(uuid.uuid4())
         return sessionId
