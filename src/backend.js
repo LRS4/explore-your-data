@@ -45,7 +45,7 @@ export default {
   uploadFile (file) {
     let formData = new FormData();
     formData.append('file', file);
-    return $axios.post(`data/upload`, formData, { timeout: 30000 })
+    return $axios.post(`data/upload`, formData, { timeout: 60000 })
       .then(res => {
         if (res.data === "Invalid data") {
           return res.data;
