@@ -1,5 +1,5 @@
 """
-REST API for Uploads
+REST API for file operations
 https://flask-restx.readthedocs.io/en/latest/quickstart.html
 """
 
@@ -19,6 +19,8 @@ import io
 import os
 import uuid
 
+from app.services import file_service
+
 
 @api_rest.route('/data/upload')
 class FileUpload(Resource):
@@ -27,11 +29,8 @@ class FileUpload(Resource):
     def post(self):
         f = request.files['file']
         session_id = request.form['sessionId']
-        print(session_id)
-        filename = secure_filename(str(session_id) + '.csv')
-        f.save(filename)
-        data = pd.read_csv(filename)
-        #os.remove(filename)
+        file_service.upload_file(f, session_id)
+        data = file_service.read_file(session_id)
         return data.head(20).to_json()
 
 

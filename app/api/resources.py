@@ -1,5 +1,5 @@
 """
-REST API Resource Routing
+REST API for resources
 https://flask-restx.readthedocs.io/en/latest/quickstart.html
 """
 

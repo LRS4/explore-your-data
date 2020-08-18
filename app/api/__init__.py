@@ -14,6 +14,7 @@ def add_header(response):
 
 
 # Import resources to ensure view is registered
+# Controllers
 from .resources import * # NOQA
-from .mutate import *
-from .upload import *
+from .data import *
+from .file import *

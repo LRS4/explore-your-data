@@ -1,5 +1,5 @@
 """
-REST API for Data Operations
+REST API for data operations
 https://flask-restx.readthedocs.io/en/latest/quickstart.html
 """
 
@@ -16,7 +16,7 @@ import pandas as pd
 import json
 import io
 
-@api_rest.route('/mutate/add/<int:number_one>/<int:number_two>')
+@api_rest.route('/data/add/<int:number_one>/<int:number_two>')
 class AddTwoNumbers(Resource):
     """ Adds two numbers """
 
@@ -24,7 +24,7 @@ class AddTwoNumbers(Resource):
         return number_one + number_two
 
 
-@api_rest.route('/mutate/describe')
+@api_rest.route('/data/describe')
 class DescribeData(Resource):
     """ Returns summary description of a dataset """
 

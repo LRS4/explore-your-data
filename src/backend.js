@@ -75,7 +75,7 @@ export default {
   },
 
   getDataSummary() {
-    return $axios.post(`mutate/describe`, { sessionId: String(sessionStorage.sessionId) })
+    return $axios.post(`data/describe`, { sessionId: String(sessionStorage.sessionId) })
       .then(response => {
         return response.data;
       })
