@@ -16,6 +16,8 @@ import pandas as pd
 import json
 import io
 
+from app.services import file_service
+
 @api_rest.route('/data/add/<int:number_one>/<int:number_two>')
 class AddTwoNumbers(Resource):
     """ Adds two numbers """
@@ -30,5 +32,5 @@ class DescribeData(Resource):
 
     def post(self):
         file_name = request.get_json()['sessionId']
-        data = pd.read_csv(file_name + '.csv')
+        data = file_service.read_file(file_name)
         return data.describe().to_json()

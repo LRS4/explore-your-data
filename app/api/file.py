@@ -10,13 +10,6 @@ from werkzeug.utils import secure_filename
 
 from .security import require_auth
 from . import api_rest
-
-import requests
-import numpy as np
-import pandas as pd
-import json
-import io
-import os
 import uuid
 
 from app.services import file_service
