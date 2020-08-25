@@ -85,7 +85,6 @@ export default {
   methods: {
     async returnDataSummary() {
       this.summary = await $backend.getDataSummary();
-      console.log("done");
     }
   },
   computed: {

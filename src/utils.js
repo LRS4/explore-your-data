@@ -22,7 +22,6 @@ export const getDatasetColumns = (data) => {
  */
 export const getDatasetRows = (data) => {
   let rows = [];
-  console.log(data);
   let numberOfRows = getRowCount(data);
   for (let i = 0; i < numberOfRows; i++) {
     let row = {};
