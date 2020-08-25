@@ -1,5 +1,5 @@
 """
-REST API for Uploads
+REST API for file operations
 https://flask-restx.readthedocs.io/en/latest/quickstart.html
 """
 
@@ -10,14 +10,9 @@ from werkzeug.utils import secure_filename
 
 from .security import require_auth
 from . import api_rest
-
-import requests
-import numpy as np
-import pandas as pd
-import json
-import io
-import os
 import uuid
+
+from app.services import file_service
 
 
 @api_rest.route('/data/upload')
@@ -26,9 +21,16 @@ class FileUpload(Resource):
 
     def post(self):
         f = request.files['file']
-        filename = secure_filename(str(f.filename).replace('.csv', '') + str(uuid.uuid4()) + '.csv')
-        f.save(filename)
-        data = pd.read_csv(filename)
-        print(data)
-        os.remove(filename)
+        session_id = request.form['sessionId']
+        file_service.upload_file(f, session_id)
+        data = file_service.read_file(session_id)
         return data.head(20).to_json()
+
+
+@api_rest.route('/session/create')
+class CreateUniqueSession(Resource):
+    """ Creates a unique session ID """
+
+    def post(self):
+        sessionId = str(uuid.uuid4())
+        return sessionId

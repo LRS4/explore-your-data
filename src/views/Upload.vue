@@ -60,25 +60,48 @@ export default {
     };
   },
   methods: {
-    submitData() {
+    async submitData() {
       console.log("Submitting data...");
       this.isLoading = true;
+      if (!this.sessionIdHasBeenSet()) {
+        await $backend.getUniqueSessionId();
+      }
+      this.handleFileSubmit();
+    },
+    handleFileSubmit() {
       $backend.uploadFile(this.data)
         .then(res => {
           if (res === "Invalid data") {
-            this.showError = true;
-            this.isLoading = false;
-            this.errorMessage = "The uploaded data was invalid.";
+            this.showErrorMessage("The uploaded data was invalid.");
+          } 
+
+          if (res != null && res !== undefined) {
+            this.sendDatasetToStore(res);
+            this.goToAnalysisPage();
           } else {
-            this.$store.dispatch('setDataset', {
-              dataset: res
-            });
-            console.log('Data pushed to store:', res);
-            router.push('analysis');
+            this.showErrorMessage("Upload failed. Please try uploading the CSV again." + 
+                                  "The file size limit is currently 60MB or approximately 500,000 rows.");
           }
         });
+    },
+    showErrorMessage(message) {
+      this.showError = true;
+      this.isLoading = false;
+      this.errorMessage = message;
+    },
+    sendDatasetToStore(data) {
+      this.$store.dispatch('setDataset', {
+        dataset: data
+      });
+      console.log('Data pushed to store:', data);
+    },
+    goToAnalysisPage() {
+      router.push('analysis');
+    },
+    sessionIdHasBeenSet() {
+      return sessionStorage['sessionId'] !== undefined;
     }
-  },
+  }
 };
 </script>
 

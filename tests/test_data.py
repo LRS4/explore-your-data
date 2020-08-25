@@ -11,5 +11,5 @@ def client():
 
 
 def test_add_two_numbers(client):
-    resp = client.get('api/mutate/add/35/20')
+    resp = client.get('api/data/add/35/20')
     assert int(resp.data) == 55

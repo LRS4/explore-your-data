@@ -6,11 +6,7 @@
       </b-tab-item>
 
       <b-tab-item class="tab" label="Summary">
-        Lorem
-        <br />ipsum
-        <br />dolor
-        <br />sit
-        <br />amet.
+        {{ summary }}
       </b-tab-item>
 
       <b-tab-item label="Univariate">
@@ -64,7 +60,8 @@
 <script>
 import Table from "@/components/Table.vue";
 import { mapGetters } from 'vuex';
-import router from '../router'
+import router from '../router';
+import $backend from '../backend';
 
 export default {
   name: "analysis",
@@ -75,11 +72,20 @@ export default {
     return {
       activeTab: 0,
       featureSwitch: true,
+      summary: null
     };
   },
   created() {
-    if (this.$store.state.dataset.length <= 0) {
+    if (this.$store.state.dataset.length <= 0 || this.$store.state.dataset === undefined) {
       router.push({ path: 'upload' });
+    }
+
+    this.returnDataSummary();
+  },
+  methods: {
+    async returnDataSummary() {
+      this.summary = await $backend.getDataSummary();
+      console.log("done");
     }
   },
   computed: {

@@ -2,6 +2,7 @@
 .cache
 .mypy_cache\
 .env
+google_credentials.json
 
 /dist
 .coverage
