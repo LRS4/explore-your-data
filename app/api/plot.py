@@ -6,6 +6,7 @@ https://flask-restx.readthedocs.io/en/latest/quickstart.html
 from app.services import plot_service
 from app.services import file_service
 import seaborn as sns
+sns.set(font_scale=1.5)
 import matplotlib.pyplot as plt
 from datetime import datetime
 from flask import request, send_file
@@ -38,15 +39,16 @@ class DistributionPlot(Resource):
                          mimetype='image/png')
 
 
-@api_rest.route('/plots/pairplot/<string:file_name>')
+@api_rest.route('/plots/pairplot/<int:datetime>/<string:file_name>')
 class PairPlot(Resource):
     """ Returns a standard pairplot for the dataset"""
 
-    def get(self, file_name):
+    def get(self, datetime, file_name):
+        bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(11, 9))
         pairplot = sns.pairplot(data)
-        bytes_image = io.BytesIO()
+        plt.tight_layout()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
 

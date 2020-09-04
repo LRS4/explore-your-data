@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-modal :active="isActive" :can-cancel="true" :on-cancel="closeModal">
+    <b-modal :active="isActive" :can-cancel="true" :on-cancel="closeModal" :full-screen="false">
       <p class="image is-4by3">
         <img :src="imageUrl" />
       </p>

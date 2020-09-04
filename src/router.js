@@ -4,10 +4,8 @@ import Home from './views/Home.vue'
 import Api from './views/Api.vue'
 import Upload from './views/Upload.vue'
 import Analysis from './views/Analysis.vue'
-import Buefy from 'buefy'
 
 Vue.use(Router)
-Vue.use(Buefy)
 
 export default new Router({
   routes: [
