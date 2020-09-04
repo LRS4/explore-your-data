@@ -65,7 +65,7 @@ import Table from "@/components/Table.vue";
 import UnivariateTab from "@/components/UnivariateTab.vue";
 import { mapGetters } from 'vuex';
 import router from '../router';
-import $backend from '../backend';
+import dataService from '../services/dataService';
 
 export default {
   name: "analysis",
@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     async returnDataSummary() {
-      this.summary = await $backend.getDataSummary();
+      this.summary = await dataService.getDataSummary();
       console.log(this.summary);
     }
   },

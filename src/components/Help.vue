@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import $backend from '../backend'
+import resourceService from '../services/resourceService';
 
 export default {
   name: "Help",
@@ -27,7 +27,7 @@ export default {
     }
   },
   created() {
-    $backend.fetchLinks()
+    resourceService.fetchLinks()
       .then(responseData => {
         this.links = responseData.sort((a, b) => a.text.localeCompare(b.text));
       }).catch(error => {

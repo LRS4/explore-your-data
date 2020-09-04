@@ -38,7 +38,8 @@ import Warning from "@/components/Warning.vue";
 import Notification from "@/components/Notification.vue";
 import Spinner from "@/components/Spinner.vue";
 import BackLink from "@/components/BackLink.vue";
-import $backend from '../backend'
+import authService from "../services/authService";
+import uploadService from "../services/uploadService";
 import router from '../router'
 
 export default {
@@ -64,12 +65,12 @@ export default {
       console.log("Submitting data...");
       this.isLoading = true;
       if (!this.sessionIdHasBeenSet()) {
-        await $backend.getUniqueSessionId();
+        await authService.getUniqueSessionId();
       }
       this.handleFileSubmit();
     },
     handleFileSubmit() {
-      $backend.uploadFile(this.data)
+      uploadService.uploadFile(this.data)
         .then(res => {
           if (res === "Invalid data") {
             this.showErrorMessage("The uploaded data was invalid.");
