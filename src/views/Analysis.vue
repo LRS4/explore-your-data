@@ -6,16 +6,18 @@
       </b-tab-item>
 
       <b-tab-item class="tab" label="Summary">
-        {{ summary }}
+        <div v-for="(column, title) in summary" v-bind:key="column.id">
+          <h1>{{ title }}</h1>
+          <ul>
+            <li v-for="(value, measure) in column" v-bind:key="value.id">
+              {{ measure }} - {{ value }}
+            </li>
+          </ul>
+        </div>
       </b-tab-item>
 
       <b-tab-item label="Univariate">
-        What light is light, if Silvia be not seen?
-        <br />What joy is joy, if Silvia be not by—
-        <br />Unless it be to think that she is by
-        <br />And feed upon the shadow of perfection?
-        <br />Except I be by Silvia in the night,
-        <br />There is no music in the nightingale.
+        <UnivariateTab />
       </b-tab-item>
 
       <b-tab-item label="Bivariate">
@@ -54,11 +56,13 @@
       </b-tab-item>
 
     </b-tabs>
+
   </section>
 </template>
 
 <script>
 import Table from "@/components/Table.vue";
+import UnivariateTab from "@/components/UnivariateTab.vue";
 import { mapGetters } from 'vuex';
 import router from '../router';
 import $backend from '../backend';
@@ -66,7 +70,8 @@ import $backend from '../backend';
 export default {
   name: "analysis",
   components: {
-    Table
+    Table,
+    UnivariateTab
   },
   data() {
     return {
@@ -85,6 +90,7 @@ export default {
   methods: {
     async returnDataSummary() {
       this.summary = await $backend.getDataSummary();
+      console.log(this.summary);
     }
   },
   computed: {

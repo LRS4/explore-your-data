@@ -18,3 +18,4 @@ def add_header(response):
 from .resources import * # NOQA
 from .data import *
 from .file import *
+from .plot import *

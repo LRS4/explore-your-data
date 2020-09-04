@@ -34,3 +34,25 @@ class DescribeData(Resource):
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         return data.describe().to_json()
+
+
+@api_rest.route('/data/numeric_columns')
+class ContinuousColumnLabels(Resource):
+    """ Returns the labels of the columns which are numeric """
+
+    def post(self):
+        file_name = request.get_json()['sessionId']
+        data = file_service.read_file(file_name)
+        numeric_variables = data.select_dtypes(include=[np.number])
+        return numeric_variables.columns.to_json()
+
+
+@api_rest.route('/data/categorical_columns')
+class CategoricalColumnLabels(Resource):
+    """ Returns the labels of the columns which are categorical """
+
+    def post(self):
+        file_name = request.get_json()['sessionId']
+        data = file_service.read_file(file_name)
+        numeric_variables = data.select_dtypes(include=['object', 'bool'])
+        return numeric_variables.columns.to_json()
