@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "buefy": "^0.8.20",
+    "chunk": "^0.0.3",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
@@ -35,11 +36,14 @@
     "root": true,
     "rules": {
       "semi": "off",
-      "quotes": ["off", "always"],
+      "quotes": [
+        "off",
+        "always"
+      ],
       "comma-dangle": "off",
       "space-before-function-paren": "off",
       "no-trailing-spaces": "off"
-    }, 
+    },
     "extends": [
       "plugin:vue/essential",
       "@vue/standard"
