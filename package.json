@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "buefy": "^0.8.20",
+    "buefy": "0.9.3",
     "chunk": "^0.0.3",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",

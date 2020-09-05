@@ -171,6 +171,7 @@ Credit for the Vue.js Flask template goes to [gtalarico](https://github.com/gtal
 
 * [Managing python dependencies](https://thoughtbot.com/blog/how-to-manage-your-python-projects-with-pipenv)
 * [Using yarn](https://stackoverflow.com/questions/47238241/heroku-build-failing-due-to-yarn-and-npm-lockfile-conflict)
+* [Upgrading yarn packages](https://classic.yarnpkg.com/en/docs/cli/upgrade/)
 * [Initialise SQLAlchemy](https://stackoverflow.com/questions/45228328/sqlalchemy-nameerror-name-db-is-not-defined)
 * [Python garbage collection](https://stackify.com/python-garbage-collection/#:~:text=The%20Python%20garbage%20collector%20has,a%20threshold%20number%20of%20objects)
 * [Pandas optional dependencies](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html#optional-dependencies)
