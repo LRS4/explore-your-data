@@ -1,6 +1,7 @@
 <template>
   <section>
-    <div class="columns" v-for="column in chunkedColumns" v-bind:key="column.id">
+    <h1>Univariate</h1>
+    <!-- <div class="columns" v-for="column in chunkedColumns" v-bind:key="column.id">
       <div class="column is-one-third" v-for="variable in column" v-bind:key="variable.id">
         <div class="card">
           <div class="card-image">
@@ -37,7 +38,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <ImageModal
       :isActive="modalOpen"
       :imageUrl="selectedImageUrl"
@@ -57,11 +58,12 @@ export default {
     return {
       modalOpen: false,
       selectedImageUrl: null,
-      filename: sessionStorage['sessionId']
+      filename: sessionStorage["sessionId"],
+      timestamp: Date.now(),
     };
   },
   components: {
-    ImageModal,
+    ImageModal
   },
   methods: {
     openImageModal(event) {

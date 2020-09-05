@@ -21,10 +21,7 @@
       </b-tab-item>
 
       <b-tab-item label="Bivariate">
-        Nunc nec velit nec libero vestibulum eleifend.
-        Curabitur pulvinar congue luctus.
-        Nullam hendrerit iaculis augue vitae ornare.
-        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+        <BivariateTab />
       </b-tab-item>
 
       <b-tab-item label="Multivariate">
@@ -62,7 +59,8 @@
 
 <script>
 import Table from "@/components/Table.vue";
-import UnivariateTab from "@/components/UnivariateTab.vue";
+import UnivariateTab from "@/components/tabs/UnivariateTab.vue";
+import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import { mapGetters } from 'vuex';
 import router from '../router';
 import dataService from '../services/dataService';
@@ -71,7 +69,8 @@ export default {
   name: "analysis",
   components: {
     Table,
-    UnivariateTab
+    UnivariateTab,
+    BivariateTab
   },
   data() {
     return {
