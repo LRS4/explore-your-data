@@ -10,6 +10,9 @@
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
           <span class="nav-link has-text-weight-bold">Home</span>
         </b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ path: '/upload' }">
+          <span class="nav-link has-text-weight-bold">Upload</span>
+        </b-navbar-item>
         <b-navbar-item tag="router-link" :to="{ path: '/api' }">
           <span class="nav-link has-text-weight-bold">API Sample</span>
         </b-navbar-item>

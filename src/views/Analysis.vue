@@ -2,10 +2,20 @@
   <section>
     <b-tabs v-model="activeTab" :animated="false">
       <b-tab-item class="tab" label="Data">
+        <span class="tag is-info mr-2">1000 rows total</span>
+        <span class="tag is-info">8 columns</span>
         <Table :data="rows" :columns="columns" />
       </b-tab-item>
 
-      <b-tab-item class="tab" label="Summary">
+      <b-tab-item :visible="featureSwitch" label="Missing values">
+        Nunc nec velit nec libero vestibulum eleifend.
+        Curabitur pulvinar congue luctus.
+        Nullam hendrerit iaculis augue vitae ornare.
+        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+      </b-tab-item>
+
+      <b-tab-item label="Univariate">
+        <UnivariateTab />
         <div v-for="(column, title) in summary" v-bind:key="column.id">
           <h1>{{ title }}</h1>
           <ul>
@@ -14,10 +24,6 @@
             </li>
           </ul>
         </div>
-      </b-tab-item>
-
-      <b-tab-item label="Univariate">
-        <UnivariateTab />
       </b-tab-item>
 
       <b-tab-item label="Bivariate">
@@ -38,14 +44,21 @@
         Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
       </b-tab-item>
 
-      <b-tab-item :visible="featureSwitch" label="Analysis">
+      <b-tab-item :visible="featureSwitch" label="Predictors">
         Nunc nec velit nec libero vestibulum eleifend.
         Curabitur pulvinar congue luctus.
         Nullam hendrerit iaculis augue vitae ornare.
         Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
       </b-tab-item>
 
-      <b-tab-item :visible="featureSwitch" label="Time Series">
+      <b-tab-item :visible="featureSwitch" label="Feature engineering">
+        Nunc nec velit nec libero vestibulum eleifend.
+        Curabitur pulvinar congue luctus.
+        Nullam hendrerit iaculis augue vitae ornare.
+        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+      </b-tab-item>
+
+      <b-tab-item :visible="featureSwitch" label="Next steps">
         Nunc nec velit nec libero vestibulum eleifend.
         Curabitur pulvinar congue luctus.
         Nullam hendrerit iaculis augue vitae ornare.
