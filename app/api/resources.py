@@ -52,7 +52,6 @@ class TitanicData(Resource):
 
     def get(self):
         return data_service.get_titanic_data()
-        
 
 
 @api_rest.route('/resource/get-useful-links')

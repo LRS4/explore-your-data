@@ -13,8 +13,11 @@
         <b-navbar-item tag="router-link" :to="{ path: '/upload' }">
           <span class="nav-link has-text-weight-bold">Upload</span>
         </b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ path: '/api' }">
-          <span class="nav-link has-text-weight-bold">API Sample</span>
+        <b-navbar-item tag="router-link" :to="{ path: '/analysis' }" v-if="isDataAvailable">
+          <span class="nav-link has-text-weight-bold">Analysis</span>
+        </b-navbar-item>
+        <b-navbar-item :href="uri + 'api'" target="_blank">
+          <span class="nav-link has-text-weight-bold">API</span>
         </b-navbar-item>
         <!-- <b-navbar-dropdown label="Info">
           <b-navbar-item href="#">About</b-navbar-item>
@@ -63,8 +66,20 @@
 </template>
 
 <script>
+import authService from '../services/authService';
+
 export default {
   name: "Navbar",
+  data() {
+    return {
+      uri: authService.getEnvironmentURI()
+    }
+  },
+  computed: {
+    isDataAvailable() {
+      return this.$store.state.dataset.length > 0;
+    }
+  },
 };
 </script>
 
