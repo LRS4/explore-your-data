@@ -26,6 +26,17 @@ class AddTwoNumbers(Resource):
         return number_one + number_two
 
 
+@api_rest.route('/data/shape')
+class DataShape(Resource):
+    """ Returns shape of the data """
+
+    def post(self):
+        file_name = request.get_json()['sessionId']
+        data = file_service.read_file(file_name)
+        shape = data.shape
+        return json.dumps({'rows': shape[0], 'columns': shape[1]})
+
+
 @api_rest.route('/data/describe/numeric')
 class DescribeNumericData(Resource):
     """ 
