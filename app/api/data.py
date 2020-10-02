@@ -26,14 +26,31 @@ class AddTwoNumbers(Resource):
         return number_one + number_two
 
 
-@api_rest.route('/data/describe')
-class DescribeData(Resource):
-    """ Returns summary description of a dataset """
+@api_rest.route('/data/describe/numeric')
+class DescribeNumericData(Resource):
+    """ 
+    Returns summary description of the numeric variables in the dataset 
+    """
 
     def post(self):
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         return data.describe().to_json()
+
+
+@api_rest.route('/data/describe/categorical')
+class DescribeCategoricalData(Resource):
+    """ 
+    Returns summary description of the categorical variables in the dataset 
+    """
+
+    def post(self):
+        file_name = request.get_json()['sessionId']
+        data = file_service.read_file(file_name)
+        categorical_df = data.select_dtypes(
+            include=['object', 'bool'])
+
+        return categorical_df.describe().to_json()
 
 
 @api_rest.route('/data/numeric_columns')
@@ -54,5 +71,5 @@ class CategoricalColumnLabels(Resource):
     def post(self):
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
-        numeric_variables = data.select_dtypes(include=['object', 'bool'])
-        return numeric_variables.columns.to_json()
+        categorical_df = data.select_dtypes(include=['object', 'bool'])
+        return categorical_df.columns.to_json()

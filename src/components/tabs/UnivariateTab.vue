@@ -1,55 +1,49 @@
 <template>
   <section>
-    <h1>Univariate</h1>
-    <!-- <div class="columns" v-for="column in chunkedColumns" v-bind:key="column.id">
+    <div class="columns" v-for="column in chunkedData" v-bind:key="column.id">
       <div class="column is-one-third" v-for="variable in column" v-bind:key="variable.id">
         <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img
-                v-bind:src="'http://localhost:8080/api/plots/distribution/' + filename + '/' + variable.label"
-                alt="Placeholder image"
-                @click="openImageModal($event)"
-              />
-            </figure>
-          </div>
           <div class="card-content">
             <div class="media">
               <div class="media-left">
                 <figure class="image is-48x48">
-                  <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
+                  <img v-if="variable.type == 'Numeric'"
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Greek_uc_sigma.svg/1200px-Greek_uc_sigma.svg.png" 
+                  alt="Sigma symbol for numeric variable" />
+                  <img v-else 
+                  src="https://icon-library.com/images/category-icon-png/category-icon-png-2.jpg"
+                  alt="Boxes for categorical variable" />
                 </figure>
               </div>
               <div class="media-content">
-                <p class="title is-4">{{ variable.label }}</p>
-                <p class="subtitle is-6">Numeric</p>
+                <p class="title is-4">{{ variable.name }}</p>
+                <p class="subtitle is-6">{{ variable.type }}</p>
               </div>
             </div>
 
             <div class="content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Phasellus nec iaculis mauris.
-              <a>@bulmaio</a>.
-              <a href="#">#css</a>
-              <a href="#">#responsive</a>
-              <br />
-              <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              <div class="columns">
+                <div class="column">
+                  <p class="has-text-weight-semibold" v-for="(data, name) in variable.data" v-bind:key="name.id">
+                    {{ name }}
+                  </p>
+                </div>
+                <div class="column">
+                  <p v-for="(data, name) in variable.data" v-bind:key="name.id">
+                    {{ data }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div> -->
-    <ImageModal
-      :isActive="modalOpen"
-      :imageUrl="selectedImageUrl"
-      @onModalClose="modalOpen = $event"
-    />
+    </div>
   </section>
 </template>
 
 <script>
-import ImageModal from "@/components/ImageModal.vue";
-import { mapGetters } from "vuex";
+import dataService from "../../services/dataService";
 var chunk = require("chunk");
 
 export default {
@@ -60,32 +54,53 @@ export default {
       selectedImageUrl: null,
       filename: sessionStorage["sessionId"],
       timestamp: Date.now(),
+      summary: [],
+      chunkedData: null
     };
   },
-  components: {
-    ImageModal
+  created() {
+    this.returnDataSummary();
   },
+  components: {},
   methods: {
-    openImageModal(event) {
-      let newImageUrl = event.target.src;
-      this.updateImageModalUrl(newImageUrl);
-      this.modalOpen = true;
+    async returnDataSummary() {
+      await this.returnNumericSummary();
+      await this.returnCategoricalSummary();
+      this.chunkDataSummary();
     },
-    updateImageModalUrl(url) {
-      this.selectedImageUrl = url;
+    chunkDataSummary() {
+      this.chunkedData = chunk(this.summary, 3);
+      console.log("Chunked data:", this.chunkedData);
     },
-  },
-  computed: {
-    ...mapGetters(["columns"]),
-    chunkedColumns() {
-      return chunk(this.columns, 3);
+    async returnNumericSummary() {
+      let data = await dataService.getNumericVariablesSummary();
+      this.pushDataToSummary(data, 'Numeric');
+      console.log("Added numeric summary:", this.summary);
     },
-  },
+    async returnCategoricalSummary() {
+      let data = await dataService.getCategoricalVariablesSummary();
+      this.pushDataToSummary(data, 'Categorical');
+      console.log("Added categorical summary:", this.summary);
+    },
+    pushDataToSummary(data, type) {
+      for (let column in data) {
+        this.summary.push({
+          'type': type,
+          'name': column,
+          'data': data[column]
+        });
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
 img:hover {
   cursor: pointer;
+}
+
+.column, .is-one-third {
+  min-height: 350px;
 }
 </style>

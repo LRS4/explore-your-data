@@ -23,6 +23,7 @@ An application to present exploratory data analysis in an accessible format. You
 * [Travis CI](https://travis-ci.com/github/LRS4/explore-your-data) pipeline with automated testing
 * [Codecov](https://codecov.io/gh/LRS4/explore-your-data) for monitoring code test coverage
 * [Heroku](https://www.heroku.com/) Configuration with automated Git deployment + Gunicorn
+* [Google Cloud Storage](https://cloud.google.com/storage) for short term CSV file storage 
 
 ## Structure
 
