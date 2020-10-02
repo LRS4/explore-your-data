@@ -70,17 +70,14 @@ export default {
     },
     chunkDataSummary() {
       this.chunkedData = chunk(this.summary, 3);
-      console.log("Chunked data:", this.chunkedData);
     },
     async returnNumericSummary() {
       let data = await dataService.getNumericVariablesSummary();
       this.pushDataToSummary(data, 'Numeric');
-      console.log("Added numeric summary:", this.summary);
     },
     async returnCategoricalSummary() {
       let data = await dataService.getCategoricalVariablesSummary();
       this.pushDataToSummary(data, 'Categorical');
-      console.log("Added categorical summary:", this.summary);
     },
     pushDataToSummary(data, type) {
       for (let column in data) {
