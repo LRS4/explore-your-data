@@ -20,7 +20,7 @@
       </b-tab-item>
 
       <b-tab-item label="Correlation"> 
-        Coming soon. 
+        <CorrelationTab />
       </b-tab-item>
 
       <b-tab-item :visible="featureSwitch" label="Predictors">
@@ -39,6 +39,7 @@ import Table from "@/components/Table.vue";
 import UnivariateTab from "@/components/tabs/UnivariateTab.vue";
 import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import MissingDataTab from '@/components/tabs/MissingDataTab.vue';
+import CorrelationTab from '@/components/tabs/CorrelationTab.vue';
 import { mapGetters } from "vuex";
 import router from "../router";
 import dataService from '../services/dataService';
@@ -49,7 +50,8 @@ export default {
     Table,
     UnivariateTab,
     BivariateTab,
-    MissingDataTab
+    MissingDataTab,
+    CorrelationTab
   },
   data() {
     return {
