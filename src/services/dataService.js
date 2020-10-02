@@ -23,5 +23,16 @@ export default {
       .then(response => {
         return JSON.parse(response.data);
       })
+  },
+
+  /**
+   * Retrieves the shape of the data (columns, rows)
+   * @return {Object} The dataset shape.
+   */
+  getDataShape() {
+    return $axios.post(`/data/shape`, { sessionId: String(sessionStorage.sessionId) })
+      .then(response => {
+        return JSON.parse(response.data);
+      })
   }
 }
