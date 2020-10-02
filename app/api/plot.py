@@ -55,3 +55,22 @@ class PairPlot(Resource):
         return send_file(bytes_image,
                          attachment_filename=f"pairplot.png",
                          mimetype='image/png')
+
+
+@api_rest.route('/plots/missing-data-plot/<int:datetime>/<string:file_name>')
+class MissingDataPlot(Resource):
+    """ Returns a missing data visualisation for the dataset"""
+
+    def get(self, datetime, file_name):
+        bytes_image = io.BytesIO()
+        data = file_service.read_file(file_name)
+        f, ax = plt.subplots(figsize=(11, 9))
+        missing_plot = sns.heatmap(
+            data.isnull(), cbar=False, cmap="YlGnBu_r")
+        plt.tight_layout()
+        plt.savefig(bytes_image, format='png')
+        bytes_image.seek(0)
+
+        return send_file(bytes_image,
+                         attachment_filename=f"missing-data.png",
+                         mimetype='image/png')
