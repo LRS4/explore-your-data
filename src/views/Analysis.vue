@@ -1,21 +1,15 @@
 <template>
   <section>
     <b-tabs v-model="activeTab" :animated="false" position="is-left">
-      <b-tab-item class="tab" label="Data Preview">
-        <span class="tag is-info mr-2">{{ shape.rows }} rows total</span>
-        <span class="tag is-info">{{ shape.columns }} columns</span>
-        <Table :data="rows" :columns="columns" />
+      <b-tab-item class="tab" label="Data Sample">
+        <SampleTab />
       </b-tab-item>
 
-      <b-tab-item label="Summary">
+      <b-tab-item label="Variables">
         <UnivariateTab />
       </b-tab-item>
 
-      <b-tab-item label="Missing values">
-        <MissingDataTab />
-      </b-tab-item>
-      
-      <b-tab-item label="Bivariate">
+      <b-tab-item label="Interactions">
         <BivariateTab />
       </b-tab-item>
 
@@ -23,8 +17,8 @@
         <CorrelationTab />
       </b-tab-item>
 
-      <b-tab-item :visible="featureSwitch" label="Predictors">
-        Coming soon.
+      <b-tab-item label="Missing values">
+        <MissingDataTab />
       </b-tab-item>
 
       <b-tab-item :visible="featureSwitch" label="Next steps">
@@ -36,18 +30,17 @@
 
 <script>
 import Table from "@/components/Table.vue";
+import SampleTab from "@/components/tabs/SampleTab.vue";
 import UnivariateTab from "@/components/tabs/UnivariateTab.vue";
 import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import MissingDataTab from '@/components/tabs/MissingDataTab.vue';
 import CorrelationTab from '@/components/tabs/CorrelationTab.vue';
-import { mapGetters } from "vuex";
-import router from "../router";
-import dataService from '../services/dataService';
 
 export default {
   name: "analysis",
   components: {
     Table,
+    SampleTab,
     UnivariateTab,
     BivariateTab,
     MissingDataTab,
@@ -56,33 +49,8 @@ export default {
   data() {
     return {
       activeTab: 0,
-      featureSwitch: true,
-      shape: {}
+      featureSwitch: true
     };
-  },
-  created() {
-    if (
-      this.$store.state.dataset.length <= 0 ||
-      this.$store.state.dataset === undefined
-    ) {
-      router.push({ path: "upload" });
-    }
-    this.getDataShape();
-  },
-  methods: {
-    async getDataShape() {
-      let shape = await dataService.getDataShape();
-      this.shape = {
-        'columns': shape.columns,
-        'rows': shape.rows
-      }
-    }
-  },
-  computed: {
-    dataset() {
-      return this.$store.state.dataset[0].dataset;
-    },
-    ...mapGetters(["columns", "rows"]),
   },
 };
 </script>

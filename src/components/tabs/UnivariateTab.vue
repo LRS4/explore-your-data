@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="columns" v-for="column in chunkedData" v-bind:key="column.id">
-      <div class="column is-one-third" v-for="variable in column" v-bind:key="variable.id">
+      <div class="column is-one-quarter" v-for="variable in column" v-bind:key="variable.id">
         <div class="card">
           <div class="card-content">
             <div class="media">
@@ -24,17 +24,29 @@
             <div class="content">
               <div class="columns">
                 <div class="column">
-                  <p class="has-text-weight-semibold" v-for="(data, name) in variable.data" v-bind:key="name.id">
-                    {{ name }}
-                  </p>
-                </div>
-                <div class="column">
-                  <p v-for="(data, name) in variable.data" v-bind:key="name.id">
-                    {{ data }}
-                  </p>
+                  <div class="mb-2" v-for="(data, name) in variable.data" v-bind:key="name.id">
+                    <span class="has-text-weight-semibold">{{ name }} </span>
+                    <span class="is-pulled-right">{{ data | toFixed }}</span>
+                  </div>
                 </div>
               </div>
             </div>
+              <b-button tag="a" 
+                :href="uri + 'api/plots/distribution/' + timestamp + '/' + filename + '/' + variable.name" 
+                target="_blank" 
+                class="button-secondary"
+                v-if="lowUniqueValueCount(variable.name)">
+                View distribution 
+                <b-icon class="icon" icon="open-in-new" size="is-small"></b-icon>
+              </b-button>
+              <b-tooltip label="Too many unique values to plot" type="is-light" v-else>
+                <b-button 
+                  class="button-secondary"
+                  disabled>
+                  View distribution
+                  <b-icon class="icon" icon="open-in-new" size="is-small"></b-icon>
+                </b-button>
+              </b-tooltip>
           </div>
         </div>
       </div>
@@ -42,8 +54,9 @@
   </section>
 </template>
 
-<script>
+<script> 
 import dataService from "../../services/dataService";
+import authService from "../../services/authService";
 var chunk = require("chunk");
 
 export default {
@@ -55,7 +68,9 @@ export default {
       filename: sessionStorage["sessionId"],
       timestamp: Date.now(),
       summary: [],
-      chunkedData: null
+      chunkedData: null,
+      uri: authService.getEnvironmentURI(),
+      skipRenderingButton: false
     };
   },
   created() {
@@ -69,7 +84,7 @@ export default {
       this.chunkDataSummary();
     },
     chunkDataSummary() {
-      this.chunkedData = chunk(this.summary, 3);
+      this.chunkedData = chunk(this.summary, 4);
     },
     async returnNumericSummary() {
       let data = await dataService.getNumericVariablesSummary();
@@ -87,6 +102,26 @@ export default {
           'data': data[column]
         });
       }
+    },
+    lowUniqueValueCount(variable) {
+      let isCountLow = true;
+      for (let i = 0; i < this.summary.length; i++) {
+        let name = this.summary[i].name;
+        let data = this.summary[i].data;
+        if (data.unique > 15 && name === variable) {
+          isCountLow = false;
+        }
+      }
+      return isCountLow;
+    }
+  },
+  filters: {
+    toFixed(value) {
+      if (typeof (value) === 'number') {
+        return value.toFixed(2);
+      } else {
+        return value;
+      }
     }
   }
 };
@@ -97,7 +132,11 @@ img:hover {
   cursor: pointer;
 }
 
-.column, .is-one-third {
-  min-height: 350px;
+.column, .card, .is-one-quarter {
+  min-height: 300px !important;
+}
+
+.icon {
+  margin-left: 1px !important;
 }
 </style>
