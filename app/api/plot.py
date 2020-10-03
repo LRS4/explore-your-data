@@ -5,6 +5,7 @@ https://flask-restx.readthedocs.io/en/latest/quickstart.html
 
 import matplotlib
 import pandas as pd
+from pandas.api.types import is_numeric_dtype
 import numpy as np
 import base64
 import io
@@ -22,14 +23,21 @@ sns.set(font_scale=1.5)
 matplotlib.use('Agg')
 
 
-@api_rest.route('/plots/distribution/<string:file_name>/<string:variable>')
+@api_rest.route('/plots/distribution/<int:datetime>/<string:file_name>/<string:variable>')
 class DistributionPlot(Resource):
-    """ Returns a distribution plot for the given variable """
+    """ 
+    Returns a distribution plot if the given variable is numeric.
+    Returns a count plot if the given variable is categorical.
+    """
 
-    def get(self, variable, file_name):
+    def get(self, variable, file_name, datetime):
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(11, 9))
-        dist_plot = sns.distplot(data[variable])
+        if (is_numeric_dtype(data[variable])):
+            plot = sns.distplot(data[variable], kde=False)
+        else:
+            plot = sns.countplot(x=variable, data=data, palette="Blues")
+
         bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
