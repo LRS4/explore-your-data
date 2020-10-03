@@ -26,6 +26,18 @@ export default {
   },
 
   /**
+   * Retrieves a json object with the column names of both categorical and
+   * numeric variables from the dataframe
+   * @return {Object} The column names object.
+   */
+  getColumnNames() {
+    return $axios.post(`data/column_names`, { sessionId: String(sessionStorage.sessionId) })
+      .then(response => {
+        return JSON.parse(response.data);
+      })
+  },
+
+  /**
    * Retrieves the shape of the data (columns, rows)
    * @return {Object} The dataset shape.
    */

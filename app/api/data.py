@@ -18,6 +18,7 @@ import io
 
 from app.services import file_service
 
+
 @api_rest.route('/data/add/<int:number_one>/<int:number_two>')
 class AddTwoNumbers(Resource):
     """ Adds two numbers """
@@ -64,23 +65,17 @@ class DescribeCategoricalData(Resource):
         return categorical_df.describe().to_json()
 
 
-@api_rest.route('/data/numeric_columns')
-class ContinuousColumnLabels(Resource):
-    """ Returns the labels of the columns which are numeric """
+@api_rest.route('/data/column_names')
+class ColumnNames(Resource):
+    """ Returns the labels of the columns for both numeric
+    and categorical variables """
 
     def post(self):
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
-        numeric_variables = data.select_dtypes(include=[np.number])
-        return numeric_variables.columns.to_json()
-
-
-@api_rest.route('/data/categorical_columns')
-class CategoricalColumnLabels(Resource):
-    """ Returns the labels of the columns which are categorical """
-
-    def post(self):
-        file_name = request.get_json()['sessionId']
-        data = file_service.read_file(file_name)
+        numeric_df = data.select_dtypes(include=[np.number])
         categorical_df = data.select_dtypes(include=['object', 'bool'])
-        return categorical_df.columns.to_json()
+        return json.dumps({
+            'categorical': list(categorical_df.columns.values),
+            'numeric': list(numeric_df.columns.values)
+        })

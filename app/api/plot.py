@@ -47,6 +47,34 @@ class DistributionPlot(Resource):
                          mimetype='image/png')
 
 
+@api_rest.route('/plots/scatter-plot/<int:datetime>/<string:file_name>/<string:x>/<string:y>')
+class ScatterPlot(Resource):
+    """ 
+    Returns a scatter plot for the two provided x and y numeric variables and an optional
+    hue for a categorical variable.
+
+    :param datetime: the current datetime in integer format
+    :param file_name: the file name represented by session_id
+    :param x: the x variable
+    :param y: the y variable
+    :param hue: the categorical hue for the plot (optional) 
+    :return: A bytes image seaborn scatter plot
+    """
+
+    def get(self, datetime, file_name, x, y):
+        bytes_image = io.BytesIO()
+        data = file_service.read_file(file_name)
+        f, ax = plt.subplots(figsize=(11, 9))
+        scatter = sns.scatterplot(data=data, x=x, y=y)
+        plt.tight_layout()
+        plt.savefig(bytes_image, format='png')
+        bytes_image.seek(0)
+
+        return send_file(bytes_image,
+                         attachment_filename=f"scatter.png",
+                         mimetype='image/png')
+
+
 @api_rest.route('/plots/pairplot/<int:datetime>/<string:file_name>')
 class PairPlot(Resource):
     """ Returns a standard pairplot for the dataset"""
@@ -92,14 +120,15 @@ class CorrelationPlot(Resource):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(11, 9))
-        correlation_df = data.select_dtypes(include=[np.number]).corr(method='pearson')
+        correlation_df = data.select_dtypes(
+            include=[np.number]).corr(method='pearson')
 
         cmap = sns.diverging_palette(220, 10, as_cmap=True)
         mask = np.zeros_like(correlation_df, dtype=np.bool)
         mask[np.triu_indices_from(mask)] = True
 
         correlation_plot = sns.heatmap(correlation_df, mask=mask, annot=True,
-                                       cmap=cmap, vmax=.3, center=0, square=True, linewidths=.5, 
+                                       cmap=cmap, vmax=.3, center=0, square=True, linewidths=.5,
                                        cbar_kws={"shrink": .5})
 
         plt.tight_layout()
