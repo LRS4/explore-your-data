@@ -17,7 +17,7 @@ flask-sqlalchemy = "*"
 google-cloud-storage = "*"
 fsspec = "*"
 gcsfs = "*"
-matplotlib = "*"
+matplotlib = "==3.3.2"
 seaborn = "*"
 
 [dev-packages]
