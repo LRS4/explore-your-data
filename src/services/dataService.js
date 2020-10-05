@@ -46,5 +46,16 @@ export default {
       .then(response => {
         return JSON.parse(response.data);
       })
+  },
+
+  /**
+   * Retrieves information / metadata on the DataFrame
+   * @return {Object} The metadata json object.
+   */
+  getMetaData() {
+    return $axios.post(`/data/metadata`, { sessionId: String(sessionStorage.sessionId) })
+      .then(response => {
+        return JSON.parse(response.data);
+      })
   }
 }

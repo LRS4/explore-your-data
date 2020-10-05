@@ -37,10 +37,13 @@ class DistributionPlot(Resource):
             plot = sns.distplot(data[variable], kde=False)
         else:
             plot = sns.countplot(x=variable, data=data, palette="Blues")
+            plot.set_xticklabels(plot.get_xticklabels(), rotation=45, horizontalalignment='right')
 
+        plt.tight_layout()
         bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
+        plt.close()
 
         return send_file(bytes_image,
                          attachment_filename=f"{variable}_distribution.png",
@@ -64,11 +67,12 @@ class ScatterPlot(Resource):
     def get(self, datetime, file_name, x, y):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
-        f, ax = plt.subplots(figsize=(11, 9))
+        f, ax = plt.subplots(figsize=(15, 11))
         scatter = sns.scatterplot(data=data, x=x, y=y)
         plt.tight_layout()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
+        plt.close()
 
         return send_file(bytes_image,
                          attachment_filename=f"scatter.png",
@@ -82,11 +86,12 @@ class PairPlot(Resource):
     def get(self, datetime, file_name):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
-        f, ax = plt.subplots(figsize=(11, 9))
+        f, ax = plt.subplots(figsize=(16, 9))
         pairplot = sns.pairplot(data)
         plt.tight_layout()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
+        plt.close()
 
         return send_file(bytes_image,
                          attachment_filename=f"pairplot.png",
@@ -100,12 +105,13 @@ class MissingDataPlot(Resource):
     def get(self, datetime, file_name):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
-        f, ax = plt.subplots(figsize=(11, 9))
+        f, ax = plt.subplots(figsize=(16, 9))
         missing_plot = sns.heatmap(
             data.isnull(), cbar=False, cmap="YlGnBu_r")
         plt.tight_layout()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
+        plt.close()
 
         return send_file(bytes_image,
                          attachment_filename=f"missing-data.png",
@@ -119,7 +125,7 @@ class CorrelationPlot(Resource):
     def get(self, datetime, file_name):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
-        f, ax = plt.subplots(figsize=(11, 9))
+        f, ax = plt.subplots(figsize=(16, 9))
         correlation_df = data.select_dtypes(
             include=[np.number]).corr(method='pearson')
 
@@ -134,6 +140,7 @@ class CorrelationPlot(Resource):
         plt.tight_layout()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
+        plt.close()
 
         return send_file(bytes_image,
                          attachment_filename=f"correlation-plot.png",

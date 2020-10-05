@@ -40,6 +40,7 @@ import Spinner from "@/components/Spinner.vue";
 import BackLink from "@/components/BackLink.vue";
 import authService from "../services/authService";
 import uploadService from "../services/uploadService";
+import dataService from "../services/dataService";
 import router from '../router'
 
 export default {
@@ -78,6 +79,7 @@ export default {
 
           if (res != null && res !== undefined) {
             this.sendDatasetToStore(res);
+            this.getMetaData();
             this.goToAnalysisPage();
           } else {
             this.showErrorMessage("Upload failed. Please try uploading the CSV again." + 
@@ -94,7 +96,17 @@ export default {
       this.$store.dispatch('setDataset', {
         dataset: data
       });
-      console.log('Data pushed to store:', data);
+      console.log('Dataset pushed to store:', data);
+    },
+    async getMetaData() {
+      await dataService.getMetaData()
+        .then(res => {
+          this.$store.dispatch('setMetaData', {
+            metadata: res
+          });
+          console.log('Metadata pushed to store:', res);
+        })
+        .catch(err => console.log(err))
     },
     goToAnalysisPage() {
       router.push('analysis');

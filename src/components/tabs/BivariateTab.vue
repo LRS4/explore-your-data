@@ -16,14 +16,17 @@
             {{ name }}
           </b-checkbox>
         </div>
+        <p class="is-size-5 mb-4">Select hue (optional)</p>
       </div>
       <div class="column is-four-fifths">
         <b-image
           v-bind:src="uri + 'api/plots/scatter-plot/' + timestamp + '/' + filename + '/' + x + '/' + y"
-          placeholder="https://res.cloudinary.com/dayqxxsip/image/upload/l_text:Arial_34_bold:Loading visual...,g_north,y_240/e_brightness:60/e_grayscale,o_80/v1599306705/Analysis/pairplot_l4njly.png"
+          placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
           webp-fallback=".jpg"
+          ratio="15by11"
           v-if="showPlot"
-        ></b-image>
+        >
+        </b-image>
       </div>
     </div>
   </section>
@@ -72,13 +75,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.image img {
-  height: 80%;
-  width: 80%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>

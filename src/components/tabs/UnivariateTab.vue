@@ -2,7 +2,7 @@
   <section>
     <div class="columns" v-for="column in chunkedData" v-bind:key="column.id">
       <div class="column is-one-quarter" v-for="variable in column" v-bind:key="variable.id">
-        <div class="card">
+        <div class="card" :id="variable.name">
           <div class="card-content">
             <div class="media">
               <div class="media-left">

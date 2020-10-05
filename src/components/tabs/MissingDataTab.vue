@@ -1,10 +1,12 @@
 <template>
   <section>
     <b-image
-        v-bind:src="uri + 'api/plots/missing-data-plot/' + timestamp + '/' + filename"
-        placeholder="https://res.cloudinary.com/dayqxxsip/image/upload/l_text:Arial_34_bold:Loading visual...,g_north,y_240/e_brightness:60/e_grayscale,o_80/v1599306705/Analysis/pairplot_l4njly.png"
-        webp-fallback=".jpg"
-    ></b-image>
+      v-bind:src="uri + 'api/plots/missing-data-plot/' + timestamp + '/' + filename"
+      placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
+      webp-fallback=".jpg"
+      ratio="16by9"
+    >
+    </b-image>
   </section>
 </template>
 

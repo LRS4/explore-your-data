@@ -1,6 +1,10 @@
 <template>
   <section>
     <b-tabs v-model="activeTab" :animated="false" position="is-left">
+      <b-tab-item class="tab" label="Overview">
+        <OverviewTab />
+      </b-tab-item>
+      
       <b-tab-item class="tab" label="Data Sample">
         <SampleTab />
       </b-tab-item>
@@ -13,7 +17,7 @@
         <BivariateTab />
       </b-tab-item>
 
-      <b-tab-item label="Correlation"> 
+      <b-tab-item label="Correlation" class="image-tab"> 
         <CorrelationTab />
       </b-tab-item>
 
@@ -30,6 +34,7 @@
 
 <script>
 import Table from "@/components/Table.vue";
+import OverviewTab from "@/components/tabs/OverviewTab.vue";
 import SampleTab from "@/components/tabs/SampleTab.vue";
 import UnivariateTab from "@/components/tabs/UnivariateTab.vue";
 import BivariateTab from "@/components/tabs/BivariateTab.vue";
@@ -40,6 +45,7 @@ export default {
   name: "analysis",
   components: {
     Table,
+    OverviewTab,
     SampleTab,
     UnivariateTab,
     BivariateTab,

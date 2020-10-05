@@ -16,7 +16,7 @@ import pandas as pd
 import json
 import io
 
-from app.services import file_service
+from app.services import file_service, data_service
 
 
 @api_rest.route('/data/add/<int:number_one>/<int:number_two>')
@@ -78,4 +78,28 @@ class ColumnNames(Resource):
         return json.dumps({
             'categorical': list(categorical_df.columns.values),
             'numeric': list(numeric_df.columns.values)
+        })
+
+
+@api_rest.route('/data/metadata')
+class MetaData(Resource):
+    """ Returns a json object with information (metadata) on the
+    dataset """
+
+    def post(self):
+        file_name = request.get_json()['sessionId']
+        data = file_service.read_file(file_name)
+        total_missing_values, total_missing_percent = data_service.get_missing_values_info(data)
+        total_duplicate_rows, total_duplicates_percent = data_service.get_duplicates_info(data)
+
+        return json.dumps({
+            'totalMissingValues': int(total_missing_values),
+            'totalMissingPercent': total_missing_percent,
+            'totalKbInMemory': data_service.get_total_kilobytes_in_memory(data),
+            'variables': int(data.shape[1]),
+            'observations': int(data.shape[0]),
+            'totalDuplicatedRows': int(total_duplicate_rows),
+            'totalDuplicatedPercent': total_duplicates_percent,
+            'columnsInfo': data_service.get_column_type_counts(data),
+            'warningMessages': data_service.populate_warning_messages(data)
         })
