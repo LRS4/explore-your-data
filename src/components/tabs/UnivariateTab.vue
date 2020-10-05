@@ -8,10 +8,10 @@
               <div class="media-left">
                 <figure class="image is-48x48">
                   <img v-if="variable.type == 'Numeric'"
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Greek_uc_sigma.svg/1200px-Greek_uc_sigma.svg.png" 
+                  src="https://res.cloudinary.com/dayqxxsip/image/upload/v1601923068/Shared/1200px-Greek_uc_sigma.svg_hsngam.png" 
                   alt="Sigma symbol for numeric variable" />
                   <img v-else 
-                  src="https://icon-library.com/images/category-icon-png/category-icon-png-2.jpg"
+                  src="https://res.cloudinary.com/dayqxxsip/image/upload/v1601923065/Shared/category-icon-png-2_jhizjk.png"
                   alt="Boxes for categorical variable" />
                 </figure>
               </div>
