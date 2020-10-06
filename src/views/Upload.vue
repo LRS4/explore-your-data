@@ -83,7 +83,7 @@ export default {
             this.goToAnalysisPage();
           } else {
             this.showErrorMessage("Upload failed. Please try uploading the CSV again." + 
-                                  "The file size limit is currently 60MB or approximately 500,000 rows.");
+                                  "The file size limit is currently 25MB or approximately 200,000 rows.");
           }
         });
     },
