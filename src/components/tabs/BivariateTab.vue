@@ -22,14 +22,14 @@
           v-for="(property, name) in categoricalDescriptions"
           v-bind:key="name.id"
         >
-          <b-checkbox
+          <b-radio 
             v-if="property.unique < 20"
-            v-model="hueCheckboxGroup"
+            v-model="hue"
             type="is-info"
-            :native-value="name"
-          >
+            name="name"
+            :native-value="name">
             {{ name }}
-          </b-checkbox>
+            </b-radio>
         </div>
       </div>
       <div class="column is-four-fifths">
@@ -57,12 +57,11 @@ export default {
       timestamp: Date.now(),
       uri: authService.getEnvironmentURI(),
       checkboxGroup: [],
-      hueCheckboxGroup: [],
       columnNames: [],
       showPlot: false,
       x: null,
       y: null,
-      hue: null
+      hue: 'none'
     };
   },
   computed: {
@@ -75,11 +74,7 @@ export default {
   },
   watch: {
     checkboxGroup(arr) {
-      if (this.hueCheckboxGroup.length === 0) {
-        this.hue = "none";
-      }
-
-      if (arr.length === 2 && this.hueCheckboxGroup.length <= 1) {
+      if (arr.length === 2) {
         console.log("Two variables selected!", arr);
         this.x = this.checkboxGroup[0];
         this.y = this.checkboxGroup[1];
