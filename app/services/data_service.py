@@ -11,6 +11,31 @@ def get_titanic_data() -> list:
     return df.to_json()
 
 
+def get_categorical_description(df):
+    """ 
+    Returns the Pandas describe method for the categorical
+    variables in the dataset
+
+    :param df: the pandas DataFrame
+    :return: A DataFrame description in json format
+    """
+    categorical_df = df.select_dtypes(
+        include=['object', 'bool'])
+
+    return categorical_df.describe().to_json()
+
+
+def get_numeric_description(df):
+    """ 
+    Returns the Pandas describe method for the numeric
+    variables in the dataset
+
+    :param df: the pandas DataFrame
+    :return: A DataFrame description in json format
+    """
+    return df.describe().to_json()
+
+
 def get_missing_values_info(df):
     """ 
     Returns the total missing value counts and total percentage 
@@ -119,6 +144,3 @@ def populate_warning_messages(df):
             })
 
     return warning_messages
-    
-
-    
