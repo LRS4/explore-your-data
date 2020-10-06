@@ -19,19 +19,19 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_DATASET(state, dataset) {
-      state.dataset = [dataset]
+      state.dataset = [dataset];
     },
     SET_METADATA(state, metadata) {
-      state.metadata = metadata
+      state.metadata = metadata;
     }
   },
   // https://vuex.vuejs.org/guide/getters.html
   getters: {
-    columns: state => {
-      return getDatasetColumns(state.dataset[0].dataset);
+    headColumns: state => {
+      return getDatasetColumns(JSON.parse(state.dataset[0].dataset.head));
     },
-    rows: state => {
-      return getDatasetRows(state.dataset[0].dataset);
+    headRows: state => {
+      return getDatasetRows(JSON.parse(state.dataset[0].dataset.head));
     }
   }
 })

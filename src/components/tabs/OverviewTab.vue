@@ -9,7 +9,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="metadata">
             <tr>
               <th>Number of variables</th>
               <td>{{ metadata.variables }}</td>
@@ -49,7 +49,7 @@
               <th>Type</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="metadata">
             <tr v-for="warning in metadata.warningMessages" v-bind:key="warning.id">
               <td>
                 <b-tag type="is-warning">{{ warning.column }}</b-tag> {{ warning.message }}

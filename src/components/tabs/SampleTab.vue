@@ -2,7 +2,7 @@
   <section>
     <span class="tag is-info mr-2">{{ shape.rows }} observations</span>
     <span class="tag is-info">{{ shape.columns }} variables</span>
-    <Table :data="rows" :columns="columns" />
+    <Table :data="headRows" :columns="headColumns" />
   </section>
 </template>
 
@@ -41,10 +41,7 @@ export default {
     }
   },
   computed: {
-    dataset() {
-      return this.$store.state.dataset[0].dataset;
-    },
-    ...mapGetters(["columns", "rows"]),
+    ...mapGetters(["headColumns", "headRows"]),
   },
 };
 </script>
