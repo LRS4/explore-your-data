@@ -17,8 +17,12 @@
         <BivariateTab />
       </b-tab-item>
 
-      <b-tab-item label="Correlation" class="image-tab"> 
+      <b-tab-item label="Correlation"> 
         <CorrelationTab />
+      </b-tab-item>
+
+      <b-tab-item label="Crosstab"> 
+        <PivotTab />
       </b-tab-item>
 
       <b-tab-item label="Missing values">
@@ -40,6 +44,7 @@ import UnivariateTab from "@/components/tabs/UnivariateTab.vue";
 import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import MissingDataTab from '@/components/tabs/MissingDataTab.vue';
 import CorrelationTab from '@/components/tabs/CorrelationTab.vue';
+import PivotTab from '@/components/tabs/PivotTab.vue';
 import NextStepsTab from '@/components/tabs/NextStepsTab.vue';
 
 export default {
@@ -52,6 +57,7 @@ export default {
     BivariateTab,
     MissingDataTab,
     CorrelationTab,
+    PivotTab,
     NextStepsTab
   },
   data() {

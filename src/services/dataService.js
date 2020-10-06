@@ -57,5 +57,18 @@ export default {
       .then(response => {
         return JSON.parse(response.data);
       })
+  },
+
+  /**
+   * Retrieves a crosstab/pivot table DataFrame for two variables
+   * @param {String} x The x axis variable name 
+   * @param {String} y The y axis variable name
+   * @return {Object} The crosstab DataFrame as a json object.
+   */
+  getCrosstab(x, y, showPercentages) {
+    return $axios.post(`/data/crosstab/${x}/${y}/${showPercentages}`, { sessionId: String(sessionStorage.sessionId) })
+      .then(response => {
+        return response.data;
+      })
   }
 }
