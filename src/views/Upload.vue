@@ -92,11 +92,11 @@ export default {
       this.isLoading = false;
       this.errorMessage = message;
     },
-    sendDatasetToStore(data) {
+    sendDatasetToStore(res) {
       this.$store.dispatch('setDataset', {
-        dataset: data
+        dataset: res
       });
-      console.log('Dataset pushed to store:', data);
+      console.log('Dataset pushed to store:', res);
     },
     async getMetaData() {
       await dataService.getMetaData()

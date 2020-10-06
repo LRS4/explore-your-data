@@ -55,7 +55,6 @@
 </template>
 
 <script> 
-import dataService from "../../services/dataService";
 import authService from "../../services/authService";
 var chunk = require("chunk");
 
@@ -73,28 +72,8 @@ export default {
       skipRenderingButton: false
     };
   },
-  created() {
-    this.returnDataSummary();
-  },
-  components: {},
   methods: {
-    async returnDataSummary() {
-      await this.returnNumericSummary();
-      await this.returnCategoricalSummary();
-      this.chunkDataSummary();
-    },
-    chunkDataSummary() {
-      this.chunkedData = chunk(this.summary, 4);
-    },
-    async returnNumericSummary() {
-      let data = await dataService.getNumericVariablesSummary();
-      this.pushDataToSummary(data, 'Numeric');
-    },
-    async returnCategoricalSummary() {
-      let data = await dataService.getCategoricalVariablesSummary();
-      this.pushDataToSummary(data, 'Categorical');
-    },
-    pushDataToSummary(data, type) {
+    pushDataToSummaryArray(data, type) {
       for (let column in data) {
         this.summary.push({
           'type': type,
@@ -113,6 +92,17 @@ export default {
         }
       }
       return isCountLow;
+    }
+  },
+  created() {
+    let numericSummary = JSON.parse(this.$store.state.dataset[0].dataset.num_describe);
+    let categoricalSummary = JSON.parse(this.$store.state.dataset[0].dataset.cat_describe);
+    this.pushDataToSummaryArray(numericSummary, 'Numeric');
+    this.pushDataToSummaryArray(categoricalSummary, 'Categorical');
+  },
+  watch: {
+    summary() {
+      this.chunkedData = chunk(this.summary, 4);
     }
   },
   filters: {
