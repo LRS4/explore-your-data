@@ -89,8 +89,10 @@ class MetaData(Resource):
     def post(self):
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
-        total_missing_values, total_missing_percent = data_service.get_missing_values_info(data)
-        total_duplicate_rows, total_duplicates_percent = data_service.get_duplicates_info(data)
+        total_missing_values, total_missing_percent = data_service.get_missing_values_info(
+            data)
+        total_duplicate_rows, total_duplicates_percent = data_service.get_duplicates_info(
+            data)
 
         return json.dumps({
             'totalMissingValues': int(total_missing_values),
@@ -103,3 +105,23 @@ class MetaData(Resource):
             'columnsInfo': data_service.get_column_type_counts(data),
             'warningMessages': data_service.populate_warning_messages(data)
         })
+
+
+@api_rest.route('/data/crosstab/<string:x>/<string:y>/<int:show_as_percentages>')
+class CrossTab(Resource):
+    """ Returns a json object containing a cross tabulation (pivot table) 
+    data structure for x and y variables """
+
+    def post(self, x, y, show_as_percentages=False):
+        file_name = request.get_json()['sessionId']
+        data = file_service.read_file(file_name)
+        if (show_as_percentages):
+            crosstab = pd.crosstab(
+                data[x], data[y], normalize='index').round(4) * 100
+        else:
+            crosstab = pd.crosstab(data[x], data[y])
+
+        return {
+            'crosstab': crosstab.to_json(),
+            'transposed': crosstab.transpose().to_json()
+        }
