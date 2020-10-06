@@ -37,7 +37,8 @@ class DistributionPlot(Resource):
             plot = sns.distplot(data[variable], kde=False)
         else:
             plot = sns.countplot(x=variable, data=data, palette="Blues")
-            plot.set_xticklabels(plot.get_xticklabels(), rotation=45, horizontalalignment='right')
+            plot.set_xticklabels(plot.get_xticklabels(),
+                                 rotation=45, horizontalalignment='right')
 
         plt.tight_layout()
         bytes_image = io.BytesIO()
@@ -123,15 +124,15 @@ class MissingDataPlot(Resource):
                          mimetype='image/png')
 
 
-@api_rest.route('/plots/correlation/<int:datetime>/<string:file_name>')
+@api_rest.route('/plots/correlation/<int:datetime>/<string:file_name>/<string:columns>')
 class CorrelationPlot(Resource):
     """ Returns a correlation heatmap visualisation for the dataset"""
 
-    def get(self, datetime, file_name):
+    def get(self, datetime, file_name, columns):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(16, 9))
-        correlation_df = data.select_dtypes(
+        correlation_df = data[columns.split(',')].select_dtypes(
             include=[np.number]).corr(method='pearson')
 
         cmap = sns.diverging_palette(220, 10, as_cmap=True)
