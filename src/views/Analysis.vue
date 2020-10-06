@@ -26,7 +26,7 @@
       </b-tab-item>
 
       <b-tab-item :visible="featureSwitch" label="Next steps">
-        Coming soon.
+        <NextStepsTab />
       </b-tab-item>
     </b-tabs>
   </section>
@@ -40,6 +40,7 @@ import UnivariateTab from "@/components/tabs/UnivariateTab.vue";
 import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import MissingDataTab from '@/components/tabs/MissingDataTab.vue';
 import CorrelationTab from '@/components/tabs/CorrelationTab.vue';
+import NextStepsTab from '@/components/tabs/NextStepsTab.vue';
 
 export default {
   name: "analysis",
@@ -50,7 +51,8 @@ export default {
     UnivariateTab,
     BivariateTab,
     MissingDataTab,
-    CorrelationTab
+    CorrelationTab,
+    NextStepsTab
   },
   data() {
     return {
