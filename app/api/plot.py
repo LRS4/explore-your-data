@@ -50,7 +50,7 @@ class DistributionPlot(Resource):
                          mimetype='image/png')
 
 
-@api_rest.route('/plots/scatter-plot/<int:datetime>/<string:file_name>/<string:x>/<string:y>')
+@api_rest.route('/plots/scatter-plot/<int:datetime>/<string:file_name>/<string:x>/<string:y>/<string:hue>')
 class ScatterPlot(Resource):
     """ 
     Returns a scatter plot for the two provided x and y numeric variables and an optional
@@ -64,11 +64,16 @@ class ScatterPlot(Resource):
     :return: A bytes image seaborn scatter plot
     """
 
-    def get(self, datetime, file_name, x, y):
+    def get(self, datetime, file_name, x, y, hue):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(15, 11))
-        scatter = sns.scatterplot(data=data, x=x, y=y)
+        if hue == "none":
+            scatter = sns.scatterplot(
+                data=data, x=x, y=y, legend='brief')
+        else:
+            scatter = sns.scatterplot(
+                data=data, x=x, y=y, hue=hue, legend='brief')
         plt.tight_layout()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
