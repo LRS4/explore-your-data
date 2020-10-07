@@ -16,7 +16,11 @@
             {{ name }}
           </b-checkbox>
         </div>
-        <p class="is-size-5 mb-4">Select hue (optional)</p>
+        <p 
+          v-if="categoricalDescriptions.length > 0" 
+          class="is-size-5 mb-4">
+          Select hue (optional)
+        </p>
         <div
           class="field"
           v-for="(property, name) in categoricalDescriptions"
