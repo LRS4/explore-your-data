@@ -17,7 +17,7 @@
           </b-checkbox>
         </div>
         <p 
-          v-if="categoricalDescriptions.length > 0" 
+          v-if="categoricalDescriptions.Name" 
           class="is-size-5 mb-4">
           Select hue (optional)
         </p>
@@ -35,10 +35,22 @@
             {{ name }}
             </b-radio>
         </div>
+        <p class="is-size-5 mb-4">Options</p>
+        <div
+          class="field"
+        >
+          <b-checkbox
+            v-model="showRegressionLine"
+            type="is-info"
+            :native-value="1"
+          >
+            Regression plot
+          </b-checkbox>
+        </div>
       </div>
       <div class="column is-four-fifths">
         <b-image
-          v-bind:src="uri + 'api/plots/scatter-plot/' + timestamp + '/' + filename + '/' + x + '/' + y + '/' + hue"
+          v-bind:src="uri + 'api/plots/scatter-plot/' + timestamp + '/' + filename + '/' + x + '/' + y + '/' + hue + '/' + reg"
           placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
           webp-fallback=".jpg"
           ratio="15by11"
@@ -61,11 +73,13 @@ export default {
       timestamp: Date.now(),
       uri: authService.getEnvironmentURI(),
       checkboxGroup: [],
+      showRegressionLine: [], 
       columnNames: [],
       showPlot: false,
       x: null,
       y: null,
-      hue: 'none'
+      hue: 'none',
+      reg: 0
     };
   },
   computed: {
@@ -89,12 +103,13 @@ export default {
         this.showPlot = false;
       }
     },
-    hueCheckboxGroup(arr) {
-      console.log(arr);
-      if (arr.length === 0) {
-        this.hue = "none";
-      } else if (arr.length === 1) {
-        this.hue = arr[0];
+    showRegressionLine(arr) {
+      if (this.checkboxGroup.length === 2) {
+        if (arr.length > 0) {
+          this.reg = 1;
+        } else {
+          this.reg = 0;
+        }
       }
     }
   }

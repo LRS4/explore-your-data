@@ -51,7 +51,7 @@ class DistributionPlot(Resource):
                          mimetype='image/png')
 
 
-@api_rest.route('/plots/scatter-plot/<int:datetime>/<string:file_name>/<string:x>/<string:y>/<string:hue>')
+@api_rest.route('/plots/scatter-plot/<int:datetime>/<string:file_name>/<string:x>/<string:y>/<string:hue>/<int:reg>')
 class ScatterPlot(Resource):
     """ 
     Returns a scatter plot for the two provided x and y numeric variables and an optional
@@ -62,14 +62,18 @@ class ScatterPlot(Resource):
     :param x: the x variable
     :param y: the y variable
     :param hue: the categorical hue for the plot (optional) 
+    :param reg: whether to display as a regression plot
     :return: A bytes image seaborn scatter plot
     """
 
-    def get(self, datetime, file_name, x, y, hue):
+    def get(self, datetime, file_name, x, y, hue, reg):
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(15, 11))
-        if hue == "none":
+        if reg == 1:
+            regression = sns.regplot(
+                data=data, x=x, y=y)
+        elif hue == "none":
             scatter = sns.scatterplot(
                 data=data, x=x, y=y, legend='brief')
         else:
