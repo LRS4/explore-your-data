@@ -21,8 +21,12 @@ def get_categorical_description(df):
     """
     categorical_df = df.select_dtypes(
         include=['object', 'bool'])
+    columns = categorical_df.shape[1]
 
-    return categorical_df.describe().to_json()
+    if columns == 0:
+        return json.dumps({})
+    else:
+        return categorical_df.describe().to_json()
 
 
 def get_numeric_description(df):
