@@ -4,17 +4,17 @@ https://flask-restx.readthedocs.io/en/latest/quickstart.html
 """
 
 from datetime import datetime
-from flask import request
+from flask import request, make_response
 from flask_restx import Resource
 
 from .security import require_auth
 from . import api_rest
 
+import json
+import io
 import requests
 import numpy as np
 import pandas as pd
-import json
-import io
 
 from app.services import file_service, data_service
 
@@ -40,8 +40,8 @@ class DataShape(Resource):
 
 @api_rest.route('/data/describe/numeric')
 class DescribeNumericData(Resource):
-    """ 
-    Returns summary description of the numeric variables in the dataset 
+    """
+    Returns summary description of the numeric variables in the dataset
     """
 
     def post(self):
@@ -52,8 +52,8 @@ class DescribeNumericData(Resource):
 
 @api_rest.route('/data/describe/categorical')
 class DescribeCategoricalData(Resource):
-    """ 
-    Returns summary description of the categorical variables in the dataset 
+    """
+    Returns summary description of the categorical variables in the dataset
     """
 
     def post(self):
@@ -109,7 +109,7 @@ class MetaData(Resource):
 
 @api_rest.route('/data/crosstab/<string:x>/<string:y>/<int:show_as_percentages>')
 class CrossTab(Resource):
-    """ Returns a json object containing a cross tabulation (pivot table) 
+    """ Returns a json object containing a cross tabulation (pivot table)
     data structure for x and y variables """
 
     def post(self, x, y, show_as_percentages=False):
@@ -125,3 +125,18 @@ class CrossTab(Resource):
             'crosstab': crosstab.to_json(),
             'transposed': crosstab.transpose().to_json()
         }
+
+
+@api_rest.route('/data/impute-missing-data/<int:datetime>/<string:file_name>')
+class MissingDataImputer(Resource):
+    """ Returns a CSV with all missing data imputed """
+
+    def get(self, datetime, file_name):
+        data = file_service.read_file(file_name)
+        data.fillna(data.median(), inplace=True)
+        data.fillna(value='missing', inplace=True)
+
+        resp = make_response(data.to_csv(index=False))
+        resp.headers["Content-Disposition"] = "attachment; filename=imputed_missing.csv"
+        resp.headers["Content-Type"] = "text/csv"
+        return resp
