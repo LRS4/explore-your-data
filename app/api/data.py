@@ -27,6 +27,21 @@ class AddTwoNumbers(Resource):
         return number_one + number_two
 
 
+@api_rest.route('/data/uniques/<string:column_name>')
+class UniqueValues(Resource):
+
+    def post(self, column_name):
+        """ Returns the unique values for the given column """
+        file_name = request.get_json()['sessionId']
+        data = file_service.read_file(file_name)
+        data[column_name].fillna('Missing', inplace=True)
+        uniques = pd.unique(data[column_name])
+        uniques_json = json.dumps({
+            'uniques': np.sort(uniques).tolist()
+        })
+        return uniques_json
+
+
 @api_rest.route('/data/shape')
 class DataShape(Resource):
     """ Returns shape of the data """
