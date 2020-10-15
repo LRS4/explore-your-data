@@ -60,6 +60,18 @@ export default {
   },
 
   /**
+   * Retrieves unique values for the given column from the DataFrame
+   * Populates the unique values for the key influencers categorical dropdown
+   * @return {Object} The unique values json object.
+   */
+  getUniqueValues(column) {
+    return $axios.post(`/data/uniques/${column}`, { sessionId: String(sessionStorage.sessionId) })
+      .then(response => {
+        return JSON.parse(response.data);
+      })
+  },
+
+  /**
    * Retrieves a crosstab/pivot table DataFrame for two variables
    * @param {String} x The x axis variable name 
    * @param {String} y The y axis variable name
