@@ -29,6 +29,10 @@
         <MissingDataTab />
       </b-tab-item>
 
+      <b-tab-item label="Influencers">
+        <InfluencersTab />
+      </b-tab-item>
+
       <b-tab-item :visible="featureSwitch" label="Next steps">
         <NextStepsTab />
       </b-tab-item>
@@ -45,6 +49,7 @@ import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import MissingDataTab from '@/components/tabs/MissingDataTab.vue';
 import CorrelationTab from '@/components/tabs/CorrelationTab.vue';
 import PivotTab from '@/components/tabs/PivotTab.vue';
+import InfluencersTab from '@/components/tabs/InfluencersTab.vue';
 import NextStepsTab from '@/components/tabs/NextStepsTab.vue';
 
 export default {
@@ -58,6 +63,7 @@ export default {
     MissingDataTab,
     CorrelationTab,
     PivotTab,
+    InfluencersTab,
     NextStepsTab
   },
   data() {
