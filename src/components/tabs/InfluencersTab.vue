@@ -135,7 +135,25 @@
             Select a row in the table for more information.
           </b-message>
 
-          {{ selectedRow }}
+          <div class="field" v-if="selectedRow != null">
+              <b-checkbox
+                v-model="showActuals"
+                type="is-info"
+                :native-value="1"
+              >
+                Show actuals (default is percentages)
+              </b-checkbox>
+          </div>
+
+          <b-image
+            class="mt-6"
+            v-bind:src="uri + 'api/plots/influencer-plot/' + timestamp + '/' + filename + '/' + selectedRow.column + '/' + currentVariable + '/' + currentTargetValue + '/' + actuals"
+            placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
+            webp-fallback=".jpg"
+            ratio="15by11"
+            v-if="selectedRow != null && currentTargetValue != 'Select value'"
+          >
+          </b-image>
         </div>
       </div>
     </div>
@@ -163,7 +181,9 @@ export default {
       currentTargetValue: "",
       uniqueValues: [],
       influencers: null,
-      selectedRow: null
+      selectedRow: null,
+      showActuals: [],
+      actuals: 0
     };
   },
   methods: {
@@ -181,17 +201,17 @@ export default {
       this.analysisType = null;
     },
     prepareCategoricalInfluencers(data) {
-      return data.map(obj => {
+      return data.map((obj) => {
         return {
           when: `${obj.parent_column_name} is ${obj.index}`,
           percentage: obj.value,
-          column: obj.parent_column_name
-        }
-      })
+          column: obj.parent_column_name,
+        };
+      });
     },
     prepareContinuousInfluencers(data) {
       return data;
-    }
+    },
   },
   computed: {
     firstColumn() {
@@ -232,14 +252,23 @@ export default {
           this.currentTargetValue
         );
 
-        if (this.analysisType === 'continuous') {
+        if (this.analysisType === "continuous") {
           this.influencers = this.prepareContinuousInfluencers(res.influencers);
         } else {
-          this.influencers = this.prepareCategoricalInfluencers(res.influencers);
+          this.influencers = this.prepareCategoricalInfluencers(
+            res.influencers
+          );
           console.log(this.influencers);
         }
       }
     },
+    showActuals(arr) {
+      if (arr.length > 0) {
+        this.actuals = 1;
+      } else {
+        this.actuals = 0;
+      }
+    }
   },
 };
 </script>
