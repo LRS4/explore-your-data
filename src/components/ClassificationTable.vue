@@ -1,0 +1,67 @@
+<template>
+  <b-table :selected.sync="selected" :data="data" v-if="data && data.length > 0">
+    <b-table-column
+      field="when"
+      label="When..."
+      width="33%"
+      centred
+      v-slot="props"
+    >
+      {{ props.row.when }}
+    </b-table-column>
+
+    <b-table-column
+      field="percentage"
+      :label="percentage_label"
+      width="33%"
+      centred
+      v-slot="props"
+    >
+      <b-progress
+        type="is-primary"
+        :value="props.row.percentage"
+        show-value
+        size="is-medium"
+        format="percent"
+      >
+      </b-progress>
+    </b-table-column>
+  </b-table>
+</template>
+
+<script>
+export default {
+  name: "classification-table",
+  props: {
+    target_column: String,
+    target_value: String,
+    data: Array
+  },
+  data() {
+    return {
+      selected: null
+    };
+  },
+  computed: {
+    percentage_label() {
+      return "... % with '".concat(
+        String(this.target_column),
+        "' value of ",
+        String(this.target_value),
+        " ..."
+      );
+    },
+    max_difference() {
+      return Math.max.apply(
+        Math,
+        this.data.map((a) => a.diff_from_baseline_avg)
+      );
+    },
+  },
+  watch: {
+    selected() {
+      this.$emit('selectedRow', this.selected);
+    }
+  }
+};
+</script>
