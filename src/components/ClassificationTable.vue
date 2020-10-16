@@ -18,7 +18,7 @@
       v-slot="props"
     >
       <b-progress
-        type="is-primary"
+        type="is-info"
         :value="props.row.percentage"
         show-value
         size="is-medium"
@@ -65,3 +65,14 @@ export default {
   }
 };
 </script>
+
+<style>
+.is-selected { 
+    background-color: #005EA5 !important; 
+    color: white !important;
+}
+
+.progress {
+  background-color: blue !important;
+}
+</style>
