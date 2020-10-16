@@ -64,8 +64,10 @@
       </a>
       <div class="columns is-vcentred">
         <div class="column pt-0 mt-4">
-          <p class="is-size-5 mb-2 mt-2">Select a variable and target value</p>
-
+          <p class="is-size-5 mb-2 mt-2"></p>
+          <b-message type="is-info">
+            Select a variable and target value below
+          </b-message>
           <span class="text-bottom">What influences... </span>
 
           <b-dropdown v-model="currentVariable" aria-role="list">
@@ -118,9 +120,24 @@
               <h3>{{ value }}</h3>
             </b-dropdown-item>
           </b-dropdown>
+
+          <hr />
+
+          <ClassificationTable 
+            :target_column="currentVariable"
+            :target_value="String(currentTargetValue)"
+            :data="influencers"
+            @selectedRow="selectedRow = $event" 
+          />
+        </div>
+        <div class="column is-one-half pt-0 mt-4">
+          <b-message class="mt-2" type="is-info" v-if="influencers != null">
+            Select a row in the table for more information.
+          </b-message>
+
+          {{ selectedRow }}
         </div>
       </div>
-      <div class="column is-one-half"></div>
     </div>
   </section>
 </template>
@@ -129,9 +146,13 @@
 import authService from "../../services/authService";
 import dataService from "../../services/dataService";
 import influencerService from "../../services/influencerService";
+import ClassificationTable from "@/components/ClassificationTable.vue";
 
 export default {
   name: "influencers",
+  components: {
+    ClassificationTable,
+  },
   data() {
     return {
       filename: sessionStorage["sessionId"],
@@ -141,6 +162,8 @@ export default {
       currentVariable: "Select variable",
       currentTargetValue: "",
       uniqueValues: [],
+      influencers: null,
+      selectedRow: null
     };
   },
   methods: {
@@ -157,6 +180,18 @@ export default {
     goBack() {
       this.analysisType = null;
     },
+    prepareCategoricalInfluencers(data) {
+      return data.map(obj => {
+        return {
+          when: `${obj.parent_column_name} is ${obj.index}`,
+          percentage: obj.value,
+          column: obj.parent_column_name
+        }
+      })
+    },
+    prepareContinuousInfluencers(data) {
+      return data;
+    }
   },
   computed: {
     firstColumn() {
@@ -171,6 +206,9 @@ export default {
         }
       }
       return newObject;
+    },
+    currentTargetValueType() {
+      return typeof this.currentTargetValue;
     },
   },
   watch: {
@@ -188,12 +226,18 @@ export default {
     async currentTargetValue(value) {
       if (value !== "Select value") {
         console.log("Getting key influencers...");
-        let influencers = await influencerService.getKeyInfluencers(
+        let res = await influencerService.getKeyInfluencers(
           this.analysisType,
           this.currentVariable,
           this.currentTargetValue
         );
-        console.log(influencers);
+
+        if (this.analysisType === 'continuous') {
+          this.influencers = this.prepareContinuousInfluencers(res.influencers);
+        } else {
+          this.influencers = this.prepareCategoricalInfluencers(res.influencers);
+          console.log(this.influencers);
+        }
       }
     },
   },
