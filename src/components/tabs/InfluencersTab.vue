@@ -47,9 +47,9 @@
               <div class="card-button__content">
                 <h3 class="card-button__heading">Continuous</h3>
                 <p class="card-button__description">
-                  What influences this to increase or decrease? Segments the data
-                  to uncover influencers on the target variable for regression
-                  models.
+                  What influences this to increase or decrease? Segments the
+                  data to uncover influencers on the target variable for
+                  regression models.
                 </p>
               </div>
             </a>
@@ -61,13 +61,10 @@
     <div class="main-section" v-show="analysisType != null">
       <a href="#/analysis" @click="goBack" class="link back-link">
         <b-icon icon="chevron-left" size="is-small"></b-icon>Back
-      </a> 
+      </a>
       <div class="columns is-vcentred">
         <div class="column pt-0 mt-4">
-          
-          <p class="is-size-5 mb-2 mt-2">
-            Select a variable and target value
-          </p>
+          <p class="is-size-5 mb-2 mt-2">Select a variable and target value</p>
 
           <span class="text-bottom">What influences... </span>
 
@@ -94,7 +91,9 @@
             </b-dropdown-item>
           </b-dropdown>
 
-          <span class="text-bottom" v-if="analysisType == 'continuous'"> ...to... </span>
+          <span class="text-bottom" v-if="analysisType == 'continuous'">
+            ...to...
+          </span>
           <span class="text-bottom" v-else> ...to be... </span>
 
           <b-dropdown v-model="currentTargetValue" aria-role="list">
@@ -129,6 +128,7 @@
 <script>
 import authService from "../../services/authService";
 import dataService from "../../services/dataService";
+import influencerService from "../../services/influencerService";
 
 export default {
   name: "influencers",
@@ -145,10 +145,11 @@ export default {
   },
   methods: {
     setAnalysisType(type) {
-      if (type === 'continuous') {
-        this.uniqueValues = ['Increase', 'Decrease'];
+      if (type === "continuous") {
+        this.uniqueValues = ["Increase", "Decrease"];
       } else {
-        this.currentTargetValue = "";
+        this.currentVariable = "Select variable";
+        this.currentTargetValue = "Select value";
         this.uniqueValues = [];
       }
       this.analysisType = type;
@@ -174,14 +175,25 @@ export default {
   },
   watch: {
     async currentVariable(value) {
-      if (this.analysisType === 'categorical') {
+      if (this.analysisType === "categorical" && value !== "Select variable") {
         let uniqueValues = await dataService.getUniqueValues(value);
         this.uniqueValues = uniqueValues["uniques"];
       }
     },
     uniqueValues() {
       if (this.uniqueValues.length > 0) {
-        this.currentTargetValue = this.uniqueValues[0];
+        this.currentTargetValue = "Select value";
+      }
+    },
+    async currentTargetValue(value) {
+      if (value !== "Select value") {
+        console.log("Getting key influencers...");
+        let influencers = await influencerService.getKeyInfluencers(
+          this.analysisType,
+          this.currentVariable,
+          this.currentTargetValue
+        );
+        console.log(influencers);
       }
     },
   },
