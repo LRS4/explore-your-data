@@ -27,9 +27,19 @@ class KeyInfluencers(Resource):
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
 
+        target_dtype = data[target_column].dtypes
+
+        if target_dtype == 'float64':
+            target_value = float(target_value)
+        elif target_dtype == 'int64':
+            target_value = int(target_value)
+        else:
+            target_value = str(target_value)
+
+        method = 'classification' if analysis_type == 'categorical' else 'regression'
+
+        influencers = influencers_service.find_key_influencers(target_column, target_value, df=data, method=method)
+
         return json.dumps({
-            'response': 'key influencers here',
-            'type': analysis_type,
-            'target_column': target_column,
-            'target_value': target_value
+            'influencers': influencers
         })
