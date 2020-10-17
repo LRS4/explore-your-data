@@ -123,48 +123,73 @@
 
           <hr />
 
-          <ClassificationTable 
+          <ClassificationTable
             :target_column="currentVariable"
             :target_value="String(currentTargetValue)"
             :data="influencers"
-            @selectedRow="selectedRow = $event" 
-            v-if="analysisType == 'categorical'
-              && currentTargetValue != 'Select value'"
+            @selectedRow="selectedRow = $event"
+            v-if="
+              analysisType == 'categorical' &&
+              currentTargetValue != 'Select value'
+            "
           />
 
-          <RegressionTable 
+          <RegressionTable
             class="mt-4"
             :target_column="currentVariable"
             :target_value="String(currentTargetValue)"
             :data="influencers"
-            @selectedRow="selectedRow = $event" 
-            v-if="analysisType == 'continuous'
-              && currentTargetValue != 'Select value'"
+            @selectedRow="selectedRow = $event"
+            v-if="
+              analysisType == 'continuous' &&
+              currentTargetValue != 'Select value'
+            "
           />
 
         </div>
         <div class="column is-one-half pt-0 mt-4">
-          <b-message class="mt-2" type="is-info" v-if="influencers != null
-            && currentTargetValue != 'Select value'">
+          <b-message
+            class="mt-2"
+            type="is-info"
+            v-if="influencers != null && currentTargetValue != 'Select value'"
+          >
             Select a row in the table for more information.
           </b-message>
 
           <div class="field" v-if="selectedRow != null">
-              <b-checkbox
-                v-model="showActuals"
-                type="is-info"
-                :native-value="1"
-                v-if="selectedRow != null 
-                  && currentTargetValue != 'Select value'
-                  && analysisType === 'categorical'"
-              >
-                Show counts (default is percentages)
-              </b-checkbox>
+            <b-checkbox
+              v-model="showActuals"
+              type="is-info"
+              :native-value="1"
+              v-if="
+                selectedRow != null &&
+                currentTargetValue != 'Select value' &&
+                analysisType === 'categorical'
+              "
+            >
+              Show counts (default is percentages)
+            </b-checkbox>
           </div>
 
           <b-image
             class="mt-6"
-            v-bind:src="uri + 'api/plots/influencer-plot/' + timestamp + '/' + filename + '/' + selectedRow.column + '/' + currentVariable + '/' + currentTargetValue + '/' + actuals"
+            v-bind:src="
+              uri +
+              'api/plots/influencer-plot/' +
+              timestamp +
+              '/' +
+              filename +
+              '/' +
+              selectedRow.column +
+              '/' +
+              currentVariable +
+              '/' +
+              currentTargetValue +
+              '/' +
+              analysisType +
+              '/' +
+              actuals
+            "
             placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
             webp-fallback=".jpg"
             ratio="15by11"
@@ -174,7 +199,6 @@
         </div>
       </div>
     </div>
-    {{ influencers }}
   </section>
 </template>
 
@@ -189,7 +213,7 @@ export default {
   name: "influencers",
   components: {
     ClassificationTable,
-    RegressionTable
+    RegressionTable,
   },
   data() {
     return {
@@ -210,6 +234,8 @@ export default {
     setAnalysisType(type) {
       if (type === "continuous") {
         this.uniqueValues = ["Increase", "Decrease"];
+        this.currentVariable = "Select variable";
+        this.currentTargetValue = "Select value";
       } else {
         this.currentVariable = "Select variable";
         this.currentTargetValue = "Select value";
@@ -252,16 +278,18 @@ export default {
       return newObject;
     },
     getContinuousDropdownItems() {
-      let numericColumnNames = JSON.parse(this.$store.state.dataset[0].dataset.num_describe);
+      let numericColumnNames = JSON.parse(
+        this.$store.state.dataset[0].dataset.num_describe
+      );
       return numericColumnNames;
-    }
+    },
   },
   computed: {
     firstColumn() {
       return this.menus[0];
     },
     selectVariableList() {
-      if (this.analysisType === 'categorical') {
+      if (this.analysisType === "categorical") {
         return this.getCategoricalDropdownItems();
       } else {
         return this.getContinuousDropdownItems();
@@ -277,6 +305,10 @@ export default {
         let uniqueValues = await dataService.getUniqueValues(value);
         this.uniqueValues = uniqueValues["uniques"];
       }
+
+      if (this.analysisType === "continuous") {
+        this.currentTargetValue = "Select value";
+      }
     },
     uniqueValues() {
       if (this.uniqueValues.length > 0) {
@@ -291,8 +323,8 @@ export default {
         let res = await influencerService.getKeyInfluencers(
           this.analysisType,
           this.currentVariable,
-          this.analysisType === 'categorical' 
-            ? this.currentTargetValue 
+          this.analysisType === "categorical"
+            ? this.currentTargetValue
             : this.currentTargetValue.toLowerCase()
         );
 
@@ -313,7 +345,7 @@ export default {
       } else {
         this.actuals = 0;
       }
-    }
+    },
   },
 };
 </script>

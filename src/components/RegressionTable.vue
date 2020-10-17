@@ -12,7 +12,7 @@
 
     <b-table-column
       field="when"
-      :label="'...had an average ' + target_column + ' of...'"
+      :label="'... ' + target_column + ' had an average of...'"
       width="33%"
       centred
       v-slot="props"
@@ -28,7 +28,7 @@
       v-slot="props"
     >
       <b-progress
-        type="is-primary"
+        type="is-info"
         :value="props.row.diff_from_baseline_avg"
         show-value
         :max="max_difference"
@@ -36,7 +36,6 @@
       >
       </b-progress>
     </b-table-column>
-    {{max_difference}}
   </b-table>
 </template>
 
