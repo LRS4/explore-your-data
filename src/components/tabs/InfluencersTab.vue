@@ -131,6 +131,17 @@
             v-if="analysisType == 'categorical'
               && currentTargetValue != 'Select value'"
           />
+
+          <RegressionTable 
+            class="mt-4"
+            :target_column="currentVariable"
+            :target_value="String(currentTargetValue)"
+            :data="influencers"
+            @selectedRow="selectedRow = $event" 
+            v-if="analysisType == 'continuous'
+              && currentTargetValue != 'Select value'"
+          />
+
         </div>
         <div class="column is-one-half pt-0 mt-4">
           <b-message class="mt-2" type="is-info" v-if="influencers != null
@@ -144,7 +155,8 @@
                 type="is-info"
                 :native-value="1"
                 v-if="selectedRow != null 
-                  && currentTargetValue != 'Select value'"
+                  && currentTargetValue != 'Select value'
+                  && analysisType === 'categorical'"
               >
                 Show counts (default is percentages)
               </b-checkbox>
@@ -162,7 +174,7 @@
         </div>
       </div>
     </div>
-    {{ selectVariableList }}
+    {{ influencers }}
   </section>
 </template>
 
@@ -171,11 +183,13 @@ import authService from "../../services/authService";
 import dataService from "../../services/dataService";
 import influencerService from "../../services/influencerService";
 import ClassificationTable from "@/components/ClassificationTable.vue";
+import RegressionTable from "@/components/RegressionTable.vue";
 
 export default {
   name: "influencers",
   components: {
     ClassificationTable,
+    RegressionTable
   },
   data() {
     return {
@@ -207,6 +221,7 @@ export default {
       this.analysisType = null;
     },
     prepareCategoricalInfluencers(data) {
+      // Format: { 'when': 'Sex is female...', 'percentage': 74, 'column': 'Sex' }
       return data.map((obj) => {
         return {
           when: `${obj.parent_column_name} is ${obj.index}`,
@@ -216,7 +231,15 @@ export default {
       });
     },
     prepareContinuousInfluencers(data) {
-      return data;
+      // Format: { 'when': 'ptratio is between 239 - 292', 'value': 50, 'diff_from_baseline_avg': 27.47, 'column': 'Ptratio' }
+      return data.map((obj) => {
+        return {
+          when: `${obj.parent_column_name} is ${obj.index}`,
+          value: obj.value,
+          diff_from_baseline_avg: obj.difference_from_baseline_avg,
+          column: obj.parent_column_name,
+        };
+      });
     },
     getCategoricalDropdownItems() {
       let newObject = {};
@@ -268,10 +291,13 @@ export default {
         let res = await influencerService.getKeyInfluencers(
           this.analysisType,
           this.currentVariable,
-          this.currentTargetValue
+          this.analysisType === 'categorical' 
+            ? this.currentTargetValue 
+            : this.currentTargetValue.toLowerCase()
         );
 
         if (this.analysisType === "continuous") {
+          console.log(res.influencers);
           this.influencers = this.prepareContinuousInfluencers(res.influencers);
         } else {
           this.influencers = this.prepareCategoricalInfluencers(
