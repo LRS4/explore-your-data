@@ -1,5 +1,5 @@
 <template>
-  <b-table :selected.sync="selected" :data="data" v-if="data && data.length > 0">
+  <b-table :selected.sync="selected" :data="data" v-if="data && data.length > 0" hoverable>
     <b-table-column
       field="when"
       label="When..."
@@ -50,13 +50,7 @@ export default {
         String(this.target_value),
         " ..."
       );
-    },
-    max_difference() {
-      return Math.max.apply(
-        Math,
-        this.data.map((a) => a.diff_from_baseline_avg)
-      );
-    },
+    }
   },
   watch: {
     selected() {
