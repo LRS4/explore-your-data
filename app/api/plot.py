@@ -186,24 +186,28 @@ class InfluencerPlot(Resource):
         else:
             target_value = str(target_value)
 
+        filtered_df = data[data[target_column] == target_value]
+
         if (is_actuals == 1):
-            filtered_df = data[data[target_column] == target_value]
             plot = sns.countplot(
                 x=filtered_df[target_column], hue=x, data=filtered_df, palette="colorblind")
         else:
-            plot = sns.barplot(data=data,
-                               x=x,
-                               y=target_column,
-                               palette="Blues")
+            if (is_numeric_dtype(data[target_column])):
+                plot = sns.barplot(data=data,
+                                x=x,
+                                y=target_column,
+                                palette="Blues")
+            else:
+                plot = sns.countplot(
+                    x=filtered_df[target_column], hue=x, data=filtered_df, palette="colorblind")
 
         if (is_actuals == 1):
             base_count = len(data[data[target_column] == target_value])
         else:
-            base_mean = influencers_service.get_target_base_frequency(
-                data, target_column, target_value)
-
-            plot.axhline(base_mean, ls='--', label='Average')
-            plt.legend()
+            if (is_numeric_dtype(data[target_column])):
+                base_mean = data[target_column].mean()
+                plot.axhline(base_mean, ls='--', label='Average')
+                plt.legend()
 
         plt.tight_layout()
         plt.savefig(bytes_image, format='png')
