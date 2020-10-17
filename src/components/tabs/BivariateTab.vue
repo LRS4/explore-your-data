@@ -17,7 +17,7 @@
           </b-checkbox>
         </div>
         <p 
-          v-if="categoricalDescriptions.Name" 
+          v-if="categoricalDescriptions" 
           class="is-size-5 mb-4">
           Select hue (optional)
         </p>
