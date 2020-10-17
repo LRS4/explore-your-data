@@ -83,7 +83,7 @@
             </b-button>
 
             <b-dropdown-item
-              v-for="(value, name) in nunique"
+              v-for="(value, name) in selectVariableList"
               v-bind:key="value.id"
               :value="name"
               aria-role="listitem"
@@ -128,10 +128,13 @@
             :target_value="String(currentTargetValue)"
             :data="influencers"
             @selectedRow="selectedRow = $event" 
+            v-if="analysisType == 'categorical'
+              && currentTargetValue != 'Select value'"
           />
         </div>
         <div class="column is-one-half pt-0 mt-4">
-          <b-message class="mt-2" type="is-info" v-if="influencers != null">
+          <b-message class="mt-2" type="is-info" v-if="influencers != null
+            && currentTargetValue != 'Select value'">
             Select a row in the table for more information.
           </b-message>
 
@@ -140,8 +143,10 @@
                 v-model="showActuals"
                 type="is-info"
                 :native-value="1"
+                v-if="selectedRow != null 
+                  && currentTargetValue != 'Select value'"
               >
-                Show actuals (default is percentages)
+                Show counts (default is percentages)
               </b-checkbox>
           </div>
 
@@ -157,6 +162,7 @@
         </div>
       </div>
     </div>
+    {{ selectVariableList }}
   </section>
 </template>
 
@@ -212,12 +218,7 @@ export default {
     prepareContinuousInfluencers(data) {
       return data;
     },
-  },
-  computed: {
-    firstColumn() {
-      return this.menus[0];
-    },
-    nunique() {
+    getCategoricalDropdownItems() {
       let newObject = {};
       let nunique = JSON.parse(this.$store.state.dataset[0].dataset.nunique);
       for (let key in nunique) {
@@ -226,6 +227,22 @@ export default {
         }
       }
       return newObject;
+    },
+    getContinuousDropdownItems() {
+      let numericColumnNames = JSON.parse(this.$store.state.dataset[0].dataset.num_describe);
+      return numericColumnNames;
+    }
+  },
+  computed: {
+    firstColumn() {
+      return this.menus[0];
+    },
+    selectVariableList() {
+      if (this.analysisType === 'categorical') {
+        return this.getCategoricalDropdownItems();
+      } else {
+        return this.getContinuousDropdownItems();
+      }
     },
     currentTargetValueType() {
       return typeof this.currentTargetValue;
@@ -246,6 +263,8 @@ export default {
     async currentTargetValue(value) {
       if (value !== "Select value") {
         console.log("Getting key influencers...");
+        this.selectedRow = null;
+
         let res = await influencerService.getKeyInfluencers(
           this.analysisType,
           this.currentVariable,
