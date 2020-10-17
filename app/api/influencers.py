@@ -29,12 +29,13 @@ class KeyInfluencers(Resource):
 
         target_dtype = data[target_column].dtypes
 
-        if target_dtype == 'float64':
-            target_value = float(target_value)
-        elif target_dtype == 'int64':
-            target_value = int(target_value)
-        else:
-            target_value = str(target_value)
+        if analysis_type != 'continuous':
+            if target_dtype == 'float64':
+                target_value = float(target_value)
+            elif target_dtype == 'int64':
+                target_value = int(target_value)
+            else:
+                target_value = str(target_value)
 
         method = 'classification' if analysis_type == 'categorical' else 'regression'
 
