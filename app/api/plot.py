@@ -3,6 +3,7 @@ REST API for plots and visuals
 https://flask-restx.readthedocs.io/en/latest/quickstart.html
 """
 
+from app.services import influencers_service
 import matplotlib
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
@@ -154,4 +155,76 @@ class CorrelationPlot(Resource):
 
         return send_file(bytes_image,
                          attachment_filename=f"correlation-plot.png",
+                         mimetype='image/png')
+
+
+@api_rest.route('/plots/influencer-plot/<int:datetime>/<string:file_name>/<string:x>/<string:target_column>/<string:target_value>/<string:analysis_type>/<int:is_actuals>')
+class InfluencerPlot(Resource):
+    """ 
+    Returns a bar plot showing the percentages of each categorical features in the chosen column
+    against the target variable.
+
+    :param datetime: the current datetime in integer format
+    :param file_name: the file name represented by session_id
+    :param x: the x variable
+    :param target_column: the target variable of the analysis
+    :param target_value: the target value of the analysis
+    :param analysis_type: a flag of 'categorical' or 'continuous' analysis type
+    :param is_actuals: a flag where 1 is actual counts and 0 is percentages
+    """
+
+    def get(self, datetime, file_name, x, target_column, target_value, analysis_type, is_actuals):
+        bytes_image = io.BytesIO()
+        data = file_service.read_file(file_name)
+        data = influencers_service.bin_continuous_cols(data, target_column)
+        f, ax = plt.subplots(figsize=(15, 11))
+
+        if analysis_type != 'continuous':
+            target_dtype = data[target_column].dtypes
+            if target_dtype == 'float64':
+                target_value = float(target_value)
+            elif target_dtype == 'int64':
+                target_value = int(target_value)
+            else:
+                target_value = str(target_value)
+
+        filtered_df = data[data[target_column] == target_value]
+
+        if (is_actuals == 1):
+            plot = sns.countplot(x=filtered_df[target_column],
+                                 hue=x,
+                                 data=filtered_df,
+                                 palette="colorblind")
+        else:
+            if (is_numeric_dtype(data[target_column]) and analysis_type == 'categorical'):
+                plot = sns.barplot(data=data,
+                                   x=x,
+                                   y=target_column,
+                                   palette="Blues")
+            elif analysis_type == 'categorical':
+                plot = sns.countplot(x=filtered_df[target_column],
+                                     hue=x,
+                                     data=filtered_df,
+                                     palette="colorblind")
+            else:
+                plot = sns.barplot(data=data,
+                                   x=x,
+                                   y=data[target_column],
+                                   palette="Blues")
+
+        if (is_actuals == 1):
+            base_count = len(data[data[target_column] == target_value])
+        else:
+            if (is_numeric_dtype(data[target_column])):
+                base_mean = data[target_column].mean()
+                plot.axhline(base_mean, ls='--', label='Average')
+                plt.legend()
+
+        plt.tight_layout()
+        plt.savefig(bytes_image, format='png')
+        bytes_image.seek(0)
+        plt.close()
+
+        return send_file(bytes_image,
+                         attachment_filename=f"influencers.png",
                          mimetype='image/png')

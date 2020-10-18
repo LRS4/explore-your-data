@@ -176,3 +176,8 @@ Credit for the Vue.js Flask template goes to [gtalarico](https://github.com/gtal
 * [Initialise SQLAlchemy](https://stackoverflow.com/questions/45228328/sqlalchemy-nameerror-name-db-is-not-defined)
 * [Python garbage collection](https://stackify.com/python-garbage-collection/#:~:text=The%20Python%20garbage%20collector%20has,a%20threshold%20number%20of%20objects)
 * [Pandas optional dependencies](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html#optional-dependencies)
+
+### Notes
+
+* When uploading a CSV with dots in a column name i.e. 'Petal.Width' this will not render correctly in the Buefy Table
+element - removing the dot being the solution. Need to add an automated check for this in the future.
