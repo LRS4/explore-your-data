@@ -1,4 +1,4 @@
-""" pytests for data endpoints """
+""" pytests for data API endpoints """
 
 import pytest
 from app import app
@@ -7,7 +7,7 @@ import time
 
 from app.services import file_service
 
-FILE_NAME = 'endpoint_test'
+FILE_NAME = 'test_data_endpoints'
 APPLICATION_TYPE = 'application/json'
 HEADERS = {
     'Content-Type': APPLICATION_TYPE,
@@ -39,9 +39,6 @@ def test_add_two_numbers(client):
 
 def test_unique_values(client):
     # arrange
-    data = {
-        'sessionId': str(FILE_NAME)
-    }
     url = 'api/data/uniques/Survived'
 
     # act
