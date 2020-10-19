@@ -37,6 +37,14 @@ def test_upload_file(client):
     assert file_name in filenames_in_bucket
 
 
+def test_read_file(client):
+    # act
+    df = file_service.read_file(FILE_NAME)
+
+    # assert
+    assert df.shape == (891, 12)
+
+
 def test_get_bytestring(client):
     # act
     bytestring = file_service.get_bytestring(FILE_NAME)

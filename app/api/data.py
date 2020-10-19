@@ -55,11 +55,11 @@ class DataShape(Resource):
 
 @api_rest.route('/data/describe/numeric')
 class DescribeNumericData(Resource):
-    """
-    Returns summary description of the numeric variables in the dataset
-    """
 
     def post(self):
+        """
+        Returns summary description of the numeric variables in the dataset
+        """
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         return data.describe().to_json()
@@ -67,11 +67,11 @@ class DescribeNumericData(Resource):
 
 @api_rest.route('/data/describe/categorical')
 class DescribeCategoricalData(Resource):
-    """
-    Returns summary description of the categorical variables in the dataset
-    """
 
     def post(self):
+        """
+        Returns summary description of the categorical variables in the dataset
+        """
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         categorical_df = data.select_dtypes(
@@ -82,10 +82,12 @@ class DescribeCategoricalData(Resource):
 
 @api_rest.route('/data/column_names')
 class ColumnNames(Resource):
-    """ Returns the labels of the columns for both numeric
-    and categorical variables """
 
     def post(self):
+        """ 
+        Returns the labels of the columns for both numeric
+        and categorical variables 
+        """
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         numeric_df = data.select_dtypes(include=[np.number])
@@ -98,10 +100,11 @@ class ColumnNames(Resource):
 
 @api_rest.route('/data/metadata')
 class MetaData(Resource):
-    """ Returns a json object with information (metadata) on the
-    dataset """
 
     def post(self):
+        """ 
+        Returns a json object with information (metadata) on the dataset 
+        """
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         total_missing_values, total_missing_percent = data_service.get_missing_values_info(
@@ -124,10 +127,12 @@ class MetaData(Resource):
 
 @api_rest.route('/data/crosstab/<string:x>/<string:y>/<int:show_as_percentages>')
 class CrossTab(Resource):
-    """ Returns a json object containing a cross tabulation (pivot table)
-    data structure for x and y variables """
 
     def post(self, x, y, show_as_percentages=False):
+        """ 
+        Returns a json object containing a cross tabulation (pivot table)
+        data structure for x and y variables 
+        """
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         if (show_as_percentages):
@@ -144,9 +149,11 @@ class CrossTab(Resource):
 
 @api_rest.route('/data/impute-missing-data/<int:datetime>/<string:file_name>')
 class MissingDataImputer(Resource):
-    """ Returns a CSV with all missing data imputed """
 
     def get(self, datetime, file_name):
+        """ 
+        Returns a CSV with all missing data imputed 
+        """
         data = file_service.read_file(file_name)
         data.fillna(data.median(), inplace=True)
         data.fillna(value='missing', inplace=True)

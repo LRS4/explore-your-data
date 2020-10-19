@@ -1,4 +1,4 @@
-""" pytests for mutate endpoints """
+""" pytests for data endpoints """
 
 import pytest
 from app import app

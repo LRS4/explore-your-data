@@ -26,12 +26,12 @@ matplotlib.use('Agg')
 
 @api_rest.route('/plots/distribution/<int:datetime>/<string:file_name>/<string:variable>')
 class DistributionPlot(Resource):
-    """ 
-    Returns a distribution plot if the given variable is numeric.
-    Returns a count plot if the given variable is categorical.
-    """
 
     def get(self, variable, file_name, datetime):
+        """ 
+        Returns a distribution plot if the given variable is numeric.
+        Returns a count plot if the given variable is categorical.
+        """
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(11, 9))
         if (is_numeric_dtype(data[variable])):
@@ -54,20 +54,20 @@ class DistributionPlot(Resource):
 
 @api_rest.route('/plots/scatter-plot/<int:datetime>/<string:file_name>/<string:x>/<string:y>/<string:hue>/<int:reg>')
 class ScatterPlot(Resource):
-    """ 
-    Returns a scatter plot for the two provided x and y numeric variables and an optional
-    hue for a categorical variable.
-
-    :param datetime: the current datetime in integer format
-    :param file_name: the file name represented by session_id
-    :param x: the x variable
-    :param y: the y variable
-    :param hue: the categorical hue for the plot (optional) 
-    :param reg: whether to display as a regression plot
-    :return: A bytes image seaborn scatter plot
-    """
 
     def get(self, datetime, file_name, x, y, hue, reg):
+        """ 
+        Returns a scatter plot for the two provided x and y numeric variables and an optional
+        hue for a categorical variable.
+
+        :param datetime: the current datetime in integer format
+        :param file_name: the file name represented by session_id
+        :param x: the x variable
+        :param y: the y variable
+        :param hue: the categorical hue for the plot (optional) 
+        :param reg: whether to display as a regression plot
+        :return: A bytes image seaborn scatter plot
+        """
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(15, 11))
@@ -92,9 +92,11 @@ class ScatterPlot(Resource):
 
 @api_rest.route('/plots/pairplot/<int:datetime>/<string:file_name>')
 class PairPlot(Resource):
-    """ Returns a standard pairplot for the dataset"""
 
     def get(self, datetime, file_name):
+        """ 
+        Returns a standard pairplot for the dataset
+        """
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(16, 9))
@@ -111,9 +113,11 @@ class PairPlot(Resource):
 
 @api_rest.route('/plots/missing-data-plot/<int:datetime>/<string:file_name>')
 class MissingDataPlot(Resource):
-    """ Returns a missing data visualisation for the dataset"""
 
     def get(self, datetime, file_name):
+        """ 
+        Returns a missing data visualisation for the dataset
+        """
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(16, 9))
@@ -131,9 +135,11 @@ class MissingDataPlot(Resource):
 
 @api_rest.route('/plots/correlation/<int:datetime>/<string:file_name>/<string:columns>')
 class CorrelationPlot(Resource):
-    """ Returns a correlation heatmap visualisation for the dataset"""
 
     def get(self, datetime, file_name, columns):
+        """ 
+        Returns a correlation heatmap visualisation for the dataset
+        """
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         f, ax = plt.subplots(figsize=(16, 9))
@@ -160,20 +166,20 @@ class CorrelationPlot(Resource):
 
 @api_rest.route('/plots/influencer-plot/<int:datetime>/<string:file_name>/<string:x>/<string:target_column>/<string:target_value>/<string:analysis_type>/<int:is_actuals>')
 class InfluencerPlot(Resource):
-    """ 
-    Returns a bar plot showing the percentages of each categorical features in the chosen column
-    against the target variable.
-
-    :param datetime: the current datetime in integer format
-    :param file_name: the file name represented by session_id
-    :param x: the x variable
-    :param target_column: the target variable of the analysis
-    :param target_value: the target value of the analysis
-    :param analysis_type: a flag of 'categorical' or 'continuous' analysis type
-    :param is_actuals: a flag where 1 is actual counts and 0 is percentages
-    """
 
     def get(self, datetime, file_name, x, target_column, target_value, analysis_type, is_actuals):
+        """ 
+        Returns a bar plot showing the percentages of each categorical features in the chosen column
+        against the target variable.
+
+        :param datetime: the current datetime in integer format
+        :param file_name: the file name represented by session_id
+        :param x: the x variable
+        :param target_column: the target variable of the analysis
+        :param target_value: the target value of the analysis
+        :param analysis_type: a flag of 'categorical' or 'continuous' analysis type
+        :param is_actuals: a flag where 1 is actual counts and 0 is percentages
+        """
         bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
         data = influencers_service.bin_continuous_cols(data, target_column)

@@ -25,7 +25,7 @@ class SecureResource(Resource):
 
 
 @api_rest.route('/resource/<string:resource_id>')
-class ResourceOne(Resource):
+class SystemTime(Resource):
     """ Unsecure Resource Class: Inherit from Resource """
 
     def get(self, resource_id):
@@ -37,26 +37,21 @@ class ResourceOne(Resource):
         return {'timestamp': json_payload}, 201
 
 
-@api_rest.route('/secure-resource/<string:resource_id>')
-class SecureResourceOne(SecureResource):
-    """ Unsecure Resource Class: Inherit from Resource """
-
-    def get(self, resource_id):
-        timestamp = datetime.utcnow().isoformat()
-        return {'timestamp': timestamp}
-
-
 @api_rest.route('/resource/get-titanic-data')
 class TitanicData(Resource):
-    """ Returns titanic dataset in JSON format """
 
     def get(self):
+        """ 
+        Returns titanic dataset in JSON format 
+        """
         return data_service.get_titanic_data()
 
 
 @api_rest.route('/resource/get-useful-links')
 class UsefulLinks(Resource):
-    """ Returns useful links for help section """
 
     def get(self):
+        """ 
+        Returns useful links for help section 
+        """
         return resource_service.get_useful_links()
