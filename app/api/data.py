@@ -21,9 +21,9 @@ from app.services import file_service, data_service
 
 @api_rest.route('/data/add/<int:number_one>/<int:number_two>')
 class AddTwoNumbers(Resource):
-    """ Adds two numbers """
 
     def get(self, number_one, number_two):
+        """ Adds two numbers """
         return number_one + number_two
 
 
@@ -44,9 +44,11 @@ class UniqueValues(Resource):
 
 @api_rest.route('/data/shape')
 class DataShape(Resource):
-    """ Returns shape of the data """
 
     def post(self):
+        """ 
+        Returns shape of the data 
+        """
         file_name = request.get_json()['sessionId']
         data = file_service.read_file(file_name)
         shape = data.shape
