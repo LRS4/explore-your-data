@@ -65,8 +65,4 @@ export default {
     background-color: #005EA5 !important; 
     color: white !important;
 }
-
-.progress {
-  background-color: blue !important;
-}
 </style>
