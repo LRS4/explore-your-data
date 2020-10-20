@@ -55,7 +55,7 @@ def get_influencers_plot(data, filtered_df, x, target_column, analysis_type, is_
     and whether categorical or continuous variable passed in
     """
     if (is_actuals == 1):
-        return sns.countplot(x=filtered_df[target_column],
+        return sns.countplot(x=target_column,
                              hue=x,
                              data=filtered_df,
                              palette="colorblind")
@@ -66,13 +66,13 @@ def get_influencers_plot(data, filtered_df, x, target_column, analysis_type, is_
                                y=target_column,
                                palette="Blues")
         elif analysis_type == 'categorical':
-            return sns.countplot(x=filtered_df[target_column],
+            return sns.countplot(x=target_column,
                                  hue=x,
                                  data=filtered_df,
                                  palette="colorblind")
         else:
             return sns.barplot(data=data,
                                x=x,
-                               y=data[target_column],
+                               y=target_column,
                                palette="Blues")
     
