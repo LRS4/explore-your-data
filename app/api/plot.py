@@ -16,11 +16,10 @@ from flask_restx import Resource
 from flask import request, send_file
 from datetime import datetime
 import matplotlib.pyplot as plt
-from app.services import plot_service
-from app.services import file_service
+from app.services import plot_service, file_service
 import seaborn as sns
-sns.set(font_scale=1.5)
 
+sns.set(font_scale=1.5)
 matplotlib.use('Agg')
 
 
@@ -29,19 +28,15 @@ class DistributionPlot(Resource):
 
     def get(self, variable, file_name, datetime):
         """ 
-        Returns a distribution plot if the given variable is numeric.
-        Returns a count plot if the given variable is categorical.
+        Returns distribution plot for numeric variables
+        and a countplot for categorical variables.
         """
         data = file_service.read_file(file_name)
-        f, ax = plt.subplots(figsize=(11, 9))
-        if (is_numeric_dtype(data[variable])):
-            plot = sns.distplot(data[variable], kde=False)
-        else:
-            plot = sns.countplot(x=variable, data=data, palette="Blues")
-            plot.set_xticklabels(plot.get_xticklabels(),
-                                 rotation=45, horizontalalignment='right')
 
+        f, ax = plt.subplots(figsize=(11, 9))
+        plot = plot_service.get_distribution_plot(data, variable)
         plt.tight_layout()
+
         bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
@@ -68,19 +63,13 @@ class ScatterPlot(Resource):
         :param reg: whether to display as a regression plot
         :return: A bytes image seaborn scatter plot
         """
-        bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
+
         f, ax = plt.subplots(figsize=(15, 11))
-        if reg == 1:
-            regression = sns.regplot(
-                data=data, x=x, y=y)
-        elif hue == "none":
-            scatter = sns.scatterplot(
-                data=data, x=x, y=y, legend='brief')
-        else:
-            scatter = sns.scatterplot(
-                data=data, x=x, y=y, hue=hue, legend='brief')
+        plot = plot_service.get_scatter_plot(data, hue, x, y, reg)
         plt.tight_layout()
+
+        bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
         plt.close()
@@ -97,11 +86,13 @@ class PairPlot(Resource):
         """ 
         Returns a standard pairplot for the dataset
         """
-        bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
+
         f, ax = plt.subplots(figsize=(16, 9))
         pairplot = sns.pairplot(data)
         plt.tight_layout()
+
+        bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
         plt.close()
@@ -118,12 +109,14 @@ class MissingDataPlot(Resource):
         """ 
         Returns a missing data visualisation for the dataset
         """
-        bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
+
         f, ax = plt.subplots(figsize=(16, 9))
         missing_plot = sns.heatmap(
             data.isnull(), cbar=False, cmap="YlGnBu_r")
         plt.tight_layout()
+
+        bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
         plt.close()
@@ -140,8 +133,8 @@ class CorrelationPlot(Resource):
         """ 
         Returns a correlation heatmap visualisation for the dataset
         """
-        bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
+
         f, ax = plt.subplots(figsize=(16, 9))
         correlation_df = data[columns.split(',')].select_dtypes(
             include=[np.number]).corr(method='pearson')
@@ -155,6 +148,7 @@ class CorrelationPlot(Resource):
                                        cbar_kws={"shrink": .5})
 
         plt.tight_layout()
+        bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
         plt.close()
@@ -180,43 +174,20 @@ class InfluencerPlot(Resource):
         :param analysis_type: a flag of 'categorical' or 'continuous' analysis type
         :param is_actuals: a flag where 1 is actual counts and 0 is percentages
         """
-        bytes_image = io.BytesIO()
         data = file_service.read_file(file_name)
+
         data = influencers_service.bin_continuous_cols(data, target_column)
         f, ax = plt.subplots(figsize=(15, 11))
 
         if analysis_type != 'continuous':
-            target_dtype = data[target_column].dtypes
-            if target_dtype == 'float64':
-                target_value = float(target_value)
-            elif target_dtype == 'int64':
-                target_value = int(target_value)
-            else:
-                target_value = str(target_value)
+            target_value = plot_service.convert_continuous_target_dtype(
+                data, target_column, target_value, analysis_type
+            )
 
         filtered_df = data[data[target_column] == target_value]
 
-        if (is_actuals == 1):
-            plot = sns.countplot(x=filtered_df[target_column],
-                                 hue=x,
-                                 data=filtered_df,
-                                 palette="colorblind")
-        else:
-            if (is_numeric_dtype(data[target_column]) and analysis_type == 'categorical'):
-                plot = sns.barplot(data=data,
-                                   x=x,
-                                   y=target_column,
-                                   palette="Blues")
-            elif analysis_type == 'categorical':
-                plot = sns.countplot(x=filtered_df[target_column],
-                                     hue=x,
-                                     data=filtered_df,
-                                     palette="colorblind")
-            else:
-                plot = sns.barplot(data=data,
-                                   x=x,
-                                   y=data[target_column],
-                                   palette="Blues")
+        plot = plot_service.get_influencers_plot(
+            data, filtered_df, x, target_column, analysis_type, is_actuals)
 
         if (is_actuals == 1):
             base_count = len(data[data[target_column] == target_value])
@@ -227,6 +198,7 @@ class InfluencerPlot(Resource):
                 plt.legend()
 
         plt.tight_layout()
+        bytes_image = io.BytesIO()
         plt.savefig(bytes_image, format='png')
         bytes_image.seek(0)
         plt.close()
