@@ -12,7 +12,6 @@ def get_distribution_plot(df, variable):
     and a countplot for categorical variables
     """
     if (is_numeric_dtype(df[variable])):
-        print("HELLO WORLD")
         return sns.distplot(df[variable], kde=False)
     else:
         plot = sns.countplot(x=variable, data=df, palette="Blues")
@@ -37,7 +36,7 @@ def get_scatter_plot(df, hue, x, y, reg: bool):
             data=df, x=x, y=y, hue=hue, legend='brief')
 
 
-def convert_continuous_target_dtype(df, target_column, target_value, analysis_type):
+def convert_continuous_target_dtype(df, target_column, target_value):
     """
     Returns target value converted to target column dtype
     """
