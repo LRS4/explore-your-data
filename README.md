@@ -152,6 +152,8 @@ Then update the .travis.yml with the new packages under `install`, to ensure the
 
 To run all pytest unit tests run `pytest -s -v` where v for verbose and s for print to console are optional or `pytest tests/`
 
+To run specific test files run `pytest -s -v -k 'test_influencers_service'` for example
+
 #### Production Server Setup
 
 Here are the commands we need to run to get things setup on the Heroku side:

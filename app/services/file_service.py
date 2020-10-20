@@ -32,8 +32,9 @@ def remove_file(filename):
 
 
 def list_files_in_bucket():
-    for blob in bucket.list_blobs():
-        print(blob)
+    files = bucket.list_blobs()
+    fileList = [file.name for file in files if '.' in file.name]
+    return fileList
 
 
 def get_byte_fileobj(blob_name: str) -> BytesIO:
@@ -63,13 +64,12 @@ def get_bytestring(blob_name: str) -> bytes:
            TIP: can be stored as env variable, e.g. os.getenv('GOOGLE_APPLICATION_CREDENTIALS_DSPLATFORM')
     :return: byte-string (needs to be decoded)
     """
-    blob = bucket.blob(blob_name)
-    return blob.download_as_string()
+    blob = bucket.blob(blob_name + '.csv')
+    return blob.download_as_bytes()
 
 
 def get_blob_URI(blob_name):
     """Prints out a blob's URI."""
     blob = bucket.blob(blob_name + '.csv')
-    print(blob)
     link = blob.path_helper(BUCKET_NAME, blob_name + '.csv')
     return f"gs://{link}"

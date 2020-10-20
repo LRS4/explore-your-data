@@ -20,7 +20,7 @@ def get_target_base_frequency(df, target_column, target_value, debug=False):
 
 def drop_columns_with_missing_over(percent, df):
     """
-    Removes columns where the percent of missing rows is over the given value.
+    Removes columns where the percent of rows that are non-NA values is over under the given threshold.
     """
 
     limit = len(df) * percent
@@ -33,24 +33,25 @@ def bin_continuous_cols(df, target_column, bins=10, debug=False):
     Splits the continuous variables into bins of the given size. 
     Has a check to exclude columns with high cardinality (nunique).
     """
+    new_df = df.copy()
 
-    for column in df:
+    for column in new_df:
         if debug:
             print(column)
-            print(df[column].nunique())
-            print(is_numeric_dtype(df[column]), end="\n---\n\n")
+            print(new_df[column].nunique())
+            print(is_numeric_dtype(new_df[column]), end="\n---\n\n")
 
         if column != target_column:
-            if df[column].nunique() > 15 and is_numeric_dtype(df[column]):
-                df[column] = pd.cut(
-                    df[column].copy(),
+            if new_df[column].nunique() > 15 and is_numeric_dtype(new_df[column]):
+                new_df[column] = pd.cut(
+                    new_df[column],
                     bins=bins,
                     precision=0)
 
                 if debug:
-                    print(df[column].value_counts())
+                    print(new_df[column].value_counts())
 
-    return df
+    return new_df
 
 
 def populate_crosstab(df, column, target_column, target_value, show_as_percentages=False):
@@ -102,6 +103,9 @@ def populate_crosstab_json(crosstab, parent_column_name, target_column, target_v
 
 
 def flatten_list(two_d_list: list):
+    """
+    Given a list of lists, flattens and returns a single list
+    """
     return [item for sublist in two_d_list for item in sublist]
 
 

@@ -18,9 +18,9 @@ from app.services import file_service, data_service
 
 @api_rest.route('/data/upload')
 class FileUpload(Resource):
-    """ Handles file upload """
 
     def post(self):
+        """ Handles file upload """
         f = request.files['file']
         session_id = request.form['sessionId']
         file_service.upload_file(f, session_id)
@@ -36,8 +36,8 @@ class FileUpload(Resource):
 
 @api_rest.route('/session/create')
 class CreateUniqueSession(Resource):
-    """ Creates a unique session ID """
 
     def post(self):
+        """ Creates a unique session ID """
         sessionId = str(uuid.uuid4())
         return sessionId
