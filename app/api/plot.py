@@ -181,7 +181,7 @@ class InfluencerPlot(Resource):
 
         if analysis_type != 'continuous':
             target_value = plot_service.convert_continuous_target_dtype(
-                data, target_column, target_value, analysis_type
+                data, target_column, target_value
             )
 
         filtered_df = data[data[target_column] == target_value]
