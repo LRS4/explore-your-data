@@ -41,7 +41,33 @@ def test_scatter_plot(client):
     # arrange
     timestamp = int(time.time())
     url = 'api/plots/scatter-plot/' + \
-        str(timestamp) + '/' + FILE_NAME + '/Age/Fare/Sex/0'
+        str(timestamp) + '/' + FILE_NAME + '/Age/Fare/none/0'
+
+    # act
+    resp = client.get(url, follow_redirects=True)
+
+    # assert
+    assert resp.status_code == 200
+
+
+def test_scatter_plot_regression(client):
+    # arrange
+    timestamp = int(time.time())
+    url = 'api/plots/scatter-plot/' + \
+        str(timestamp) + '/' + FILE_NAME + '/Age/Fare/Sex/1'
+
+    # act
+    resp = client.get(url, follow_redirects=True)
+
+    # assert
+    assert resp.status_code == 200
+
+
+def test_scatter_plot_with_hue(client):
+    # arrange
+    timestamp = int(time.time())
+    url = 'api/plots/scatter-plot/' + \
+        str(timestamp) + '/' + FILE_NAME + '/Age/Fare/Sex/1'
 
     # act
     resp = client.get(url, follow_redirects=True)
