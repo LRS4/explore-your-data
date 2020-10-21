@@ -20,9 +20,9 @@ def test_get_categorical_description(client):
 
     # act
     survived_frequency = influencers_service.get_target_base_frequency(
-        df, 'Survived', 1)
+        df, 'Survived', 1, debug=True)
     first_class_frequency = influencers_service.get_target_base_frequency(
-        df, 'Pclass', 1)
+        df, 'Pclass', 1, debug=True)
 
     # assert
     assert round(survived_frequency, 2) == 0.38
@@ -79,7 +79,7 @@ def test_populate_crosstab_json(client):
 
     # act
     jsonified = influencers_service.populate_crosstab_json(
-        crosstab, 'Sex', 'Survived', 1)
+        crosstab, 'Sex', 'Survived', 1, debug=True)
 
     # assert
     assert jsonified[0] == {
@@ -135,7 +135,7 @@ def test_populate_regression_json(client):
 
     # act
     jsonified = influencers_service.populate_regression_json(
-        grouped, column, target_column, target_mean, inc_or_dec)
+        grouped, column, target_column, target_mean, inc_or_dec, debug=True)
 
     # assert
     assert jsonified[0] == {
