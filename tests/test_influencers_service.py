@@ -108,7 +108,7 @@ def test_get_classification_influencers(client):
 
     # act
     influencers = influencers_service.get_classification_influencers(
-        'Survived', 1, df)
+        'Survived', 1, df, debug=True)
 
     # assert
     assert len(influencers) > 7
@@ -154,7 +154,7 @@ def test_get_regression_influencers(client):
 
     # act
     influencers = influencers_service.get_regression_influencers(
-        target_column='Fare', inc_or_dec='increase', df=df)
+        target_column='Fare', inc_or_dec='increase', df=df, debug=True)
 
     # assert
     assert influencers != None
@@ -174,7 +174,7 @@ def test_find_key_influencers_for_categorical_inputs(client):
 
     # act
     survived_influencers = influencers_service.find_key_influencers(
-        target_column='Survived', target_value=1, df=df, method='classification')
+        target_column='Survived', target_value=1, df=df, method='classification', debug=True)
 
     # assert
     assert {
@@ -193,10 +193,10 @@ def test_find_key_influencers_for_continuous_inputs(client):
 
     # act
     fare_increase_influencers = influencers_service.find_key_influencers(
-        target_column='Fare', target_value='increase', df=df, method='regression')
+        target_column='Fare', target_value='increase', df=df, method='regression', debug=True)
 
     fare_decrease_influencers = influencers_service.find_key_influencers(
-        target_column='Fare', target_value='decrease', df=df, method='regression')
+        target_column='Fare', target_value='decrease', df=df, method='regression', debug=True)
 
     # assert
     assert {

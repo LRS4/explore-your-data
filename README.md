@@ -90,9 +90,6 @@ Before getting started, you should have the following installed and running:
 
 ## Development Server
 
-Add a `.env` file for following environment variables:
-
-
 Run Flask Api development server:
 
 ```

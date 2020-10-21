@@ -211,7 +211,7 @@ def get_regression_influencers(target_column, inc_or_dec, df):
     return sorted(influencers, key=lambda k: k['value'], reverse=not ascending)
 
 
-def find_key_influencers(target_column, target_value, df, method):
+def find_key_influencers(target_column, target_value, df, method, debug=False):
     """
     Calculates and finds key influencers for the target column (variable).
     Returns influencers in json format.
@@ -228,10 +228,10 @@ def find_key_influencers(target_column, target_value, df, method):
     print('Finding key influencers...', end="\n\n")
 
     df = drop_columns_with_missing_over(0.5, df)
-    df = bin_continuous_cols(df, target_column, debug=False)
+    df = bin_continuous_cols(df, target_column, debug=debug)
 
     if method == 'classification':
-        return get_classification_influencers(target_column, target_value, df, debug=False)
+        return get_classification_influencers(target_column, target_value, df, debug=debug)
     elif method == 'regression':
         return get_regression_influencers(target_column, target_value, df)
     else:
