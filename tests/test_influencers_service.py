@@ -154,7 +154,7 @@ def test_get_regression_influencers(client):
 
     # act
     influencers = influencers_service.get_regression_influencers(
-        target_column='Fare', inc_or_dec='increase', df=df, debug=True)
+        target_column='Fare', inc_or_dec='increase', df=df)
 
     # assert
     assert influencers != None
