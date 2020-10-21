@@ -22,6 +22,7 @@ from app.services import file_service, influencers_service
 @api_rest.route('/data/influencers/<string:analysis_type>/<string:target_column>/<string:target_value>')
 class KeyInfluencers(Resource):
 
+    @require_auth
     def post(self, analysis_type, target_column, target_value):
         """ Returns key influencers json """
         file_name = request.get_json()['sessionId']

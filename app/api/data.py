@@ -30,6 +30,7 @@ class AddTwoNumbers(Resource):
 @api_rest.route('/data/uniques/<string:column_name>')
 class UniqueValues(Resource):
 
+    @require_auth
     def post(self, column_name):
         """ Returns the unique values for the given column """
         file_name = request.get_json()['sessionId']
@@ -45,6 +46,7 @@ class UniqueValues(Resource):
 @api_rest.route('/data/shape')
 class DataShape(Resource):
 
+    @require_auth
     def post(self):
         """ 
         Returns shape of the data 
@@ -58,6 +60,7 @@ class DataShape(Resource):
 @api_rest.route('/data/describe/numeric')
 class DescribeNumericData(Resource):
 
+    @require_auth
     def post(self):
         """
         Returns summary description of the numeric variables in the dataset
@@ -70,6 +73,7 @@ class DescribeNumericData(Resource):
 @api_rest.route('/data/describe/categorical')
 class DescribeCategoricalData(Resource):
 
+    @require_auth
     def post(self):
         """
         Returns summary description of the categorical variables in the dataset
@@ -85,6 +89,7 @@ class DescribeCategoricalData(Resource):
 @api_rest.route('/data/column_names')
 class ColumnNames(Resource):
 
+    @require_auth
     def post(self):
         """ 
         Returns the labels of the columns for both numeric
@@ -103,6 +108,7 @@ class ColumnNames(Resource):
 @api_rest.route('/data/metadata')
 class MetaData(Resource):
 
+    @require_auth
     def post(self):
         """ 
         Returns a json object with information (metadata) on the dataset 
