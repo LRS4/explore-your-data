@@ -1,7 +1,7 @@
 
 {
-  "name": "Flask VueJs Template",
-  "description": "",
+  "name": "Explore Your Data",
+  "description": "An application to automate exploratory data analysis",
   "repository": "https://github.com/LRS4/explore-your-data",
   "logo": "https://github.com/LRS4/explore-your-data/blob/master/docs/vue-logo.png",
   "keywords": ["flask", "vue"],
@@ -9,10 +9,6 @@
     "FLASK_ENV": {
       "description": "Flask Enviroment",
       "value": "production"
-    },
-    "SECRET": {
-      "description": "Flask Secret Key",
-      "value": "YourKeyHere"
     }
    },
   "addons": [
