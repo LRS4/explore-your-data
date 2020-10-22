@@ -1,11 +1,13 @@
-# Explore Your Data - with AI 🦾
+# Explore Your Data - Automated EDA 🦾
 [![Build Status](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)](https://travis-ci.com/LRS4/explore-your-data.svg?branch=master)   [![codecov](https://codecov.io/gh/LRS4/explore-your-data/branch/master/graph/badge.svg)](https://codecov.io/gh/LRS4/explore-your-data)
 
 
 ## Introduction
-An application to present exploratory data analysis in an accessible format. You bring a nicely formatted CSV file that has some data in it, and let the AI worry about the rest! It will give you a good overview of the data for quicker understanding, perfect for data professionals and non-technical persons alike.
+An application to automate and present exploratory data analysis in an accessible format. You bring a nicely formatted CSV file that has some data in it, and let the AI worry about the rest! It will give you a good overview of the data for quicker understanding, perfect for data professionals and non-technical persons alike.
 
-![Vue Logo](/docs/vue-logo.png "Vue Logo") ![Flask Logo](/docs/flask-logo.png "Flask Logo")
+[https://exploreyourdata.herokuapp.com/](https://exploreyourdata.herokuapp.com/)
+
+![Screen Capture Influencers Tab](https://res.cloudinary.com/dayqxxsip/image/upload/v1603375791/App%20Screenshots/influencers-tab_qocn5f.png "Screen Capture Influencers Tab")
 
 ## Features
 * [Flask](https://flask.palletsprojects.com/en/1.1.x/quickstart/) 1.0 App
@@ -42,9 +44,9 @@ resource routing.
 
 A Flask view is used to serve the `index.html` as an entry point into the Vue app at the endpoint `/`.
 
-The template uses vue-cli 3 and assumes Vue Cli & Webpack will manage front-end resources and assets, so it does overwrite template delimiter.
+The application uses vue-cli 3 and assumes Vue Cli & Webpack will manage front-end resources and assets.
 
-The Vue instance is preconfigured with Filters, Vue-Router, Vuex; each of these can easilly removed if they are not desired.
+The Vue instance is contains Filters, Vue-Router, Vuex.
 
 #### Important Files
 
@@ -123,7 +125,7 @@ $ python run.py
 
 ## Production Server
 
-This template is configured to work with Heroku + Gunicorn and it's pre-configured
+This template is configured to work with Heroku + Gunicorn and it's configured
 to have Heroku build the application before releasing it.
 
 #### JS Build Process
@@ -156,8 +158,8 @@ To run specific test files run `pytest -s -v -k 'test_influencers_service'` for 
 Here are the commands we need to run to get things setup on the Heroku side:
 
 	```
-	$ heroku apps:create flask-vuejs-template-demo
-	$ heroku git:remote --app flask-vuejs-template-demo
+	$ heroku apps:create explore-your-data
+	$ heroku git:remote --app explore-your-data
 	$ heroku buildpacks:add --index 1 heroku/nodejs
 	$ heroku buildpacks:add --index 2 heroku/python
 	$ heroku config:set FLASK_ENV=production
@@ -167,7 +169,7 @@ Here are the commands we need to run to get things setup on the Heroku side:
 	```
 
 ### References
-Credit for the Vue.js Flask template goes to [gtalarico](https://github.com/gtalarico/flask-vuejs-template) and set up to [this video](https://www.youtube.com/watch?v=VZv8UybZHNA).
+Credit for the Vue.js Flask Heroku template goes to [gtalarico](https://github.com/gtalarico/flask-vuejs-template) and set up to [this video](https://www.youtube.com/watch?v=VZv8UybZHNA).
 
 * [Managing python dependencies](https://thoughtbot.com/blog/how-to-manage-your-python-projects-with-pipenv)
 * [Using yarn](https://stackoverflow.com/questions/47238241/heroku-build-failing-due-to-yarn-and-npm-lockfile-conflict)
