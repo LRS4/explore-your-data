@@ -25,13 +25,8 @@ class FileUpload(Resource):
         session_id = request.form['sessionId']
         file_service.upload_file(f, session_id)
         data = file_service.read_file(session_id)
-        return json.dumps({
-            'head': data.head(20).to_json(),
-            'tail': data.tail(20).to_json(),
-            'cat_describe': data_service.get_categorical_description(data),
-            'num_describe': data_service.get_numeric_description(data),
-            'nunique': data.nunique().to_json()
-        })
+        
+        return data_service.get_metadata_information(data)
 
 
 @api_rest.route('/session/create')

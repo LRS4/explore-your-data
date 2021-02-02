@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "table",
+  name: "buefytable",
   props: {
     data: Array,
     columns: Array

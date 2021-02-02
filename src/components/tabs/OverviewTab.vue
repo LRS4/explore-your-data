@@ -32,7 +32,7 @@
             </tr>
             <tr>
               <th>Duplicate rows (%)</th>
-              <td>{{ metadata.totalDuplicatedPercent }} %</td>
+              <td>{{ (metadata.totalDuplicatedPercent * 100).toFixed(2) }} %</td>
             </tr>
             <tr>
               <th>Total size in memory (Kb)</th>
@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     metadata() {
-      return this.$store.state.metadata.metadata;
+      return this.$store.state.metadata;
     }
   }
 };

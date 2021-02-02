@@ -6,7 +6,9 @@ export default {
   * @return {Object} The key influencers json object.
   */
   getKeyInfluencers(analysisType, targetColumn, targetValue) {
-    return $axios.post(`/data/influencers/${analysisType}/${targetColumn}/${targetValue}`, { sessionId: String(sessionStorage.sessionId) })
+    return $axios.post(`/data/influencers/${analysisType}/${targetColumn}/${targetValue}`, { sessionId: String(sessionStorage.sessionId) }, {
+      timeout: (60 * 1000) * 3
+    })
       .then(response => {
         return JSON.parse(response.data);
       })

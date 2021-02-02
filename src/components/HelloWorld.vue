@@ -29,9 +29,6 @@
         How to store data as a CSV file?
       </a>
     </p>
-    <p class="content">
-      The file size limit is currently 25MB or approximately 200,000 rows.
-    </p>
     <b-button
       class="is-success start-button has-text-weight-bold"
       size="is-large"

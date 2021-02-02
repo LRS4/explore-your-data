@@ -3,7 +3,6 @@
     <div class="columns">
       <div class="column">
         <div class="has-text-left">
-          <h1 class="is-size-1 has-text-weight-bold content">{{ msg }}</h1>
           <p class="content">
             An analytics project starts with trying to understand the business
             problem.
@@ -58,9 +57,10 @@
       </div>
       <div class="column">
         <b-image
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/CRISPDM-Extended-Majid.png/749px-CRISPDM-Extended-Majid.png"
+          src="https://res.cloudinary.com/dayqxxsip/image/upload/v1603884368/App%20Images/data-cycle_yrwgi4.png"
           placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
           webp-fallback=".jpg"
+          rel="preload"
           class="mt-6"
         >
         </b-image>

@@ -23,10 +23,12 @@ export const getDatasetColumns = (data) => {
 export const getDatasetRows = (data) => {
   let rows = [];
   let numberOfRows = getRowCount(data);
-  for (let i = 0; i < numberOfRows; i++) {
+  let index = getStartIndex(data);
+
+  for (let i = 0; i < numberOfRows; i++, index++) {
     let row = {};
     for (let col in data) {
-      row[col] = data[col][i];
+      row[col] = data[col][index];
     }
     rows.push(row);
   }
@@ -46,4 +48,20 @@ export const getRowCount = (data) => {
     rowsInColumns.push(rows);
   }
   return Math.max.apply(null, rowsInColumns);
+}
+
+/**
+ * Gets the start index for the head or tail dataset
+ *
+ * @param {Object} data
+ * @return {Number} Start index
+ */
+export const getStartIndex = (data) => {
+  for (let prop in data) {
+    let column = data[prop];
+    for (let row in column) {
+      return row;
+    }
+    break;
+  }
 }

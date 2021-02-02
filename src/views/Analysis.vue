@@ -1,42 +1,40 @@
 <template>
   <section>
-    <b-tabs v-model="activeTab" :animated="false" position="is-left">
-      <b-tab-item class="tab" label="Overview">
-        <OverviewTab />
-      </b-tab-item>
-      
-      <b-tab-item class="tab" label="Data Sample">
-        <SampleTab />
-      </b-tab-item>
+    <div class="tabs">
+      <ul>
+        <router-link active-class="is-active" tag="li" to="overview" exact>
+          <a>Overview</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="sample" exact>
+          <a>Data Sample</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="variables">
+          <a>Variables</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="interactions">
+          <a>Interactions</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="correlation">
+          <a>Correlation</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="crosstab">
+          <a>Crosstab</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="missing">
+          <a>Missing values</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="influencers">
+          <a>Influencers</a>
+        </router-link>
+        <router-link active-class="is-active" tag="li" to="next-steps">
+          <a>Next steps</a>
+        </router-link>
+      </ul>
+    </div>
 
-      <b-tab-item label="Variables">
-        <UnivariateTab />
-      </b-tab-item>
-
-      <b-tab-item label="Interactions">
-        <BivariateTab />
-      </b-tab-item>
-
-      <b-tab-item label="Correlation"> 
-        <CorrelationTab />
-      </b-tab-item>
-
-      <b-tab-item label="Crosstab"> 
-        <PivotTab />
-      </b-tab-item>
-
-      <b-tab-item label="Missing values">
-        <MissingDataTab />
-      </b-tab-item>
-
-      <b-tab-item label="Influencers">
-        <InfluencersTab />
-      </b-tab-item>
-
-      <b-tab-item :visible="featureSwitch" label="Next steps">
-        <NextStepsTab />
-      </b-tab-item>
-    </b-tabs>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </section>
 </template>
 
@@ -46,11 +44,13 @@ import OverviewTab from "@/components/tabs/OverviewTab.vue";
 import SampleTab from "@/components/tabs/SampleTab.vue";
 import UnivariateTab from "@/components/tabs/UnivariateTab.vue";
 import BivariateTab from "@/components/tabs/BivariateTab.vue";
-import MissingDataTab from '@/components/tabs/MissingDataTab.vue';
-import CorrelationTab from '@/components/tabs/CorrelationTab.vue';
-import PivotTab from '@/components/tabs/PivotTab.vue';
-import InfluencersTab from '@/components/tabs/InfluencersTab.vue';
-import NextStepsTab from '@/components/tabs/NextStepsTab.vue';
+import MissingDataTab from "@/components/tabs/MissingDataTab.vue";
+import CorrelationTab from "@/components/tabs/CorrelationTab.vue";
+import PivotTab from "@/components/tabs/PivotTab.vue";
+import InfluencersTab from "@/components/tabs/InfluencersTab/InfluencersTab.vue";
+import NextStepsTab from "@/components/tabs/NextStepsTab.vue";
+import router from "../router";
+import authService from '../services/authService';
 
 export default {
   name: "analysis",
@@ -69,8 +69,29 @@ export default {
   data() {
     return {
       activeTab: 0,
-      featureSwitch: true
+      featureSwitch: true,
+      filename: sessionStorage["sessionId"],
+      timestamp: Date.now(),
+      uri: authService.getEnvironmentURI()
     };
+  },
+  beforeCreate() {
+    if (Object.keys(this.$store.state.metadata).length <= 0) {
+      router.push({ name: "upload" });
+    }
+  },
+  mounted() {
+    this.preloadImage(this.uri + 'api/plots/missing-data-plot/' + this.timestamp + '/' + this.filename);
+  },
+  methods: {
+    preloadImage(url) {
+      var img = new Image();
+      img.src = url;
+      this.$store.dispatch('cacheImage', {
+        name: 'missingDataImg',
+        img: img 
+      });
+    }
   },
 };
 </script>

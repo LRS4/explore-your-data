@@ -51,7 +51,7 @@
       <div class="column is-four-fifths">
         <b-image
           v-bind:src="uri + 'api/plots/scatter-plot/' + timestamp + '/' + filename + '/' + x + '/' + y + '/' + hue + '/' + reg"
-          placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
+          placeholder="https://res.cloudinary.com/dayqxxsip/image/upload/v1603883887/Shared/placeholder-image_ccgbjr.png"
           webp-fallback=".jpg"
           ratio="15by11"
           v-if="showPlot"
@@ -84,16 +84,15 @@ export default {
   },
   computed: {
     metadata() {
-      return this.$store.state.metadata.metadata;
+      return this.$store.state.metadata;
     },
     categoricalDescriptions() {
-      return JSON.parse(this.$store.state.dataset[0].dataset.cat_describe);
+      return JSON.parse(this.$store.state.metadata.cat_describe);
     }
   },
   watch: {
     checkboxGroup(arr) {
       if (arr.length === 2) {
-        console.log("Two variables selected!", arr);
         this.x = this.checkboxGroup[0];
         this.y = this.checkboxGroup[1];
         this.showPlot = true;

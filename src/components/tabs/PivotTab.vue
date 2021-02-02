@@ -84,7 +84,9 @@ export default {
   },
   computed: {
     nunique() {
-      return JSON.parse(this.$store.state.dataset[0].dataset.nunique);
+      if (Object.keys(this.$store.state.metadata).length > 0) {
+        return JSON.parse(this.$store.state.metadata.nunique);
+      }
     }
   },
   methods: {
@@ -99,7 +101,6 @@ export default {
   watch: {
     checkboxGroup(arr) {
       if (arr.length === 2) {
-        // console.log("Two variables selected!", arr);
         this.xTitle = this.checkboxGroup[0];
         this.yTitle = this.checkboxGroup[1];
         this.updateCrosstabData(this.xTitle, this.yTitle);

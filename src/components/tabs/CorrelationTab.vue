@@ -25,7 +25,7 @@
         <b-image
           v-if="showImage"
           v-bind:src="uri + 'api/plots/correlation/' + timestamp + '/' + filename + '/' + selectedColumns"
-          placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
+          placeholder="https://res.cloudinary.com/dayqxxsip/image/upload/v1603883887/Shared/placeholder-image_ccgbjr.png"
           webp-fallback=".jpg"
           ratio="16by10"
         >
@@ -53,7 +53,6 @@ export default {
   methods: {
     updateCorrPlot() {
       if (this.checkboxGroup.length >= 2) {
-        console.log(this.checkboxGroup);
         this.selectedColumns = this.checkboxGroup.join();
         this.showImage = true;
       } else {
@@ -64,13 +63,13 @@ export default {
   },
   computed: {
     metadata() {
-      return this.$store.state.metadata.metadata;
+      return this.$store.state.metadata;
     },
     numericalDescriptions() {
-      return JSON.parse(this.$store.state.dataset[0].dataset.num_describe);
+      return JSON.parse(this.$store.state.metadata.num_describe);
     },
     isLowColumnCount() {
-      let cols = JSON.parse(this.$store.state.dataset[0].dataset.num_describe);
+      let cols = JSON.parse(this.$store.state.metadata.num_describe);
       return Object.keys(cols).length <= 7;
     }
   },

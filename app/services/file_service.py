@@ -19,7 +19,7 @@ def upload_file(file, session_id):
     )
 
 
-def read_file(filename) -> pd.DataFrame:
+def read_file(filename, columns=[]) -> pd.DataFrame:
     """ Reads a file from blob storage bucket """
     file_object = get_byte_fileobj(filename + '.csv')
     return pd.read_csv(file_object)

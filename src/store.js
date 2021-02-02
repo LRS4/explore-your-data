@@ -6,32 +6,48 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    dataset: [],
-    metadata: {}
+    metadata: {},
+    images: {
+      'missingDataImg': null
+    }
   },
   actions: {
-    setDataset({ commit }, dataset) {
-      commit('SET_DATASET', dataset);
+    setMetadata({ commit }, metadata) {
+      commit('SET_METADATA', metadata.metadata);
     },
-    setMetaData({ commit }, metadata) {
-      commit('SET_METADATA', metadata);
+    cacheImage({ commit }, payload) {
+      commit('CACHE_IMAGE', payload);
     }
   },
   mutations: {
-    SET_DATASET(state, dataset) {
-      state.dataset = [dataset];
-    },
     SET_METADATA(state, metadata) {
       state.metadata = metadata;
+    },
+    CACHE_IMAGE(state, payload) {
+      state.images[payload.name] = payload.img;
     }
   },
   // https://vuex.vuejs.org/guide/getters.html
   getters: {
     headColumns: state => {
-      return getDatasetColumns(JSON.parse(state.dataset[0].dataset.head));
+      if (Object.keys(state.metadata).length > 0) {
+        return getDatasetColumns(JSON.parse(state.metadata.head));
+      }
     },
     headRows: state => {
-      return getDatasetRows(JSON.parse(state.dataset[0].dataset.head));
+      if (Object.keys(state.metadata).length > 0) {
+        return getDatasetRows(JSON.parse(state.metadata.head));
+      }
+    },
+    tailColumns: state => {
+      if (Object.keys(state.metadata).length > 0) {
+        return getDatasetColumns(JSON.parse(state.metadata.tail));
+      }
+    },
+    tailRows: state => {
+      if (Object.keys(state.metadata).length > 0) {
+        return getDatasetRows(JSON.parse(state.metadata.tail));
+      }
     }
   }
 })

@@ -63,9 +63,12 @@ class ScatterPlot(Resource):
         :param reg: whether to display as a regression plot
         :return: A bytes image seaborn scatter plot
         """
+        columns = [x, y] if hue == 'none' else [x, y, hue]
         data = file_service.read_file(file_name)
 
-        f, ax = plt.subplots(figsize=(15, 11))
+        if len(data.index) > 15000:
+            data = data.sample(n=15000)
+
         plot = plot_service.get_scatter_plot(data, hue, x, y, reg)
         plt.tight_layout()
 
@@ -194,7 +197,8 @@ class InfluencerPlot(Resource):
         else:
             if (is_numeric_dtype(data[target_column])):
                 base_mean = data[target_column].mean()
-                plot.axhline(base_mean, ls='--', label='Average')
+                plot.axhline(base_mean, ls='--',
+                             label=f'Average {target_column}')
                 plt.legend()
 
         plt.tight_layout()

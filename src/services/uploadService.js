@@ -11,7 +11,7 @@ export default {
     formData.set('sessionId', sessionStorage.sessionId);
     return $axios.post(`data/upload`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
-      timeout: 60000
+      timeout: (60 * 1000) * 5
     })
       .then(res => {
         if (res.data === "Invalid data") {
@@ -21,7 +21,7 @@ export default {
           return dataset;
         }
       }).catch(err => {
-        console.error({ err });
+        console.error(err);
       });
   }
 }

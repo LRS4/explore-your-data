@@ -2,6 +2,8 @@
   <section>
     <div class="columns is-gapless" style="height: 10px;">
       <div class="column">
+        <span class="tag is-info mr-2">{{ totalMissingValues }} missing values</span>
+        <span class="tag is-info">{{ totalMissingPercent }}% missing</span>
       </div>
       <div class="column">
         <a 
@@ -13,11 +15,12 @@
       </div>
     </div>
     <b-image
-      v-bind:src="uri + 'api/plots/missing-data-plot/' + timestamp + '/' + filename"
-      placeholder="https://lunawood.com/wp-content/uploads/2018/02/placeholder-image.png"
-      webp-fallback=".jpg"
-      ratio="16by9"
-      class="mt-5"
+    :src="missingDataImg.src"
+    placeholder="https://res.cloudinary.com/dayqxxsip/image/upload/v1603883887/Shared/placeholder-image_ccgbjr.png"
+    webp-fallback=".jpg"
+    ratio="16by9"
+    class="mt-5"
+    rel="preload"
     >
     </b-image>
   </section>
@@ -34,6 +37,26 @@ export default {
       timestamp: Date.now(),
       uri: authService.getEnvironmentURI()
     };
+  },
+  computed: {
+    missingDataImg() {
+      if (
+        this.$store.state.missingDataImg !== null || 
+        this.$store.state.missingDataImg !== undefined
+      ) {
+        return this.$store.state.images.missingDataImg;
+      }
+    },
+    totalMissingPercent() {
+      if (Object.keys(this.$store.state.metadata).length > 0) {
+        return this.$store.state.metadata.totalMissingPercent;
+      }
+    },
+    totalMissingValues() {
+      if (Object.keys(this.$store.state.metadata).length > 0) {
+        return this.$store.state.metadata.totalMissingValues;
+      }
+    }
   }
 };
 </script>

@@ -10,7 +10,7 @@ import json
 def get_target_base_frequency(df, target_column, target_value, debug=False):
     base_frequencies = df[target_column].value_counts(normalize=True)
     target_base_frequency = base_frequencies[target_value]
-    
+
     if debug:
         print(f'Baseline {target_column} ({target_value}) frequency: ', end="")
         print(str(round(target_base_frequency, 2)))
@@ -64,11 +64,15 @@ def populate_crosstab(df, column, target_column, target_value, show_as_percentag
         columns=df[target_column],
         normalize='index' if show_as_percentages else False)
 
-    crosstab = crosstab.sort_values(target_value, ascending=False)
-    target_base_frequency = get_target_base_frequency(
-        df, target_column, target_value)
+    if np.isin(target_value, crosstab.columns.values):
+        crosstab = crosstab.sort_values(by=target_value, ascending=False)
 
-    return crosstab[crosstab[target_value] > target_base_frequency + 0.05]
+        target_base_frequency = get_target_base_frequency(
+            df, target_column, target_value)
+
+        return crosstab[crosstab[target_value] > target_base_frequency + 0.05]
+    else:
+        return crosstab
 
 
 def populate_crosstab_json(crosstab, parent_column_name, target_column, target_value, debug=False):

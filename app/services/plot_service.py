@@ -3,6 +3,7 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype
 import matplotlib.pyplot as plt
 import seaborn as sns
+from matplotlib.ticker import ScalarFormatter
 import json
 
 
@@ -12,7 +13,10 @@ def get_distribution_plot(df, variable):
     and a countplot for categorical variables
     """
     if (is_numeric_dtype(df[variable])):
-        return sns.distplot(df[variable], kde=False)
+        plot = sns.distplot(df[variable], kde=False)
+        plt.ticklabel_format(style='plain', axis='x')
+
+        return plot
     else:
         plot = sns.countplot(x=variable, data=df, palette="Blues")
         plot.set_xticklabels(plot.get_xticklabels(),
@@ -25,15 +29,31 @@ def get_scatter_plot(df, hue, x, y, reg: bool):
     """
     Returns regplot or scatter plot with optional hue
     """
+    f, ax = plt.subplots(figsize=(15, 11))
+    for axis in [ax.xaxis, ax.yaxis]:
+        axis.set_major_formatter(ScalarFormatter())
+
     if reg == 1:
-        return sns.regplot(
+        plot = sns.regplot(
             data=df, x=x, y=y)
+        plt.ticklabel_format(style='plain', axis='y')
+        plt.ticklabel_format(style='plain', axis='x')
+
+        return plot
     elif hue == "none":
-        return sns.scatterplot(
+        plot = sns.scatterplot(
             data=df, x=x, y=y, legend='brief')
+        plt.ticklabel_format(style='plain', axis='y')
+        plt.ticklabel_format(style='plain', axis='x')
+
+        return plot
     else:
-        return sns.scatterplot(
+        plot = sns.scatterplot(
             data=df, x=x, y=y, hue=hue, legend='brief')
+        plt.ticklabel_format(style='plain', axis='y')
+        plt.ticklabel_format(style='plain', axis='x')
+
+        return plot
 
 
 def convert_continuous_target_dtype(df, target_column, target_value):
@@ -55,24 +75,43 @@ def get_influencers_plot(data, filtered_df, x, target_column, analysis_type, is_
     and whether categorical or continuous variable passed in
     """
     if (is_actuals == 1):
-        return sns.countplot(x=target_column,
+        plot = sns.countplot(x=target_column,
                              hue=x,
                              data=filtered_df,
                              palette="colorblind")
+        plt.ticklabel_format(style='plain', axis='y')
+
+        return plot
     else:
         if (is_numeric_dtype(data[target_column]) and analysis_type == 'categorical'):
-            return sns.barplot(data=data,
+            plot = sns.barplot(data=data,
                                x=x,
                                y=target_column,
                                palette="Blues")
+            plt.ticklabel_format(style='plain', axis='y')
+
+            return plot
         elif analysis_type == 'categorical':
-            return sns.countplot(x=target_column,
-                                 hue=x,
-                                 data=filtered_df,
-                                 palette="colorblind")
+            ct = pd.crosstab(data[x], data[target_column],
+                             normalize="index").round(4) * 100
+            stacked = ct.stack().reset_index().rename(columns={0: 'percent %'})
+
+            plot = sns.barplot(x=stacked[x],
+                               y=stacked['percent %'],
+                               hue=stacked[target_column],
+                               palette="colorblind")
+            plt.ticklabel_format(style='plain', axis='y')
+            plot.set_xticklabels(plot.get_xticklabels(),
+                                 rotation=45, horizontalalignment='right')
+
+            return plot
         else:
-            return sns.barplot(data=data,
+            plot = sns.barplot(data=data,
                                x=x,
                                y=target_column,
                                palette="Blues")
-    
+            plt.ticklabel_format(style='plain', axis='y')
+            plot.set_xticklabels(plot.get_xticklabels(),
+                                 rotation=45, horizontalalignment='right')
+
+            return plot

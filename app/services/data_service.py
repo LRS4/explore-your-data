@@ -5,10 +5,12 @@ from operator import add
 from functools import reduce
 
 
-def get_titanic_data() -> list:
-    url = "https://gist.githubusercontent.com/michhar/2dfd2de0d4f8727f873422c5d959fff5/raw/fa71405126017e6a37bea592440b4bee94bf7b9e/titanic.csv"
-    df = pd.read_csv(url)
-    return df.to_json()
+def get_data_shape(df):
+    """
+    Returns shape of the data.
+    """
+    shape = df.shape
+    return json.dumps({'rows': shape[0], 'columns': shape[1]})
 
 
 def get_categorical_description(df):
@@ -148,3 +150,29 @@ def populate_warning_messages(df):
             })
 
     return warning_messages
+
+
+def get_metadata_information(df):
+    """
+    Returns metadata for the given dataframe.
+    """
+    total_missing_values, total_missing_percent = get_missing_values_info(df)
+    total_duplicate_rows, total_duplicates_percent = get_duplicates_info(df)
+
+    return json.dumps({
+        'head': df.head(20).to_json(),
+        'tail': df.tail(20).to_json(),
+        'cat_describe': get_categorical_description(df),
+        'num_describe': get_numeric_description(df),
+        'nunique': df.nunique().to_json(),
+        'shape': get_data_shape(df),
+        'totalMissingValues': int(total_missing_values),
+        'totalMissingPercent': total_missing_percent,
+        'totalKbInMemory': get_total_kilobytes_in_memory(df),
+        'variables': int(df.shape[1]),
+        'observations': int(df.shape[0]),
+        'totalDuplicatedRows': int(total_duplicate_rows),
+        'totalDuplicatedPercent': total_duplicates_percent,
+        'columnsInfo': get_column_type_counts(df),
+        'warningMessages': populate_warning_messages(df)
+    })

@@ -40,7 +40,6 @@ import Spinner from "@/components/Spinner.vue";
 import BackLink from "@/components/BackLink.vue";
 import authService from "../services/authService";
 import uploadService from "../services/uploadService";
-import dataService from "../services/dataService";
 import router from '../router'
 
 export default {
@@ -78,12 +77,9 @@ export default {
           } 
 
           if (res != null && res !== undefined) {
-            this.sendDatasetToStore(res);
-            this.getMetaData();
-            this.goToAnalysisPage();
+            this.sendMetadataToStore(res);
           } else {
-            this.showErrorMessage("Upload failed. Please try uploading the CSV again." + 
-                                  "The file size limit is currently 25MB or approximately 200,000 rows.");
+            this.showErrorMessage("Upload failed. Please try uploading the CSV again.");
           }
         });
     },
@@ -92,24 +88,15 @@ export default {
       this.isLoading = false;
       this.errorMessage = message;
     },
-    sendDatasetToStore(res) {
-      this.$store.dispatch('setDataset', {
-        dataset: res
+    sendMetadataToStore(res) {
+      this.$store.dispatch('setMetadata', {
+        metadata: res
       });
-      console.log('Dataset pushed to store:', res);
-    },
-    async getMetaData() {
-      await dataService.getMetaData()
-        .then(res => {
-          this.$store.dispatch('setMetaData', {
-            metadata: res
-          });
-          console.log('Metadata pushed to store:', res);
-        })
-        .catch(err => console.log(err))
+      console.log('Metadata pushed to store:', res);
+      this.goToAnalysisPage();
     },
     goToAnalysisPage() {
-      router.push('analysis');
+      router.push('analysis/overview');
     },
     sessionIdHasBeenSet() {
       return sessionStorage['sessionId'] !== undefined;

@@ -53,7 +53,9 @@ export default {
    * @return {Object} The metadata json object.
    */
   getMetaData() {
-    return $axios.post(`/data/metadata`, { sessionId: String(sessionStorage.sessionId) })
+    return $axios.post(`/data/metadata`, { sessionId: String(sessionStorage.sessionId) }, {
+      timeout: (60 * 1000) * 2
+    })
       .then(response => {
         return JSON.parse(response.data);
       })

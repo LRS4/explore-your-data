@@ -13,16 +13,17 @@
         <b-navbar-item tag="router-link" :to="{ path: '/upload' }">
           <span class="nav-link has-text-weight-bold">Upload</span>
         </b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ path: '/analysis' }" v-if="isDataAvailable">
+        <b-navbar-item tag="router-link" :to="{ path: '/analysis/overview' }" v-if="isDataAvailable">
           <span class="nav-link has-text-weight-bold">Analysis</span>
         </b-navbar-item>
         <b-navbar-item :href="uri + 'api'" target="_blank">
           <span class="nav-link has-text-weight-bold">API</span>
         </b-navbar-item>
-        <!-- <b-navbar-dropdown label="Info">
-          <b-navbar-item href="#">About</b-navbar-item>
-          <b-navbar-item href="#">Contact</b-navbar-item>
-        </b-navbar-dropdown> -->
+        <b-navbar-item href="#" @click="isModalActive = !isModalActive">
+          <span class="nav-link has-text-weight-bold">
+            Tutorial
+          </span>
+        </b-navbar-item>
       </template>
 
       <!-- <template slot="end">
@@ -62,6 +63,16 @@
         </p>
       </div>
     </div>
+    <b-modal v-model="isModalActive">
+      <iframe
+        width="100%"
+        height="560"
+        :src="tutorialSrc"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </b-modal>
   </div>
 </template>
 
@@ -72,12 +83,19 @@ export default {
   name: "Navbar",
   data() {
     return {
-      uri: authService.getEnvironmentURI()
+      uri: authService.getEnvironmentURI(),
+      isModalActive: false,
+      tutorialSrc: this.getTutorialVideoURL()
+    }
+  },
+  methods: {
+    getTutorialVideoURL() {
+      return process.env.VUE_APP_TUTORIAL_URL;
     }
   },
   computed: {
     isDataAvailable() {
-      return this.$store.state.dataset.length > 0;
+      return Object.keys(this.$store.state.metadata).length > 0;
     }
   },
 };

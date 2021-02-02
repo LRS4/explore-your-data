@@ -9,10 +9,12 @@
                 <figure class="image is-48x48">
                   <img v-if="variable.type == 'Numeric'"
                   src="https://res.cloudinary.com/dayqxxsip/image/upload/v1601923068/Shared/1200px-Greek_uc_sigma.svg_hsngam.png" 
-                  alt="Sigma symbol for numeric variable" />
+                  alt="Sigma symbol for numeric variable"
+                  rel="preload" />
                   <img v-else 
                   src="https://res.cloudinary.com/dayqxxsip/image/upload/v1601923065/Shared/category-icon-png-2_jhizjk.png"
-                  alt="Boxes for categorical variable" />
+                  alt="Boxes for categorical variable"
+                  rel="preload" />
                 </figure>
               </div>
               <div class="media-content">
@@ -95,10 +97,20 @@ export default {
     }
   },
   created() {
-    let numericSummary = JSON.parse(this.$store.state.dataset[0].dataset.num_describe);
-    let categoricalSummary = JSON.parse(this.$store.state.dataset[0].dataset.cat_describe);
-    this.pushDataToSummaryArray(numericSummary, 'Numeric');
-    this.pushDataToSummaryArray(categoricalSummary, 'Categorical');
+    this.pushDataToSummaryArray(this.numericSummary, 'Numeric');
+    this.pushDataToSummaryArray(this.categoricalSummary, 'Categorical');
+  },
+  computed: {
+    numericSummary() {
+      if (Object.keys(this.$store.state.metadata).length > 0) {
+        return JSON.parse(this.$store.state.metadata.num_describe);
+      }
+    },
+    categoricalSummary() {
+      if (Object.keys(this.$store.state.metadata).length > 0) {
+        return JSON.parse(this.$store.state.metadata.cat_describe);
+      }
+    }
   },
   watch: {
     summary() {

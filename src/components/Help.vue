@@ -1,19 +1,25 @@
 <template>
-  <div>
-    <div class="thin-blue-strip" />
-    <div class="has-text-left help-section">
+  <section>
+    <div>
+      <div class="thin-blue-strip" />
       <h1 class="is-size-4 has-text-weight-bold content">Useful resources</h1>
-      <ul>
-        <li v-for="link in links" :key="link.text">
-          <a class="link"
-            :href="link.href"
-            target="_blank">
-            {{ link.text }}
-          </a>
-        </li>
-      </ul>
+      <div class="container">
+        <div class="has-text-left help-section">
+          <ul>
+            <li v-for="link in links" :key="link.text">
+              <a class="link"
+                :href="link.href"
+                target="_blank">
+                {{ link.text }}
+              </a>
+            </li>
+          </ul>
+        </div>
+        <b-loading :is-full-page="false" v-model="isLoading" :can-cancel="true"></b-loading>
+      </div>
     </div>
-  </div>
+    
+  </section>
 </template>
 
 <script>
@@ -23,15 +29,18 @@ export default {
   name: "Help",
   data() {
     return {
-      links: null
+      links: null,
+      isLoading: true
     }
   },
-  created() {
-    resourceService.fetchLinks()
+  async created() {
+    await resourceService.fetchLinks()
       .then(responseData => {
         this.links = responseData.sort((a, b) => a.text.localeCompare(b.text));
+        this.isLoading = false;
       }).catch(error => {
-        this.error = error.message
+        this.error = error.message;
+        this.isLoading = false;
       })
   }
 };
