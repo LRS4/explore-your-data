@@ -12,6 +12,8 @@ import json
 from .security import require_auth
 from . import api_rest
 import uuid
+import numpy as np
+import pandas as pd
 
 from app.services import file_service, data_service
 
@@ -24,8 +26,9 @@ class FileUpload(Resource):
         f = request.files['file']
         session_id = request.form['sessionId']
         file_service.upload_file(f, session_id)
-        data = file_service.read_file(session_id)
-        
+        f.seek(0)
+        data = pd.read_csv(f)
+
         return data_service.get_metadata_information(data)
 
 
