@@ -20,6 +20,7 @@ gcsfs = "*"
 matplotlib = "==3.3.2"
 seaborn = "*"
 scikit-learn = "==0.23.2"
+pyarrow = "*"
 
 [dev-packages]
 pytest = "*"
