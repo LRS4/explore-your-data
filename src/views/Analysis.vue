@@ -23,11 +23,11 @@
         <router-link active-class="is-active" tag="li" to="missing">
           <a>Missing values</a>
         </router-link>
+        <router-link active-class="is-active" tag="li" to="geospatial">
+          <a>Geospatial</a>
+        </router-link>
         <router-link active-class="is-active" tag="li" to="influencers">
           <a>Influencers</a>
-        </router-link>
-        <router-link active-class="is-active" tag="li" to="next-steps">
-          <a>Next steps</a>
         </router-link>
       </ul>
     </div>
@@ -47,6 +47,7 @@ import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import MissingDataTab from "@/components/tabs/MissingDataTab.vue";
 import CorrelationTab from "@/components/tabs/CorrelationTab.vue";
 import PivotTab from "@/components/tabs/PivotTab.vue";
+import GeospatialTab from "@/components/tabs/GeospatialTab.vue";
 import InfluencersTab from "@/components/tabs/InfluencersTab/InfluencersTab.vue";
 import NextStepsTab from "@/components/tabs/NextStepsTab.vue";
 import router from "../router";
@@ -63,6 +64,7 @@ export default {
     MissingDataTab,
     CorrelationTab,
     PivotTab,
+    GeospatialTab,
     InfluencersTab,
     NextStepsTab
   },

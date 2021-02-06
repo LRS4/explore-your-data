@@ -11,6 +11,7 @@ import BivariateTab from "@/components/tabs/BivariateTab.vue";
 import MissingDataTab from '@/components/tabs/MissingDataTab.vue';
 import CorrelationTab from '@/components/tabs/CorrelationTab.vue';
 import PivotTab from '@/components/tabs/PivotTab.vue';
+import GeospatialTab from "@/components/tabs/GeospatialTab.vue";
 import InfluencersTab from '@/components/tabs/InfluencersTab/InfluencersTab.vue';
 import NextStepsTab from '@/components/tabs/NextStepsTab.vue';
 
@@ -61,6 +62,10 @@ export default new Router({
         {
           path: 'crosstab',
           component: PivotTab
+        },
+        {
+          path: 'geospatial',
+          component: GeospatialTab
         },
         {
           path: 'missing',
