@@ -89,10 +89,10 @@ export default {
     style(feature) {
       return {
         fillColor: this.getColors(feature.properties["2018 people per sq. km"]),
-        weight: 2,
+        weight: 1,
         opacity: 1,
-        color: "white",
-        dashArray: "3",
+        color: "gray",
+        dashArray: "2",
         fillOpacity: 0.7,
       };
     },
