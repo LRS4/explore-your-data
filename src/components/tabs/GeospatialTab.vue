@@ -36,8 +36,8 @@ export default {
       L.tileLayer(
         "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
         {
-          maxZoom: 18,
-          minZoom: 3,
+          maxZoom: 10,
+          minZoom: 6,
           attribution:
             'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
             '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -71,20 +71,20 @@ export default {
     },
     getColors(d) {
       return d > 1000
-        ? "#800026"
+        ? "#005fa6"
         : d > 500
-          ? "#BD0026"
+          ? "#2f6aad"
           : d > 200
-            ? "#E31A1C"
+            ? "#557db8"
             : d > 100
-              ? "#FC4E2A"
+              ? "#7e98c8"
               : d > 50
-                ? "#FD8D3C"
+                ? "#a0b1d6"
                 : d > 20
-                  ? "#FEB24C"
+                  ? "#b0bedd"
                   : d > 10
-                    ? "#FED976"
-                    : "#FFEDA0";
+                    ? "#c2cde5"
+                    : "#d4dbed";
     },
     style(feature) {
       return {
