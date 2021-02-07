@@ -3,7 +3,7 @@
     <div class="columns">
       <div class="column">Map</div>
       <div class="column is-four-fifths">
-        <div id="mapContainer"></div>  
+        <div id="mapContainer"></div>
       </div>
     </div>
   </section>
@@ -21,13 +21,13 @@ export default {
     return {
       filename: sessionStorage["sessionId"],
       timestamp: Date.now(),
-      uri: authService.getEnvironmentURI(),
+      uri: authService.getEnvironmentURI()
     };
   },
   methods: {
     setupLeafletMap: function () {
-      console.log('Setting up map');
-      const mapDiv = L.map("mapContainer", {
+      console.log("Setting up map");
+      this.map = L.map("mapContainer", {
         fullscreenControl: true,
         fullscreenControlOptions: {
           position: "topleft",
@@ -44,14 +44,20 @@ export default {
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
           id: "mapbox/streets-v11",
         }
-      ).addTo(mapDiv);
+      ).addTo(this.map);
 
-      var geojsonLayer = new L.GeoJSON(data, { style: this.style });
+      var geojsonLayer = new L.GeoJSON(data, { 
+        style: this.style,
+        onEachFeature: this.onEachFeature
+      });
 
-      geojsonLayer.addTo(mapDiv);
+      geojsonLayer.addTo(this.map);
+      this.geojsonLayer = geojsonLayer;
+
+      this.setupInfoPanel();
     },
     importFullScreenMode() {
-      console.log('Importing full screen');
+      console.log("Importing full screen");
       let script = document.createElement("script");
       script.setAttribute(
         "src",
@@ -90,12 +96,72 @@ export default {
         fillOpacity: 0.7,
       };
     },
+    highlightFeature(e) {
+      var layer = e.target;
+
+      layer.setStyle({
+        weight: 2.5,
+        color: "#666",
+        dashArray: "",
+        fillOpacity: 0.7,
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+
+      this.info.update(layer.feature.properties);
+    },
+    resetHighlight(e) {
+      this.geojsonLayer.resetStyle(e.target);
+      this.info.update();
+    },
+    zoomToFeature(e) {
+      this.map.fitBounds(e.target.getBounds());
+    },
+    onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: this.highlightFeature,
+        mouseout: this.resetHighlight,
+        click: this.zoomToFeature,
+      });
+    },
+    setupInfoPanel() {
+      this.info = L.control();
+
+      this.info.onAdd = function () {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+      };
+
+      this.info.update = function (props) {
+        this._div.innerHTML =
+          "<h5>Population Density</h5>" +
+          (props
+            ? "<b>" +
+              props.LAD19NM +
+              "</b><br />" +
+              props["Area (sq km)"] +
+              " sq. km" +
+              "<br />" +
+              props["2018 people per sq. km"] +
+              " people per sq. km" +
+              "<br />" +
+              props["Estimated Population mid-2018"] +
+              " people total" +
+              "<br />"
+            : "Hover over a boundary");
+      };
+
+      this.info.addTo(this.map);
+    }
   },
   mounted() {
-    this.importFullScreenMode()
+    this.importFullScreenMode();
     setTimeout(() => {
       this.setupLeafletMap();
-    }, 200)
+    }, 200);
   },
   computed: {
     metadata() {
@@ -108,11 +174,25 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 @import "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css";
 
 #mapContainer {
   width: 100%;
   height: 80vh;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
 }
 </style>
