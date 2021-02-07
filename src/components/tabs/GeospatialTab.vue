@@ -3,7 +3,7 @@
     <div class="columns">
       <div class="column">Map</div>
       <div class="column is-four-fifths">
-        <div id="mapContainer"></div>
+        <div id="mapContainer"></div>  
       </div>
     </div>
   </section>
@@ -13,7 +13,7 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import authService from "../../services/authService";
-const data = require("../../assets/Local_Authority_Districts_(May_2020)_Boundaries_UK_BFE.json");
+const data = require("../../assets/test.json");
 
 export default {
   name: "geospatial",
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     setupLeafletMap: function () {
-      console.log(data);
+      console.log('Setting up map');
       const mapDiv = L.map("mapContainer", {
         fullscreenControl: true,
         fullscreenControlOptions: {
@@ -46,40 +46,56 @@ export default {
         }
       ).addTo(mapDiv);
 
-      var geojsonLayer = new L.GeoJSON(
-        // "http://geoportal1-ons.opendata.arcgis.com/datasets/deeb99fdf09949bc8ed4dc95c80da279_4.geojson"
-        data
-      );
+      var geojsonLayer = new L.GeoJSON(data, { style: this.style });
 
       geojsonLayer.addTo(mapDiv);
-
-      // events are fired when entering or exiting fullscreen.
-      mapDiv.on("enterFullscreen", function () {
-        console.log("entered fullscreen");
-      });
-
-      mapDiv.on("exitFullscreen", function () {
-        console.log("exited fullscreen");
-      });
-
-      // you can also toggle fullscreen from map object
-      mapDiv.toggleFullScreen();
     },
     importFullScreenMode() {
+      console.log('Importing full screen');
       let script = document.createElement("script");
       script.setAttribute(
         "src",
         "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"
       );
+      script.setAttribute("id", "leafletFullMapScript");
       document.head.appendChild(script);
     },
     numberWithCommas(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
+    getColors(d) {
+      return d > 1000
+        ? "#800026"
+        : d > 500
+          ? "#BD0026"
+          : d > 200
+            ? "#E31A1C"
+            : d > 100
+              ? "#FC4E2A"
+              : d > 50
+                ? "#FD8D3C"
+                : d > 20
+                  ? "#FEB24C"
+                  : d > 10
+                    ? "#FED976"
+                    : "#FFEDA0";
+    },
+    style(feature) {
+      return {
+        fillColor: this.getColors(feature.properties["2018 people per sq. km"]),
+        weight: 2,
+        opacity: 1,
+        color: "white",
+        dashArray: "3",
+        fillOpacity: 0.7,
+      };
+    },
   },
   mounted() {
-    this.importFullScreenMode();
-    this.setupLeafletMap();
+    this.importFullScreenMode()
+    setTimeout(() => {
+      this.setupLeafletMap();
+    }, 200)
   },
   computed: {
     metadata() {
