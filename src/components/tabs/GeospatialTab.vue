@@ -1,7 +1,11 @@
 <template>
   <section>
     <div class="columns">
-      <div class="column">Map</div>
+      <div class="column">
+        Map
+        <button @click="destroyMap()">Destroy</button>
+        <button @click="setupLeafletMap()">Draw</button>
+      </div>
       <div class="column is-four-fifths">
         <div id="mapContainer"></div>
       </div>
@@ -25,6 +29,10 @@ export default {
     };
   },
   methods: {
+    destroyMap() {
+      console.log('Destroying map')
+      this.map.remove();
+    },
     setupLeafletMap: function () {
       console.log("Setting up map");
       this.map = L.map("mapContainer", {
