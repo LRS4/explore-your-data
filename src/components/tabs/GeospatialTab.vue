@@ -6,26 +6,33 @@
         <button @click="destroyMap()">Destroy</button>
         <button @click="setupLeafletMap()">Draw</button>
       </div>
-      <div class="column is-four-fifths">
-        <div id="mapContainer"></div>
+      <div class="column is-four-fifths"> 
+        <div id="mapContainer" v-show="!isLoading"></div>
       </div>
     </div>
+    <Spinner :isLoading="isLoading" />
   </section>
 </template>
 
 <script>
+import Spinner from "@/components/Spinner.vue";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import authService from "../../services/authService";
-const data = require("../../assets/test.json");
+import localAuthorityDistricts from "../../assets/Local_Authority_Districts_(May_2020)_Boundaries_UK_BFE.json";
+const mapData = require("../../assets/test.json");
 
 export default {
   name: "geospatial",
+  components: {
+    Spinner
+  },
   data() {
     return {
       filename: sessionStorage["sessionId"],
       timestamp: Date.now(),
-      uri: authService.getEnvironmentURI()
+      uri: authService.getEnvironmentURI(),
+      isLoading: false
     };
   },
   methods: {
@@ -34,7 +41,9 @@ export default {
       this.map.remove();
     },
     setupLeafletMap: function () {
-      console.log("Setting up map");
+      this.isLoading = true;
+      this.getGeoJSONFile();
+
       this.map = L.map("mapContainer", {
         fullscreenControl: true,
         fullscreenControlOptions: {
@@ -54,18 +63,30 @@ export default {
         }
       ).addTo(this.map);
 
-      var geojsonLayer = new L.GeoJSON(data, { 
+      var geojsonLayer = new L.GeoJSON(mapData, { 
         style: this.style,
         onEachFeature: this.onEachFeature
       });
 
       geojsonLayer.addTo(this.map);
       this.geojsonLayer = geojsonLayer;
-
       this.setupInfoPanel();
+      console.log('Map setup complete')
+      this.isLoading = false;
+    },
+    getGeoJSONFile() {
+      let features = localAuthorityDistricts['features'];
+      this.joinDataToGeoJSON(features);
+    },
+    joinDataToGeoJSON(features) {
+      let totalFeatures = features.length;
+      for (let i = 0; i < totalFeatures; i++) {
+        let properties = features[i]['properties'];
+        properties['test_property'] = 'Hello world!';
+        console.log(i, properties);
+      }
     },
     importFullScreenMode() {
-      console.log("Importing full screen");
       let script = document.createElement("script");
       script.setAttribute(
         "src",
@@ -73,6 +94,7 @@ export default {
       );
       script.setAttribute("id", "leafletFullMapScript");
       document.head.appendChild(script);
+      console.log("Importing full screen complete");
     },
     numberWithCommas(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -138,7 +160,7 @@ export default {
       this.info = L.control();
 
       this.info.onAdd = function () {
-        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this._div = L.DomUtil.create('div', 'info');
         this.update();
         return this._div;
       };
@@ -167,9 +189,6 @@ export default {
   },
   mounted() {
     this.importFullScreenMode();
-    setTimeout(() => {
-      this.setupLeafletMap();
-    }, 200);
   },
   computed: {
     metadata() {
@@ -182,14 +201,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import "https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css";
 
 #mapContainer {
   width: 100%;
   height: 80vh;
 }
+</style>
 
+<style>
 .info {
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
